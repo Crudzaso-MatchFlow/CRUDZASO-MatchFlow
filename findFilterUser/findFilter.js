@@ -1,17 +1,25 @@
+// API
 const url = "http://localhost:3000/candidates";
 
+// Fincion Filter and Search
 async function filterSearch() {
+  // Variables DOM
   const viewResultados = document.querySelector(".resultados");
   const formFilter = document.querySelector("#formFilter");
   const searchInput = document.querySelector("#search");
-
+  const searchForm = document.querySelector("#searchForm");
+  // Control de Errores
   try {
+    // Method Get Fetch
     const resp = await fetch(url);
+    // Valido el estado de la peticion y creo un Obj para guardar el error y mostrarlo
     if (!resp.ok) throw new Error(`HTTP error! status: ${resp.status}`);
-
+    // Guardo la data de mi peticion para poder usarla
     const dataResp = await resp.json();
+    // Validamos posible estructura de la data
     const candidates = dataResp.candidates || dataResp;
 
+    // Funcion para mostrar Resultados de busqueda
     function renderResults(filtered) {
       if (filtered.length === 0) {
         viewResultados.innerHTML = `<p>No hay resultados que cumplan los filtros</p>`;
@@ -40,8 +48,9 @@ async function filterSearch() {
           .join("");
       }
     }
-
+    // Funcion para Filter and Search
     function applyFilters() {
+      // Guardo parametros para Filtrar
       const categorias = [];
       if (document.getElementById("frontend").checked)
         categorias.push("frontend");
@@ -50,37 +59,52 @@ async function filterSearch() {
       if (document.getElementById("fullstack").checked)
         categorias.push("full stack");
 
+      // Caturo el input y lo parseo a minuscula y descarto espacion en blanco
       const searchText = searchInput.value.toLowerCase().trim();
 
+      // para cuando no se filtre muestre los Todos los candidatos
       let filtered = candidates;
 
       // Filtrar por categorías
       if (categorias.length > 0) {
+        // Filtra las profesiones que coinsidan con las categorias[]
         filtered = filtered.filter((c) =>
-          categorias.some((cat) => c.profession.toLowerCase().includes(cat)),
+          categorias.some((ctgrias) =>
+            c.profession.toLowerCase().includes(ctgrias),
+          ),
         );
       }
 
       // Filtrar por barra de búsqueda
       if (searchText) {
+        // Busca por nombre o Profesion
         filtered = filtered.filter(
           (c) =>
             c.name.toLowerCase().includes(searchText) ||
             c.profession.toLowerCase().includes(searchText),
         );
       }
-
+      // Muestro en la function renderResults Los filtros Hechos
       renderResults(filtered);
     }
 
     // Eventos
+
+    // Filtro
     formFilter.addEventListener("submit", (e) => {
       e.preventDefault();
       applyFilters();
     });
-
-    searchInput.addEventListener("input", applyFilters);
-
+    // Search Button
+    searchForm.addEventListener("click", (e) => {
+      e.preventDefault();
+      applyFilters();
+    });
+    // Searc Input
+    searchForm.addEventListener("input", (e) => {
+      e.preventDefault();
+      applyFilters();
+    });
     // Render inicial
     renderResults(candidates);
   } catch (error) {
