@@ -15,53 +15,65 @@
                         <div class="card-body">
                             <form id="formCreateOffer">
                                 <div class="mb-4">
-                                    <label for="titleOffer" class="form-label">Título de la Oferta</label>
-                                    <input type="text" class="form-control" id="titleOffer" placeholder="Example: Software Developer" required>
+                                    <label class="form-label">Título de la Oferta</label>
+                                    <input type="text" class="form-control" placeholder="Example: Software Developer" required>
                                 </div>
                                 <div class="mb-4">
-                                    <label for="descriptionOffer" class="form-label">Descripción del Cargo</label>
-                                    <textarea class="form-control" id="descriptionOffer" rows="3"></textarea>
+                                    <label class="form-label">Descripción del Cargo</label>
+                                    <textarea class="form-control" rows="3"></textarea>
                                 </div>
-                                <div class="mb-4 d-flex gap-4">
-                                    <label for="professionOffer" class="form-label">Profesión</label>
-                                    <select class="form-select" aria-label="Default select example" id="professionOffer">
-                                        <option selected>Seleccione Profesión</option>
-                                        <option value="abogado">Abogado</option>
-                                        <option value="contador">Contador</option>
-                                        <option value="arquitecto">Arquitecto</option>
-                                        <option value="programador">Programador</option>
-                                        <option value="médico">Médico</option>
-                                    </select>
-                                    <label for="typeContract" class="form-label">Tipo de Contrato</label>
-                                    <select class="form-select" aria-label="Default select example" id="typeContract">
-                                        <option selected>Seleccione Tipo</option>
-                                        <option value="indefinido">Término Indefinido</option>
-                                        <option value="fijo">Término Fijo</option>
-                                        <option value="obralabor">Obra o Labor</option>
-                                        <option value="aprendizaje">Aprendizaje</option>
-                                        <option value="ocasional">Ocasional, accidental o transitorio</option>
-                                    </select>
+                                <div class="row mb-4">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label">Profesión</label>
+                                        <select class="form-select">
+                                            <option selected>Seleccione Profesión</option>
+                                            <option>Abogado</option>
+                                            <option>Contador</option>
+                                            <option>Arquitecto</option>
+                                            <option>Programador</option>
+                                            <option>Médico</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Tipo de Contrato</label>
+                                        <select class="form-select">
+                                            <option selected>Seleccione Tipo</option>
+                                            <option>Indefinido</option>
+                                            <option>Fijo</option>
+                                            <option>Obra o Labor</option>
+                                            <option>Aprendizaje</option>
+                                            <option>Ocasional</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="mb-4 d-flex gap-4">
-                                    <label for="locationOffer" class="form-label">Ubicación</label>
-                                    <input type="text" class="form-control" id="locationOffer" placeholder="Example: Bogotá D.C." required>
-                                    <label for="modeOffer" class="form-label">Modalidad</label>
-                                    <select class="form-select" aria-label="Default select example" id="modeOffer">
-                                        <option selected>Presencial, Remoto o Híbrido</option>
-                                        <option value="presencial">Presencial</option>
-                                        <option value="remoto">Remoto</option>
-                                        <option value="hibrido">Híbrido</option>
-                                    </select>
+                                <div class="row mb-4">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label">Ubicación</label>
+                                        <input type="text" class="form-control" placeholder="Bogotá D.C." required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Modalidad</label>
+                                        <select class="form-select">
+                                            <option selected>Seleccione Modalidad</option>
+                                            <option>Presencial</option>
+                                            <option>Remoto</option>
+                                            <option>Híbrido</option>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="mb-4 d-flex gap-4">
-                                    <label for="salaryOffer" class="form-label">Salario</label>
-                                    <input type="text" class="form-control" id="salaryOffer" placeholder="Example: $2.550.000" required>
-                                    <label for="deadlineOffer" class="form-label">Fecha Límite</label>
-                                    <input type="date" class="form-control" id="deadlineOffer" required>
+                                <div class="row mb-4">
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label">Salario</label>
+                                        <input type="text" class="form-control" placeholder="$2.550.000" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label class="form-label">Fecha Límite</label>
+                                        <input type="date" class="form-control" required>
+                                    </div>
                                 </div>
-                                <div class="mb-4 d-flex justify-content-center gap-4">
-                                    <button type="submit" class="btn btn-primary" id="submitBtn">Publicar Oferta</button>
-                                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancelar</button>
+                                <div class="d-flex justify-content-center gap-4">
+                                    <button type="submit" class="btn btn-primary">Publicar Oferta</button>
+                                    <button type="button" class="btn btn-secondary">Cancelar</button>
                                 </div>
                             </form>
                         </div>
