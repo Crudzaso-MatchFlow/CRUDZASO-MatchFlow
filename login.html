@@ -89,8 +89,13 @@
                                     </div>
                                     <!-- Confirm password input -->
                                     <div class="mb-3">
-                                        <label for="signup-confirm" class="form-label">Confirm Password</label>
-                                        <input type="password" class="form-control" id="signup-confirm" required>
+                                        <!-- Selector de rol -->
+                                        <label for="roleSelect">Select a role:</label>
+                                        <select id="roleSelect" class="form-control">
+                                            <option value="">-- Select Rol --</option>
+                                            <option value="1">company</option>
+                                            <option value="2">User</option>
+                                        </select>
                                     </div>
                                     <!-- Submit button -->
                                     <button type="submit" class="btn btn-primary w-100">Create Account</button>

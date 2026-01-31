@@ -1,9 +1,6 @@
 // ================================
 // DATA (ONLY JSON IN MEMORY)
 // ================================
-
-// ✅ Antes: localStorage
-// ❌ Ahora: solo una variable en memoria
 let usersJSON = [];
 let currentUserJSON = null;
 
@@ -47,7 +44,7 @@ if (signupForm) {
             return;
         }
 
-        // ✅ Ahora buscamos en la variable JSON
+        // Ahora buscamos en la variable JSON
         if (usersJSON.find(user => user.email === email)) {
             signupError.textContent = 'Email already registered';
             signupError.classList.remove('d-none');
@@ -56,7 +53,7 @@ if (signupForm) {
 
         const newUser = { name, email, password };
 
-        // ✅ Guardamos en el JSON en memoria
+        // Guardamos en el JSON en memoria
         usersJSON.push(newUser);
 
         signupSuccess.classList.remove('d-none');
@@ -97,11 +94,11 @@ if (loginForm) {
             return;
         }
 
-        // ✅ Buscamos en el JSON en memoria
+        // Buscamos en el JSON en memoria
         const user = usersJSON.find(u => u.email === email && u.password === password);
 
         if (user) {
-            // ✅ Guardamos sesión en memoria
+            // Guardamos sesión en memoria
             currentUserJSON = user;
             window.location.href = 'indexTask.html';
         } else {
@@ -120,8 +117,8 @@ if (loginForm) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // ❌ Antes: localStorage
-    // ✅ Ahora: variable en memoria
+
+    // Ahora: variable en memoria
     if (!currentUserJSON) return;
 
     const nameElement = document.getElementById('user-name');
