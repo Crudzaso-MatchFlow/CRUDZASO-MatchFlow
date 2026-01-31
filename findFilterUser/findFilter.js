@@ -80,8 +80,16 @@ async function filterSearch() {
         // Busca por nombre o Profesion
         filtered = filtered.filter(
           (c) =>
-            c.name.toLowerCase().includes(searchText) ||
-            c.profession.toLowerCase().includes(searchText),
+            c.name
+              .normalize("NFD") // Descompone caracteres
+              .replace(/[\u0300-\u036f]/g, "") // Elimina los signos diacríticos
+              .toLowerCase() // Todo en minusculas
+              .includes(searchText) ||
+            c.profession
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .toLowerCase()
+              .includes(searchText),
         );
       }
       // Muestro en la function renderResults Los filtros Hechos
