@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - MatchFlow</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        :root { --primary: #137fec; }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <header class="topbar">
+        <div class="container d-flex justify-content-between align-items-center py-3">
+            <a href="dashboard_user.html" class="d-flex align-items-center gap-2 text-decoration-none">
+                <div class="bg-primary rounded p-1 text-white">
+                    <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
+                        <path d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor"/>
+                    </svg>
+                </div>
+                <span class="fw-bold fs-5">MatchFlow</span>
+                <span class="badge bg-primary">Candidate</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light position-relative">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">0</span>
+                </button>
+                <div class="d-flex align-items-center gap-2">
+                    <img src="https://via.placeholder.com/36" id="topAvatar" class="rounded-circle" width="36" height="36">
+                    <span id="topName">User</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Layout -->
+    <div class="layout-candidate">
+        <!-- Sidebar -->
+        <aside class="candidate-sidebar">
+            <div class="p-3">
+                <a href="#" class="nav-item active mb-2">
+                    <span class="material-symbols-outlined">person</span>
+                    <span>Profile</span>
+                </a>
+                <a href="dashboard_user.html" class="nav-item mb-2">
+                    <span class="material-symbols-outlined">favorite</span>
+                    <span>Matches</span>
+                </a>
+                <a href="dashboard_user.html" class="nav-item mb-2">
+                    <span class="material-symbols-outlined">work</span>
+                    <span>Job Offers</span>
+                </a>
+                <a href="#" class="nav-item" onclick="logout(); return false;">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content p-4">
+            <!-- Profile Hero -->
+            <section class="profile-hero mb-4">
+                <div class="d-flex gap-4 flex-wrap">
+                    <div class="position-relative">
+                        <img src="https://via.placeholder.com/120" id="profileAvatar" class="rounded-circle" width="120" height="120">
+                        <div class="avatar-overlay" id="avatarEdit">
+                            <span class="material-symbols-outlined">photo_camera</span>
+                            <input type="file" id="photoInput" accept="image/*" class="d-none">
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <h1 id="profileName" class="fw-bold mb-1">Your full name</h1>
+                        <p id="profileTitle" class="text-muted mb-2">Your profession</p>
+                        <div class="d-flex gap-2 mb-3">
+                            <span id="profileExperience" class="badge bg-light text-dark">0 years</span>
+                            <span id="profileLocation" class="badge bg-light text-dark">Location</span>
+                            <span id="openToWorkBadge" class="badge bg-success">Open to Work</span>
+                        </div>
+                        <div class="d-flex gap-3 align-items-center">
+                            <label class="d-flex align-items-center gap-2">
+                                <input type="checkbox" id="openToWorkToggle" checked>
+                                <span>Open to Work</span>
+                            </label>
+                            <button class="btn btn-primary btn-sm" id="editProfileBtn">Edit Profile</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Content Grid -->
+            <div class="row g-4">
+                <!-- Experience -->
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0 fw-bold">Work Experience</h5>
+                                <button class="btn btn-sm btn-outline-primary" data-section="experience">Edit</button>
+                            </div>
+                            <div id="experienceSection" class="text-center text-muted py-4">
+                                <span class="material-symbols-outlined d-block mb-2" style="font-size: 40px;">work</span>
+                                <p class="mb-0">Add your professional experience</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills & Languages -->
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0 fw-bold">Skills</h5>
+                                <button class="btn btn-sm btn-outline-primary" data-section="skills">Edit</button>
+                            </div>
+                            <div id="skillsSection" class="text-center text-muted py-4">
+                                <span class="material-symbols-outlined d-block mb-2" style="font-size: 40px;">code</span>
+                                <p class="mb-0">Add your technical skills</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0 fw-bold">Languages</h5>
+                                <button class="btn btn-sm btn-outline-primary" data-section="languages">Edit</button>
+                            </div>
+                            <div id="languagesSection" class="text-center text-muted py-4">
+                                <span class="material-symbols-outlined d-block mb-2" style="font-size: 40px;">language</span>
+                                <p class="mb-0">Add languages you speak</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="modalName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Profession</label>
+                            <input type="text" class="form-control" id="modalProfession" placeholder="e.g., Frontend Developer">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Years of Experience</label>
+                            <input type="number" class="form-control" id="modalExperience" min="0" max="50">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" id="modalLocation" placeholder="e.g., Medellín">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="saveProfileBtn">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/candidate.js"></script>
+</body>
+</html>
