@@ -99,7 +99,7 @@ if (signupForm) {
             
             // Update db.json on server
             const dbData = {
-                ...await (await fetch('../db/db.json')).json(),
+                ...await (fetch('../db/db.json')).json(),
                 candidates: usersJSON
             };
             
@@ -160,9 +160,8 @@ if (loginForm) {
         const user = usersJSON.find(u => u.email === email && u.password === password);
 
         if (user) {
-            // Guardamos sesión en memoria
-            currentUserJSON = user;
-            window.location.href = 'indexTask.html';
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            window.location.href = 'dashboard_user.html';
         } else {
             loginError.textContent = usersJSON.length === 0
                 ? 'No users found. Please Sign Up first.'

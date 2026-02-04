@@ -15,7 +15,7 @@ function setupEvents() {
     document.getElementById('photoInput').click();
   document.getElementById('photoInput').onchange = uploadPhoto;
   document.getElementById('profileModal').onclick = (e) => {
-    if (e.target.id === 'profileModal') closeModal();
+  if (e.target.id === 'profileModal') closeModal();
   };
 }
 
