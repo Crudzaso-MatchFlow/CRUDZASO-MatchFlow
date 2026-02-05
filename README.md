@@ -1,136 +1,298 @@
-# Crudzaso-MatchFlow
+# MatchFlow - Hiring Platform by Crudzaso
 
-Sistema de gestión de candidatos, empresas y ofertas laborales.
+## 📋 Description
 
-## 📋 Descripción
+MatchFlow is a match-first hiring platform where candidates activate "Open to Work" status and companies discover and match with them. No traditional applications - just smart matching.
 
-MatchFlow es una plataforma que conecta candidatos con empresas a través de ofertas laborales, gestionando el proceso completo de matching y seguimiento de candidaturas.
+## 🎯 Key Features
 
-## 🗂️ Estructura de Datos
+### For Candidates
+- **Open to Work Toggle**: Control your visibility to companies
+- **Profile Management**: Update your professional information
+- **Match Tracking**: See all your matches and their status
+- **Privacy Control**: Contact info only visible after "contacted" status
 
-### 1. Candidates (Candidatos)
+### For Companies
+- **Candidate Discovery**: Browse candidates who are open to work
+- **Match Creation**: Create matches with candidates for specific job offers
+- **Reservation System**: Reserve candidates while evaluating
+- **Match Management**: Track match status (pending → contacted → interview → hired/discarded)
+- **Job Offers**: Create and manage job postings
 
-Información de los candidatos disponibles en la plataforma.
+## 🏗️ Project Structure
 
+```
+CRUDZASO-HabitFlow/
+├── index.html                    # Landing page
+├── README.md                     # This file
+├── package.json
+├── css/
+│   └── styles.css               # Unified styles (Bootstrap + custom)
+├── db/
+│   ├── db.json                  # json-server database
+│   ├── package.json
+│   └── package-lock.json
+├── images/
+│   └── hero.svg                 # Hero image
+├── pages/
+│   ├── login.html               # Login/Signup page
+│   ├── dashboard_user.html      # Unified dashboard (Discovery, Matches, Reserved)
+│   ├── candidate.html           # Candidate profile management
+│   ├── company.html             # Company profile management
+│   └── createOffer.html         # Create job offer form
+└── scripts/
+    ├── login.js                 # Authentication logic
+    ├── candidate.js             # Candidate profile functionality
+    ├── company.js               # Company profile functionality
+    ├── createOffer.js           # Job offer creation
+    ├── findFilter.js            # Search and filter functionality
+    ├── showOferts.js            # Display offers and matches
+    ├── app.js                   # Main app logic
+    └── utils.js                 # Shared utilities
+```
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js installed
+- npm or npx
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd CRUDZASO-HabitFlow
+   ```
+
+2. **Start json-server**
+   ```bash
+   cd db
+   npx json-server --watch db.json --port 3000
+   ```
+
+3. **Open the application**
+   - Open `index.html` in your browser
+   - Or use Live Server extension in VS Code
+
+## 📊 Database Structure
+
+The `db/db.json` file contains:
+
+### Candidates
 ```json
 {
-  "id": "string/number",
-  "name": "string",
-  "email": "string",
-  "phone": "string",
-  "profession": "string",
-  "openToWork": "boolean",
-  "bio": "string",
-  "reservedBy": "null o company_id",
-  "reservedForOffer": "null o jobOffer_id"
+  "id": 1,
+  "username": "user",
+  "password": "password",
+  "rol": "candidate",
+  "name": "John Doe",
+  "email": "john@example.com",
+  "phone": "+57 300 123 4567",
+  "avatar": "https://i.pravatar.cc/150?img=1",
+  "profession": "Desarrollador Frontend",
+  "experience": 3,
+  "location": "Medellín",
+  "openToWork": true,
+  "bio": "Passionate developer...",
+  "reservedBy": null,
+  "reservedForOffer": null
 }
 ```
 
-**Campos:**
-- `id`: Identificador único del candidato
-- `name`: Nombre completo
-- `email`: Correo electrónico
-- `phone`: Número de teléfono
-- `profession`: Profesión o área de especialización
-- `openToWork`: Indica si está buscando empleo activamente
-- `bio`: Biografía o descripción personal
-- `reservedBy`: ID de la empresa que ha reservado al candidato (si aplica)
-- `reservedForOffer`: ID de la oferta laboral asociada a la reserva
-
----
-
-### 2. Companies (Empresas)
-
-Información de las empresas registradas en la plataforma.
-
+### Companies
 ```json
 {
-  "id": "string/number",
-  "name": "string",
-  "email": "string",
-  "phone": "string",
-  "description": "string",
-  "industry": "string"
+  "id": 1,
+  "username": "company",
+  "password": "password",
+  "rol": "company",
+  "name": "Tech Corp",
+  "email": "contact@techcorp.com",
+  "phone": "+57 300 987 6543",
+  "avatar": "https://i.pravatar.cc/150?img=10",
+  "industry": "Technology",
+  "size": "50-200",
+  "location": "Bogotá",
+  "website": "www.techcorp.com",
+  "description": "Leading tech company..."
 }
 ```
 
-**Campos:**
-- `id`: Identificador único de la empresa
-- `name`: Nombre de la empresa
-- `email`: Correo electrónico corporativo
-- `phone`: Número de teléfono
-- `description`: Descripción de la empresa
-- `industry`: Sector o industria
-
----
-
-### 3. Job Offers (Ofertas Laborales)
-
-Publicaciones de empleos creadas por las empresas.
-
+### Job Offers
 ```json
 {
-  "id": "string/number",
-  "companyId": "number",
-  "title": "string",
-  "description": "string",
-  "profession": "string",
-  "createdAt": "string",
-  "isActive": "boolean"
+  "id": 1,
+  "companyId": 1,
+  "title": "Frontend Developer",
+  "description": "We are looking for...",
+  "profession": "Desarrollador Frontend",
+  "typeContract": "Indefinido",
+  "location": "Medellín",
+  "mode": "Híbrido",
+  "salary": "$3.500.000",
+  "deadline": "2024-12-31",
+  "createdAt": "2024-01-15T10:00:00Z",
+  "isActive": true
 }
 ```
 
-**Campos:**
-- `id`: Identificador único de la oferta
-- `companyId`: ID de la empresa que publica (FK → companies)
-- `title`: Título de la posición
-- `description`: Descripción detallada del puesto
-- `profession`: Profesión requerida (debe coincidir con profession de candidates)
-- `createdAt`: Fecha de creación (formato ISO)
-- `isActive`: Estado de la oferta (activa/inactiva)
-
----
-
-### 4. Matches (Coincidencias)
-
-Registro de las conexiones entre candidatos, empresas y ofertas laborales.
-
+### Matches
 ```json
 {
-  "id": "string/number",
-  "companyId": "number",
-  "candidateId": "number",
-  "jobOfferId": "number",
-  "status": "string",
-  "createdAt": "string"
+  "id": 1,
+  "companyId": 1,
+  "candidateId": 2,
+  "jobOfferId": 1,
+  "status": "pending",
+  "createdAt": "2024-01-20T14:30:00Z"
 }
 ```
 
-**Campos:**
-- `id`: Identificador único del match
-- `companyId`: ID de la empresa (FK → companies)
-- `candidateId`: ID del candidato (FK → candidates)
-- `jobOfferId`: ID de la oferta laboral (FK → jobOffers)
-- `status`: Estado del proceso
-  - `pending`: Pendiente de revisión
-  - `contacted`: Candidato contactado
-  - `interview`: En proceso de entrevista
-  - `hired`: Contratado
-  - `discarded`: Descartado
-- `createdAt`: Fecha de creación del match (formato ISO)
+**Match Status Flow:**
+- `pending` → Initial state
+- `contacted` → Company contacted candidate (contact info now visible)
+- `interview` → Interview scheduled
+- `hired` → Candidate hired
+- `discarded` → Match rejected
+
+## 🎨 Design System
+
+### Colors
+- **Primary**: `#137fec` (Blue)
+- **Secondary**: `#0fbcf9` (Light Blue)
+- **Success**: `#10b981` (Green)
+- **Warning**: `#f59e0b` (Orange)
+- **Danger**: `#ef4444` (Red)
+
+### Typography
+- **Font Family**: Inter (Google Fonts)
+- **Weights**: 400, 500, 600, 700
+
+### Components
+- Bootstrap 5.3.0 for base components
+- Custom CSS for MatchFlow-specific styling
+- Material Symbols icons
+
+## 🔐 Authentication
+
+### Default Test Accounts
+
+**Candidate:**
+- Email: `candidate@test.com`
+- Password: `123456`
+
+**Company:**
+- Email: `company@test.com`
+- Password: `123456`
+
+## 📱 Pages Overview
+
+### 1. Landing Page (`index.html`)
+- Hero section with CTA
+- Features showcase
+- Statistics
+- Call to action
+
+### 2. Login/Signup (`pages/login.html`)
+- Tabbed interface for login and signup
+- Role selection (Candidate/Company)
+- Form validation
+
+### 3. Dashboard (`pages/dashboard_user.html`)
+- **Discovery View**: Browse candidates/offers
+- **Matches View**: See all matches
+- **Reserved View**: (Companies only) Reserved candidates
+- Sidebar navigation
+- Real-time filtering
+
+### 4. Candidate Profile (`pages/candidate.html`)
+- Profile information display
+- Open to Work toggle
+- Edit profile modal
+- Experience and skills sections
+
+### 5. Company Profile (`pages/company.html`)
+- Company information
+- Statistics (active offers, matches, reserved)
+- Edit profile modal
+
+### 6. Create Offer (`pages/createOffer.html`)
+- Job offer creation form
+- All required fields
+- Validation
+
+## 🛠️ Technologies
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **UI Framework**: Bootstrap 5.3.0
+- **Icons**: Material Symbols
+- **Backend**: json-server (REST API)
+- **Storage**: localStorage for session management
+
+## 📝 Business Rules
+
+1. **Open to Work Visibility**
+   - Only candidates with `openToWork: true` appear in Discovery
+   - Candidates can toggle this status anytime
+
+2. **Match Creation**
+   - Companies can create matches with open candidates
+   - One match = one company + one candidate + one job offer
+
+3. **Reservation System**
+   - Companies can reserve candidates (blocks other companies)
+   - Reserved candidates show "Reserved" badge
+   - Companies can release reservations
+
+4. **Contact Privacy**
+   - Contact info (phone, email) only visible after "contacted" status
+   - Protects candidate privacy until serious interest
+
+5. **Match Status Progression**
+   - Linear flow: pending → contacted → interview → hired/discarded
+   - Companies control status updates
+
+## 🔄 API Endpoints
+
+json-server provides REST API at `http://localhost:3000`:
+
+- `GET /candidates` - List all candidates
+- `GET /candidates/:id` - Get candidate by ID
+- `POST /candidates` - Create new candidate
+- `PATCH /candidates/:id` - Update candidate
+- `PUT /candidates/:id` - Replace candidate
+
+Same pattern for:
+- `/companies`
+- `/jobOffers`
+- `/matches`
+
+## 🐛 Troubleshooting
+
+### json-server not starting
+```bash
+cd db
+npm install -g json-server
+json-server --watch db.json --port 3000
+```
+
+### CORS errors
+json-server automatically handles CORS. Make sure it's running on port 3000.
+
+### Login not working
+1. Check json-server is running
+2. Check browser console for errors
+3. Verify db.json has test accounts
+
+## 📄 License
+
+This project is part of the Crudzaso learning initiative.
+
+## 👥 Team
+
+Developed by the Crudzaso team as part of the web development bootcamp.
 
 ---
 
-## 🔗 Relaciones
-
-- Un **candidate** puede tener múltiples **matches**
-- Una **company** puede tener múltiples **jobOffers**
-- Una **company** puede tener múltiples **matches**
-- Un **jobOffer** pertenece a una **company**
-- Un **match** conecta un **candidate** con una **company** y un **jobOffer**
-
----
-
-## 🚀 Uso
-
-Este proyecto utiliza `db.json` como base de datos para un servidor JSON simulado (JSON Server).
+**Note**: This is an educational project. For production use, implement proper authentication, security measures, and backend infrastructure.
