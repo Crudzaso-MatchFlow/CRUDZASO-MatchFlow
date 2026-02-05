@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="light" lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Company Profile - MatchFlow</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+
+  <style>
+    :root { --primary: #137fec; }
+    body { font-family: 'Inter', sans-serif; }
+    .company-wrap { padding: 24px; }
+    @media (max-width: 768px){ .company-wrap { padding: 16px; } }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+
+  
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-icon">
+          <span class="material-symbols-outlined">all_inclusive</span>
+        </div>
+        <div>
+          <h1 class="logo-title">MatchFlow</h1>
+          <p class="logo-subtitle">Company</p>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="./company.html" class="nav-item active">
+          <span class="material-symbols-outlined filled">business</span>
+          <p>Profile</p>
+        </a>
+
+        <a href="search-candidates.html" class="nav-item">
+          <span class="material-symbols-outlined">search</span>
+          <p>Search candidates</p>
+        </a>
+
+        <a href="createOffer.html" class="nav-item">
+          <span class="material-symbols-outlined">add</span>
+          <p>Create Offer</p>
+        </a>
+
+        <a href="dashboard_user.html" class="nav-item">
+          <span class="material-symbols-outlined">work</span>
+          <p>My Offers</p>
+        </a>
+
+        <a href="#" class="nav-item" onclick="logout(); return false;">
+          <span class="material-symbols-outlined">logout</span>
+          <p>Logout</p>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="profile-card">
+          <img id="topAvatar" class="profile-avatar" src="https://via.placeholder.com/40?text=%3F" alt="Company" width="40" height="40">
+          <div class="profile-info">
+            <p class="profile-name" id="topName">Company</p>
+            <p class="profile-role">Company</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+      
+      <header class="header">
+        <div class="header-content">
+          <div class="header-left">
+            <h2 class="header-title-mobile">Company Profile</h2>
+          </div>
+          <div class="header-right">
+            <button class="btn-filter" id="editProfileBtn" type="button">
+              <span class="material-symbols-outlined">edit</span>
+              <span>Edit</span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../scripts/company.js"></script>
+
+</body>
+</html>
