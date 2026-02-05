@@ -105,7 +105,7 @@ function updateUI(data) {
   const phoneEl = document.getElementById('profilePhone');
   const emailEl = document.getElementById('profileEmail');
 
-  // Sidebar footer (si existe)
+  // Sidebar footer
   const sidebarAvatar = document.getElementById('user-avatar');
   const sidebarName = document.getElementById('user-name');
   const sidebarRole = document.getElementById('user-role');
