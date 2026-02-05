@@ -5,7 +5,7 @@ let currentCandidate = null;
 let profileModalInstance = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Bootstrap modal instance
+
   const modalEl = document.getElementById('profileModal');
   if (modalEl && window.bootstrap) {
     profileModalInstance = new bootstrap.Modal(modalEl);
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 // ============================
 
 function setupEvents() {
-  // Support both IDs (por si tienes dos botones)
+
   document.getElementById('editProfileBtn')?.addEventListener('click', openModal);
   document.getElementById('editProfileBtn2')?.addEventListener('click', openModal);
 
@@ -318,7 +318,7 @@ function uploadPhoto(e) {
   reader.readAsDataURL(file);
 }
 
-// Logout helper 
+
 window.logout = function logout() {
   localStorage.removeItem('currentUser');
   window.location.href = 'login.html';
