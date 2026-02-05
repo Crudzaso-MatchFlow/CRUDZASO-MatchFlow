@@ -2,32 +2,40 @@ const API_URL = 'http://localhost:3000/candidates';
 let candidateId = localStorage.getItem('candidateId');
 
 let currentCandidate = null;
+let profileModalInstance = null;
 
-// Load data on start
 document.addEventListener('DOMContentLoaded', async () => {
+  // Bootstrap modal instance
+  const modalEl = document.getElementById('profileModal');
+  if (modalEl && window.bootstrap) {
+    profileModalInstance = new bootstrap.Modal(modalEl);
+  }
+
   await loadCandidate();
   setupEvents();
 });
 
-document.getElementById()
+// ============================
+// Events
+// ============================
 
-// Event config
 function setupEvents() {
+  // Support both IDs (por si tienes dos botones)
   document.getElementById('editProfileBtn')?.addEventListener('click', openModal);
+  document.getElementById('editProfileBtn2')?.addEventListener('click', openModal);
+
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
   document.getElementById('openToWorkToggle')?.addEventListener('change', toggleStatus);
+
   document.getElementById('avatarEdit')?.addEventListener('click', () =>
-    document.getElementById('photoInput').click()
+    document.getElementById('photoInput')?.click()
   );
   document.getElementById('photoInput')?.addEventListener('change', uploadPhoto);
+}
 
-  const modal = document.getElementById('profileModal');
-  if (modal) {
-    modal.onclick = (e) => {
-    if (e.target.id === 'profileModal') closeModal();
-  };
-}
-}
+// ============================
+// Error UI
+// ============================
 
 function showProfileError(message) {
   const box = document.getElementById('profileError');
@@ -41,6 +49,10 @@ function hideProfileError() {
   if (!box) return;
   box.classList.add('d-none');
 }
+
+// ============================
+// Load candidate
+// ============================
 
 async function loadCandidate() {
   try {
@@ -77,65 +89,90 @@ async function loadCandidate() {
 }
 
 // ============================
-// UI
+// UI render
 // ============================
 
 function updateUI(data) {
   const name = data.name || 'User';
+
   const nameEl = document.getElementById('profileName');
   const titleEl = document.getElementById('profileTitle');
-  const expEl = document.getElementById('profileExperience');
-  const toggleEl = document.getElementById('openToWorkToggle');
   const bioEl = document.getElementById('profileBio');
   const skillsEl = document.getElementById('profileSkills');
   const languagesEl = document.getElementById('profileLanguages');
+  const expEl = document.getElementById('profileExperience');
+  const toggleEl = document.getElementById('openToWorkToggle');
   const phoneEl = document.getElementById('profilePhone');
   const emailEl = document.getElementById('profileEmail');
-  document.getElementById('user-avatar').src= data.avatar
- 
-  
+
+  // Sidebar footer (si existe)
+  const sidebarAvatar = document.getElementById('user-avatar');
+  const sidebarName = document.getElementById('user-name');
+  const sidebarRole = document.getElementById('user-role');
+
+  if (sidebarAvatar) sidebarAvatar.src = data.avatar || 'https://via.placeholder.com/40?text=%3F';
+  if (sidebarName) sidebarName.textContent = name;
+  if (sidebarRole) sidebarRole.textContent = 'Candidate';
 
   if (nameEl) nameEl.textContent = name;
   if (titleEl) titleEl.textContent = data.profession || '';
   if (bioEl) bioEl.textContent = data.bio || 'No bio available.';
-  if (skillsEl) skillsEl.textContent = '';
-  if (Array.isArray(data.skills) && data.skills.length > 0) {
-    data.skills.forEach((skill) => {
-      const span = document.createElement('span');
-      span.classList.add('badge', 'text-secondary', 'bg-primary-subtle', 'me-2', 'mb-2', );
-      span.textContent = skill;
-      skillsEl.appendChild(span);
-    })}
+  if (phoneEl) phoneEl.textContent = data.phone || 'N/A';
+  if (emailEl) emailEl.textContent = data.email || 'N/A';
 
-  if(Array.isArray(data.languages) && data.languages.length > 0) {
+  // Skills
+  if (skillsEl) {
+    skillsEl.textContent = '';
+    if (Array.isArray(data.skills) && data.skills.length > 0) {
+      data.skills.forEach((skill) => {
+        const span = document.createElement('span');
+        span.classList.add('badge', 'text-secondary', 'bg-primary-subtle', 'me-2', 'mb-2');
+        span.textContent = skill;
+        skillsEl.appendChild(span);
+      });
+    } else {
+      skillsEl.textContent = 'Add your technical skills';
+    }
+  }
+
+  // Languages
+  if (languagesEl) {
     languagesEl.textContent = '';
-    data.languages.forEach((lang) => {
-      const div = document.createElement('div');
-      div.classList.add('mb-2', 'text-start');
-      div.innerHTML = `
-        <h6 class="mb-1 fw-bold">${lang.name}</h6>
-        <p class="mb-0">Proficiency: ${lang.level}</p>
-      `;
-      languagesEl.appendChild(div);
-    })}
-  // NEW: experience is now an array
+    if (Array.isArray(data.languages) && data.languages.length > 0) {
+      data.languages.forEach((lang) => {
+        const div = document.createElement('div');
+        div.classList.add('mb-2', 'text-start');
+        div.innerHTML = `
+          <h6 class="mb-1 fw-bold">${lang.name || ''}</h6>
+          <p class="mb-0">Proficiency: ${lang.level || ''}</p>
+        `;
+        languagesEl.appendChild(div);
+      });
+    } else {
+      languagesEl.textContent = 'Add languages you speak';
+    }
+  }
+
+  // Experience
   if (expEl) {
+    expEl.textContent = '';
     if (Array.isArray(data.experience) && data.experience.length > 0) {
       data.experience.forEach((exp) => {
-  const div = document.createElement('div');
-  expEl.textContent ='';
-  div.classList.add('mb-3', 'text-start');
-  div.innerHTML = `
-    <h6 class="mb-1 fw-bold">${exp.position} at ${exp.company}</h6>
-    <p class="mb-0"><em>${exp.startDate} - ${exp.endDate || 'Present'}</em></p>
-    <p class="mb-0">${exp.description}</p>
-  `;
-  expEl.appendChild(div);
-})} else {
+        const div = document.createElement('div');
+        div.classList.add('mb-3', 'text-start');
+        div.innerHTML = `
+          <h6 class="mb-1 fw-bold">${exp.position || ''} at ${exp.company || ''}</h6>
+          <p class="mb-0"><em>${exp.startDate || ''} - ${exp.endDate || 'Present'}</em></p>
+          <p class="mb-0">${exp.description || ''}</p>
+        `;
+        expEl.appendChild(div);
+      });
+    } else {
       expEl.textContent = 'Add your professional experience';
     }
   }
 
+  // Toggle + badge
   if (toggleEl) toggleEl.checked = !!data.openToWork;
 
   const badge = document.getElementById('openToWorkBadge');
@@ -144,20 +181,14 @@ function updateUI(data) {
       badge.textContent = 'Open to Work';
       badge.classList.remove('bg-secondary');
       badge.classList.add('bg-success');
-  } else {
+    } else {
       badge.textContent = 'Not available';
       badge.classList.remove('bg-success');
       badge.classList.add('bg-secondary');
+    }
   }
-  }
-
-   if (phoneEl) phoneEl.textContent = data.phone || 'N/A';
-  if (emailEl) emailEl.textContent = data.email || 'N/A';
-
-
 
   updateAvatar(name, data.avatar);
-  updateStatusUI(!!data.openToWork);
 }
 
 // ============================
@@ -179,45 +210,22 @@ function updateAvatar(name, avatarUrl) {
 }
 
 // ============================
-// Status UI
-// ============================
-
-function updateStatusUI(isOpen) {
-  const text = document.getElementById('statusText');
-  const toggle = document.getElementById('statusToggle');
-
-  if (!text || !toggle) return;
-
-  if (isOpen) {
-    text.textContent = 'Open to work';
-    text.classList.remove('inactive');
-    toggle.style.background = '#f0fdf4';
-    toggle.style.borderColor = '#bbf7d0';
-  } else {
-    text.textContent = 'Not available';
-    text.classList.add('inactive');
-    toggle.style.background = '#f9fafb';
-    toggle.style.borderColor = '#e5e7eb';
-  }
-}
-
-// ============================
-// Modal
+// Modal (Bootstrap)
 // ============================
 
 function openModal() {
-  document.getElementById('profileModal')?.classList.add('active');
-
   if (!currentCandidate) return;
 
   document.getElementById('modalName').value = currentCandidate.name || '';
   document.getElementById('modalProfession').value = currentCandidate.profession || '';
   document.getElementById('modalPhone').value = currentCandidate.phone || '';
   document.getElementById('modalEmail').value = currentCandidate.email || '';
+
+  profileModalInstance?.show();
 }
 
 function closeModal() {
-  document.getElementById('profileModal')?.classList.remove('active');
+  profileModalInstance?.hide();
 }
 
 // ============================
@@ -236,8 +244,6 @@ async function saveProfile() {
     return;
   }
 
-  // IMPORTANT:
-  
   const updatedCandidate = {
     ...currentCandidate,
     name: document.getElementById('modalName').value.trim(),
@@ -257,7 +263,6 @@ async function saveProfile() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
 
     const updated = await res.json();
-
     currentCandidate = updated;
     updateUI(updated);
     closeModal();
@@ -282,25 +287,27 @@ async function toggleStatus() {
   };
 
   try {
-    await fetch(`${API_URL}/${candidateId}`, {
+    const res = await fetch(`${API_URL}/${candidateId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updated)
     });
 
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
     currentCandidate = updated;
-    updateStatusUI(isOpen);
+    updateUI(updated);
   } catch (error) {
     console.error('Error toggling status:', error);
   }
 }
 
 // ============================
-// Upload photo (local preview only)
+// Upload photo 
 // ============================
 
 function uploadPhoto(e) {
-  const file = e.target.files[0];
+  const file = e.target.files?.[0];
   if (!file || !file.type.startsWith('image/')) return;
 
   const reader = new FileReader();
@@ -310,3 +317,9 @@ function uploadPhoto(e) {
   };
   reader.readAsDataURL(file);
 }
+
+// Logout helper 
+window.logout = function logout() {
+  localStorage.removeItem('currentUser');
+  window.location.href = 'login.html';
+};
