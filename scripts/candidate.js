@@ -54,7 +54,7 @@ function hideProfileError() {
 // Load candidate
 // ============================
 
-async function loadCandidate() {
+export async function loadCandidate() {
   try {
     hideProfileError();
 

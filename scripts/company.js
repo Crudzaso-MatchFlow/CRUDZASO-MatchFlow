@@ -16,7 +16,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 function setupEvents() {
   // Defensive: don't crash if an element doesn't exist (crashes can trigger reload loops)
-  document.getElementById('editProfileBtn')?.addEventListener('click', openModal);
+  document.getElementById('editProfileBtnInline')?.addEventListener('click', openModal);
+  
   document.getElementById('closeModal')?.addEventListener('click', closeModal);
   document.getElementById('cancelBtn')?.addEventListener('click', closeModal);
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
@@ -34,6 +35,7 @@ function setupEvents() {
   }
 }
 
+/* Function to load company */
 async function loadCompany() {
   try {
     const res = await fetch(API_URL);
@@ -45,20 +47,26 @@ async function loadCompany() {
     }
 
     const companies = await res.json();
+    const sessionCompany = JSON.parse(localStorage.getItem('currentUser'))
 
+    /* Deletes this block its not working  */
     if (Array.isArray(companies) && companies.length > 0) {
-      companyId = companies[0].id || '1';
-      updateUI(companies[0]);
+      companyId = sessionCompany.id || '1';
+      updateUI(sessionCompany);
     } else {
       // Only create when we are sure GET worked and list is truly empty
+      // This create an objet template to data null company
       await createCompanyOnce();
     }
   } catch (error) {
     // Do NOT create on errors; just log and show fallback UI
     console.error('Error loading company:', error);
   }
+  /* Still Here */
+
 }
 
+/* Function to create company once time */
 async function createCompanyOnce() {
   if (hasAttemptedCreate || isCreatingCompany) return;
   hasAttemptedCreate = true;
@@ -98,15 +106,17 @@ async function createCompanyOnce() {
 }
 
 
-
+/* Update User Inteface  */
 function updateUI(data) {
   document.getElementById('companyName').textContent = data.name || 'Your Company Name';
   document.getElementById('companyIndustry').textContent = data.industry || 'Industry';
-  document.getElementById('companySize').textContent = data.size || 'Company Size';
-  document.getElementById('companyLocation').textContent = data.location || 'Location';
-  document.getElementById('companyPhone').textContent = data.phone || '+57 ...';
-  document.getElementById('companyEmail').textContent = data.email || 'email@company.com';
-  document.getElementById('companyWebsite').textContent = data.website || 'www.company.com';
+
+  /* No theres data */
+/*   document.getElementById('companySize').textContent = data.size || 'Company Size';
+  document.getElementById('companyLocation').textContent = data.location || 'Location'; */
+  
+  document.getElementById('companyPhone').textContent = `Cel: (${data.phone})` || '+57 ...';
+  document.getElementById('companyEmail').textContent = `Email: ${data.email}` || 'email@company.com';
   document.getElementById('companyDescription').textContent = data.description || 'Add a description about your company...';
 
   const contacts = document.getElementById('companyContacts');
@@ -117,6 +127,7 @@ function updateUI(data) {
   updateAvatar(data.name || 'Company');
 }
 
+/* Function updateAvatar */
 function updateAvatar(name) {
   const url = `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=2563eb&color=fff&size=140`;
   document.getElementById('profileAvatar').src = url;
@@ -124,15 +135,19 @@ function updateAvatar(name) {
   document.getElementById('topName').textContent = name;
 }
 
-function openModal() {
+/* Function to openModal */
+async function openModal() {
   document.getElementById('profileModal').classList.add('active');
 
-  fetch(`${API_URL}/${companyId}`)
+  await fetch(`${API_URL}/${companyId}`)
     .then((res) => res.json())
     .then((data) => {
       document.getElementById('modalName').value = data.name || '';
       document.getElementById('modalIndustry').value = data.industry || '';
-      document.getElementById('modalSize').value = data.size || '';
+
+      // Documentated by stteen
+/*       document.getElementById('modalSize').value = data.size || ''; */
+
       document.getElementById('modalLocation').value = data.location || '';
       document.getElementById('modalPhone').value = data.phone || '';
       document.getElementById('modalEmail').value = data.email || '';
@@ -141,10 +156,12 @@ function openModal() {
     });
 }
 
+/* Function to closeModal */
 function closeModal() {
   document.getElementById('profileModal').classList.remove('active');
 }
 
+/* Function to save profile */
 async function saveProfile() {
   const form = document.getElementById('profileForm');
   if (!form.checkValidity()) {
@@ -187,6 +204,7 @@ async function saveProfile() {
   }
 }
 
+/* Function to update image */
 function uploadPhoto(e) {
   const file = e.target.files[0];
   if (!file || !file.type.startsWith('image/')) return;
@@ -198,3 +216,12 @@ function uploadPhoto(e) {
   };
   reader.readAsDataURL(file);
 }
+
+
+/* <-------------- ** SECTION STTEEN MODIFIED **   ----------------> */
+/* Function to loggout */
+window.logout = function logout() {
+  localStorage.removeItem('currentUser');
+  window.location.href = '../pages/login.html';
+};
+
