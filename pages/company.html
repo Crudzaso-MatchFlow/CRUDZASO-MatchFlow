@@ -55,10 +55,7 @@
           <p>My Offers</p>
         </a>
 
-        <a href="#" class="nav-item" onclick="logout(); return false;">
-          <span class="material-symbols-outlined">logout</span>
-          <p>Logout</p>
-        </a>
+
       </nav>
 
       <div class="sidebar-footer">
@@ -82,9 +79,11 @@
             <h2 class="header-title-mobile">Company Profile</h2>
           </div>
           <div class="header-right">
-            <button class="btn-filter" id="editProfileBtn" type="button">
-              <span class="material-symbols-outlined">edit</span>
-              <span>Edit</span>
+            <button class="btn-filter" id="editProfileBtnInline" type="button" >
+                <a href="#" class="px-5 d-flex text-danger text-decoration-none" onclick="logout(); return false;">
+                  <span class="material-symbols-outlined">logout</span>
+                  <p class="ms-2 ">Logout</p>
+                </a>
             </button>
           </div>
         </div>
@@ -106,12 +105,13 @@
                   <p id="companyIndustry" class="text-muted mb-2">Industry</p>
 
                   <div class="d-flex gap-2 mb-3">
-                    <span id="companySize" class="badge bg-light text-dark">Size</span>
-                    <span id="companyLocation" class="badge bg-light text-dark">Location</span>
+                    <span id="companyPhone"  class="badge bg-light text-dark">Phone</span>
+                    <span id="companyEmail" class="badge bg-light text-dark">Location</span>
                   </div>
 
-                 
-                  <button class="btn btn-primary btn-sm" id="editProfileBtnInline" type="button">Edit Profile</button>
+                  <button class="btn btn-primary btn-sm" id="editProfileBtnInline" type="button" data-bs-toggle="modal" data-bs-target="#profileModal">
+                    Edit Profile
+                  </button>
                 </div>
               </div>
             </div>
@@ -185,19 +185,23 @@
             </div>
 
             <div class="mb-3">
-              <label class="form-label">Company Size</label>
-              <select class="form-select" id="modalSize">
-                <option value="">Select size</option>
-                <option value="1-10">1-10 employees</option>
-                <option value="11-50">11-50 employees</option>
-                <option value="51-200">51-200 employees</option>
-                <option value="201-500">201-500 employees</option>
-              </select>
+              <label class="form-label">Phone</label>
+              <input type="text" class="form-control" id="modalPhone" placeholder="e.g., +57 ...">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Location</label>
               <input type="text" class="form-control" id="modalLocation" placeholder="e.g., Medellín">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="text" class="form-control" id="modalEmail" placeholder="e.g., example@xxxx.com">
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Website</label>
+              <input type="text" class="form-control" id="modalWebsite" placeholder="e.g., www.start.com">
             </div>
 
             <div class="mb-3">
