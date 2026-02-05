@@ -32,10 +32,7 @@
                     <span class="material-symbols-outlined filled">person</span>
                     <p>Profile</p>
                 </a>
-                <a href="#" class="nav-item active" data-view="discovery">
-                    <span class="material-symbols-outlined filled">explore</span>
-                    <p>Discovery</p>
-                </a>
+                
                 <a href="#" class="nav-item" data-view="matches">
                     <span class="material-symbols-outlined">favorite</span>
                     <p>My Matches</p>
@@ -245,10 +242,6 @@
             let viewTitle = '';
 
             switch (currentView) {
-                case 'discovery':
-                    items = db?.candidates?.filter(c => c.openToWork && (filter === 'all' || c.profession === filter)) || [];
-                    viewTitle = 'Candidates';
-                    break;
                 case 'offers':
                     items = db?.jobOffers?.filter(o => o.isActive && (filter === 'all' || o.profession === filter)) || [];
                     viewTitle = 'Job Offers';
@@ -296,37 +289,7 @@
             document.getElementById('matches-count').textContent = matchCount;
         }
 
-        function renderCandidateCard(c) {
-            const reserved = c.reservedBy ? 'reserved' : '';
-            return `
-                <article class="card candidate-card ${reserved}">
-                    <div class="card-body">
-                        <div class="d-flex align-items-center gap-3 mb-2">
-                            <img src="${c.avatar || 'https://via.placeholder.com/48'}" width="48" height="48" class="rounded-circle">
-                            <div>
-                                <h5 class="mb-0">${c.name}</h5>
-                                <small class="text-muted">${c.profession || 'Sin profesión'}</small>
-                            </div>
-                            ${c.openToWork ? '<span class="badge bg-success">Open to Work</span>' : '<span class="badge bg-secondary">Busy</span>'}
-                            ${c.reservedBy ? '<span class="badge bg-warning">Reserved</span>' : ''}
-                        </div>
-                        ${c.bio ? `<p class="small text-muted">${c.bio}</p>` : ''}
-                        <div class="d-flex gap-2 mt-2">
-                            ${currentUser.rol === 'company' ? `
-                                ${c.openToWork && !c.reservedBy ? `
-                                    <button class="btn btn-success btn-sm" onclick="createMatch(${c.id})">Match</button>
-                                    <button class="btn btn-warning btn-sm" onclick="reserveCandidate(${c.id})">Reserve</button>
-                                ` : ''}
-                                ${c.reservedBy === currentUser.id ? `
-                                    <button class="btn btn-outline-warning btn-sm" onclick="releaseReservation(${c.id})">Release</button>
-                                ` : ''}
-                            ` : ''}
-                            <button class="btn btn-primary btn-sm" onclick="viewProfile(${c.id})">View</button>
-                        </div>
-                    </div>
-                </article>
-            `;
-        }
+
 
         function renderOfferCard(o, company) {
             return `
@@ -371,94 +334,6 @@
                     </div>
                 </article>
             `;
-        }
-
-        async function createMatch(candidateId) {
-            const offer = db.jobOffers.find(o => o.companyId === currentUser.id);
-            if (!offer) {
-                alert('No offers created. Create an offer first.');
-                return;
-            }
-            const match = { companyId: currentUser.id, candidateId, jobOfferId: offer.id, status: 'pending', createdAt: new Date().toISOString() };
-            try {
-                await fetch(`${API_URL}/matches`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(match) });
-                await loadData();
-                render();
-                alert('Match created!');
-            } catch (e) {
-                alert('Error creating match');
-            }
-        }
-
-        async function reserveCandidate(candidateId) {
-            const offer = db.jobOffers.find(o => o.companyId === currentUser.id);
-            if (!offer) {
-                alert('No offers created. Create an offer first.');
-                return;
-            }
-            try {
-                await fetch(`${API_URL}/candidates/${candidateId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reservedBy: currentUser.id, reservedForOffer: offer.id }) });
-                await loadData();
-                render();
-                alert('Candidate reserved!');
-            } catch (e) {
-                alert('Error reserving candidate');
-            }
-        }
-
-        async function releaseReservation(candidateId) {
-            try {
-                await fetch(`${API_URL}/candidates/${candidateId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ reservedBy: null, reservedForOffer: null }) });
-                await loadData();
-                render();
-                alert('Reservation released');
-            } catch (e) {
-                alert('Error releasing reservation');
-            }
-        }
-
-        async function updateMatchStatus(matchId, status) {
-            try {
-                await fetch(`${API_URL}/matches/${matchId}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ status }) });
-                await loadData();
-                render();
-            } catch (e) {
-                alert('Error updating match');
-            }
-        }
-
-        function viewProfile(id) {
-            window.location.href = `candidate.html?id=${id}`;
-        }
-
-        function viewOffer(id) {
-            // Just show details in modal
-            const offer = db.jobOffers.find(o => o.id === id);
-            const company = db.companies.find(c => c.id === offer?.companyId);
-            document.getElementById('modalTitle').textContent = offer?.title;
-            document.getElementById('modalBody').innerHTML = `
-                <p><strong>Company:</strong> ${company?.name || 'N/A'}</p>
-                <p><strong>Description:</strong> ${offer?.description || 'N/A'}</p>
-                <p><strong>Location:</strong> ${offer?.location}</p>
-                <p><strong>Salary:</strong> ${offer?.salary}</p>
-            `;
-            new bootstrap.Modal(document.getElementById('actionModal')).show();
-        }
-
-        function viewMatchDetails(id) {
-            const m = db.matches.find(x => x.id === id);
-            const offer = db.jobOffers.find(o => o.id === m?.jobOfferId);
-            const company = db.companies.find(c => c.id === m?.companyId);
-            const candidate = db.candidates.find(c => c.id === m?.candidateId);
-            document.getElementById('modalTitle').textContent = 'Match Details';
-            document.getElementById('modalBody').innerHTML = `
-                <p><strong>Offer:</strong> ${offer?.title || 'N/A'}</p>
-                <p><strong>Company:</strong> ${company?.name || 'N/A'}</p>
-                <p><strong>Candidate:</strong> ${candidate?.name || 'N/A'}</p>
-                <p><strong>Status:</strong> ${m?.status}</p>
-                ${m?.status === 'contacted' || m?.status === 'interview' || m?.status === 'hired' ? `<p><strong>Contact:</strong> ${candidate?.phone || 'N/A'}</p>` : ''}
-            `;
-            new bootstrap.Modal(document.getElementById('actionModal')).show();
         }
 
         function logout() {
