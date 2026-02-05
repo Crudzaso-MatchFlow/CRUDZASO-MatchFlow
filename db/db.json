@@ -1,7 +1,7 @@
 {
   "candidates": [
     {
-      "id": 1,
+      "id": "1",
       "username": "mariagarcia",
       "password": "password123",
       "rol": "candidate",
@@ -10,13 +10,40 @@
       "phone": "+57 300 123 4567",
       "avatar": "https://i.pravatar.cc/150?img=1",
       "profession": "Desarrollador Frontend",
-      "openToWork": true,
+      "openToWork": false,
       "bio": "Desarrolladora frontend con pasión por crear interfaces de usuario intuitivas y accesibles. Experiencia en React y Vue.",
       "reservedBy": null,
-      "reservedForOffer": null
+      "reservedForOffer": null,
+      "skills": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "Vue",
+        "Responsive Design"
+      ],
+      "languages": [
+    {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
+      ],
+      "experience": [
+        {
+          "company": "DigitalSoft",
+          "position": "Frontend Developer",
+          "startDate": "2023-02",
+          "endDate": "2024-12",
+          "description": "Developed responsive user interfaces using React and Vue, collaborating closely with designers and backend developers."
+        }
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "carlosr",
       "password": "password123",
       "rol": "candidate",
@@ -28,10 +55,37 @@
       "openToWork": true,
       "bio": "Especialista en arquitecturas escalables y APIs RESTful. Trabajo con Node.js y Python.",
       "reservedBy": null,
-      "reservedForOffer": null
+      "reservedForOffer": null,
+      "skills": [
+        "Node.js",
+        "Python",
+        "REST APIs",
+        "PostgreSQL",
+        "Docker",
+        "Microservices"
+      ],
+      "languages": [
+    {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B1"
+        }
+      ],
+      "experience": [
+        {
+          "company": "CloudCore",
+          "role": "Backend Developer",
+          "startDate": "2022-08",
+          "endDate": "2024-11",
+          "description": "Designed and maintained scalable REST APIs and backend services using Node.js and Python in cloud-based environments."
+        }
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "username": "anamartinez",
       "password": "password123",
       "rol": "candidate",
@@ -43,10 +97,37 @@
       "openToWork": false,
       "bio": "Diseñadora centrada en el usuario con enfoque en investigación y prototipado.",
       "reservedBy": null,
-      "reservedForOffer": null
+      "reservedForOffer": null,
+      "skills": [
+        "User Research",
+        "Wireframing",
+        "Prototyping",
+        "Figma",
+        "Usability Testing",
+        "Design Systems"
+      ],
+      "languages": [
+    {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
+      ],
+      "experience": [
+        {
+          "company": "UX Studio Lab",
+          "role": "UX/UI Designer",
+          "startDate": "2023-01",
+          "endDate": "2024-10",
+          "description": "Conducted user research and created interactive prototypes, improving usability and accessibility across multiple digital products."
+        }
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "username": "luish",
       "password": "password123",
       "rol": "candidate",
@@ -58,10 +139,37 @@
       "openToWork": true,
       "bio": "Full Stack developer con experiencia en MERN stack y desarrollo ágil.",
       "reservedBy": 1,
-      "reservedForOffer": 2
+      "reservedForOffer": 2,
+      "skills": [
+        "JavaScript",
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Express",
+        "Agile Development"
+      ],
+      "languages": [
+        {
+          "name": "Spanish",
+          "level": "Native"
     },
     {
-      "id": 5,
+          "name": "English",
+          "level": "B2"
+        }
+      ],
+      "experience": [
+        {
+          "company": "NextGen Apps",
+          "role": "Full Stack Developer",
+          "startDate": "2022-06",
+          "endDate": "2024-12",
+          "description": "Built and maintained full-stack web applications using the MERN stack and collaborated in agile, cross-functional teams."
+        }
+      ]
+    },
+    {
+      "id": "5",
       "username": "sandralopez",
       "password": "password123",
       "rol": "candidate",
@@ -73,12 +181,39 @@
       "openToWork": true,
       "bio": "Analista de datos con experiencia en SQL, Python y visualización de datos con Power BI.",
       "reservedBy": null,
-      "reservedForOffer": null
+      "reservedForOffer": null,
+      "skills": [
+        "SQL",
+        "Python",
+        "Power BI",
+        "Data Visualization",
+        "Data Cleaning",
+        "Statistical Analysis"
+      ],
+      "languages": [
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B1"
+        }
+      ],
+      "experience": [
+        {
+          "company": "Insight Data Co",
+          "role": "Data Analyst",
+          "startDate": "2023-03",
+          "endDate": "2024-12",
+          "description": "Analyzed large datasets, built dashboards in Power BI, and delivered actionable insights to support business decisions."
+        }
+      ]
     }
   ],
   "companies": [
     {
-      "id": 1,
+      "id": "1",
       "username": "techcorp",
       "password": "company123",
       "rol": "company",
@@ -90,7 +225,7 @@
       "industry": "Tecnología"
     },
     {
-      "id": 2,
+      "id": "2",
       "username": "innovadesign",
       "password": "company123",
       "rol": "company",
@@ -102,7 +237,7 @@
       "industry": "Diseño y Marketing"
     },
     {
-      "id": 3,
+      "id": "3",
       "username": "dataminds",
       "password": "company123",
       "rol": "company",
@@ -114,7 +249,7 @@
       "industry": "Consultoría"
     },
     {
-      "id": 4,
+      "id": "4",
       "username": "startuphub",
       "password": "company123",
       "rol": "company",
@@ -128,7 +263,7 @@
   ],
   "jobOffers": [
     {
-      "id": 1,
+      "id": "1",
       "companyId": 1,
       "title": "Desarrollador Frontend Senior",
       "description": "Buscamos un desarrollador frontend con experiencia en React para liderar proyectos de aplicaciones web empresariales.",
@@ -142,7 +277,7 @@
       "isActive": true
     },
     {
-      "id": 2,
+      "id": "2",
       "companyId": 1,
       "title": "Desarrollador Full Stack",
       "description": "Únete a nuestro equipo para desarrollar soluciones completas usando tecnologías modernas.",
@@ -156,7 +291,7 @@
       "isActive": true
     },
     {
-      "id": 3,
+      "id": "3",
       "companyId": 2,
       "title": "Diseñador UX/UI Junior",
       "description": "Buscamos diseñador creativo para trabajar en proyectos de branding y diseño digital.",
@@ -170,7 +305,7 @@
       "isActive": true
     },
     {
-      "id": 4,
+      "id": "4",
       "companyId": 3,
       "title": "Analista de Datos",
       "description": "Analista para procesar grandes volúmenes de datos y generar insights de negocio.",
@@ -184,7 +319,7 @@
       "isActive": true
     },
     {
-      "id": 5,
+      "id": "5",
       "companyId": 4,
       "title": "Backend Developer",
       "description": "Desarrollador backend para crear APIs y microservicios escalables.",
@@ -198,7 +333,7 @@
       "isActive": true
     },
     {
-      "id": 6,
+      "id": "6",
       "companyId": 2,
       "title": "Senior UX Designer",
       "description": "Diseñador UX senior para liderar proyectos de investigación y diseño centrado en el usuario.",
@@ -214,7 +349,7 @@
   ],
   "matches": [
     {
-      "id": 1,
+      "id": "1",
       "companyId": 1,
       "candidateId": 1,
       "jobOfferId": 1,
@@ -222,7 +357,7 @@
       "createdAt": "2026-01-26T10:30:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "companyId": 1,
       "candidateId": 4,
       "jobOfferId": 2,
@@ -230,7 +365,7 @@
       "createdAt": "2026-01-27T14:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "companyId": 3,
       "candidateId": 5,
       "jobOfferId": 4,
@@ -238,7 +373,7 @@
       "createdAt": "2026-01-28T09:15:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "companyId": 4,
       "candidateId": 2,
       "jobOfferId": 5,
