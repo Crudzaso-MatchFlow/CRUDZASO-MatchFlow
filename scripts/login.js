@@ -1,196 +1,117 @@
-// ================================
-// DATA - LOAD FROM DB
-// ================================
-let usersJSON = [];
-let currentUserJSON = null;
 
-// Load users from db.json on startup
-async function loadUsers() {
-    try {
-        const response = await fetch('../db/db.json');
-        const data = await response.json();
-        usersJSON = data.candidates || [];
-    } catch (error) {
-        console.error('Error loading users:', error);
-        usersJSON = [];
-    }
+// Helpers
+
+async function getAllUsers() {
+    const [candidates, companies] = await Promise.all([
+        fetch(`http://localhost:3000/candidates`).then(response => response.json()),
+        fetch(`http://localhost:3000/companies`).then(response => response.json())
+    ]);
+
+    return [...candidates, ...companies];
 }
 
-// ================================
-// INITIALIZE ON DOM READY
-// ================================
-document.addEventListener('DOMContentLoaded', async () => {
-    await loadUsers();
+// Sign up
 
-// ================================
-// SIGN UP FORM HANDLER
-// ================================
+async function createUser(newUser) {
+    const users = await getAllUsers();
 
-const signupForm = document.getElementById('signup-form');
+    const exists = users.some(user => user.email === newUser.email);
+    if (exists) {
+        throw new Error('Email already exists');
+    }
 
-if (signupForm) {
+    const endpoint = newUser.rol === 'company' ? 'companies' : 'candidates';
+
+    const response = await fetch(`http://localhost:3000/${endpoint}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUser)
+    });
+
+    return response.json();
+}
+
+// Login
+
+async function loginUser(email, password) {
+    const users = await getAllUsers();
+
+    return users.find(user => user.email === email && user.password === password);
+}
+
+
+// Events
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Sigup
+    const signupForm = document.getElementById('signup-form');
     const signupError = document.getElementById('signup-error');
     const signupSuccess = document.getElementById('signup-success');
+    const signupName = document.getElementById('signup-name');
+    const signupEmail = document.getElementById('signup-email');
+    const signupPassword = document.getElementById('signup-password');
+    const signupRole = document.getElementById('signup-role');
 
-    signupForm.addEventListener('submit', function (e) {
+    signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const nameEl = document.getElementById('signup-name');
-        const emailEl = document.getElementById('signup-email');
-        const passwordEl = document.getElementById('signup-password');
-        const confirmEl = document.getElementById('signup-confirm');
-
-        if (!nameEl || !emailEl || !passwordEl || !confirmEl) return;
-
-        const name = nameEl.value.trim();
-        const email = emailEl.value.trim().toLowerCase();
-        const password = passwordEl.value;
-        const confirmPassword = confirmEl.value;
 
         signupError.classList.add('d-none');
         signupSuccess.classList.add('d-none');
 
-        if (!name || !email || !password || !confirmPassword) {
-            signupError.textContent = 'Please fill all fields';
-            signupError.classList.remove('d-none');
-            return;
-        }
-
-        if (password !== confirmPassword) {
-            signupError.textContent = 'Passwords do not match';
-            signupError.classList.remove('d-none');
-            return;
-        }
-
-        if (password.length < 6) {
-            signupError.textContent = 'Password must be at least 6 characters';
-            signupError.classList.remove('d-none');
-            return;
-        }
-
-        // Check if email already exists
-        if (usersJSON.find(user => user.email === email)) {
-            signupError.textContent = 'Email already registered';
-            signupError.classList.remove('d-none');
-            return;
-        }
-
-        // Create new user object with full candidate structure
-        const newId = usersJSON.length > 0 ? Math.max(...usersJSON.map(u => u.id)) + 1 : 1;
         const newUser = {
-            id: newId,
-            username: email.split('@')[0],
-            password: password,
-            rol: 'candidate',
-            name: name,
-            email: email,
-            phone: '',
-            avatar: `https://i.pravatar.cc/150?img=${newId}`,
-            profession: '',
-            openToWork: true,
-            bio: '',
-            reservedBy: null,
-            reservedForOffer: null
+            name: signupName.value.trim(),
+            email: signupEmail.value.trim().toLowerCase(),
+            password: signupPassword.value,
+            rol: signupRole.value
         };
 
-        // Save to db.json
         try {
-            usersJSON.push(newUser);
-            
-            // Update db.json on server
-            const dbData = {
-                ...await (fetch('../db/db.json')).json(),
-                candidates: usersJSON
-            };
-            
-            // Note: Direct db.json modification requires backend support
-            // For now, we save in memory and localStorage as backup
-            localStorage.setItem('users', JSON.stringify(usersJSON));
-            
+            await createUser(newUser);
             signupSuccess.classList.remove('d-none');
             signupForm.reset();
-
-            setTimeout(() => {
-                const loginTabTrigger = document.getElementById('login-tab');
-                if (loginTabTrigger) {
-                    new bootstrap.Tab(loginTabTrigger).show();
-                    const loginEmail = document.getElementById('login-email');
-                    if (loginEmail) loginEmail.value = email;
-                }
-                signupSuccess.classList.add('d-none');
-            }, 1500);
         } catch (error) {
-            console.error('Error saving user:', error);
-            signupError.textContent = 'Error registering user';
+            signupError.textContent = error.message;
             signupError.classList.remove('d-none');
         }
     });
-}
 
-
-// ================================
-// LOGIN FORM HANDLER
-// ================================
-
-const loginForm = document.getElementById('login-form');
-
-if (loginForm) {
+    // Login
+    const loginForm = document.getElementById('login-form');
     const loginError = document.getElementById('login-error');
+    const loginEmail = document.getElementById('login-email');
+    const loginPassword = document.getElementById('login-password');
 
-    loginForm.addEventListener('submit', function (e) {
+    loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-
-        const emailEl = document.getElementById('login-email');
-        const passwordEl = document.getElementById('login-password');
-
-        if (!emailEl || !passwordEl) return;
-
-        const email = emailEl.value.trim().toLowerCase();
-        const password = passwordEl.value;
 
         loginError.classList.add('d-none');
 
-        if (!email || !password) {
-            loginError.textContent = 'Please enter email and password';
+        const user = await loginUser(
+            loginEmail.value.trim().toLowerCase(),
+            loginPassword.value
+        );
+
+        if (!user) {
             loginError.classList.remove('d-none');
             return;
         }
 
-        // Buscamos en el JSON en memoria
-        const user = usersJSON.find(u => u.email === email && u.password === password);
+        localStorage.setItem('currentUser', JSON.stringify(user));
 
-        if (user) {
-            localStorage.setItem('currentUser', JSON.stringify(user));
-            window.location.href = 'dashboard_user.html';
-        } else {
-            loginError.textContent = usersJSON.length === 0
-                ? 'No users found. Please Sign Up first.'
-                : 'Invalid email or password';
-            loginError.classList.remove('d-none');
-        }
+        window.location.href =
+            user.rol === 'company' ? 'company.html' : 'dashboard_user.html';
     });
-}
-
-}); // Fin DOMContentLoaded
-
-// ================================
-// SESSION HANDLER (indexTask.html)
-// ================================
+});
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Ahora: variable en memoria
-    if (!currentUserJSON) return;
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    const nameElement = document.getElementById('user-name');
-    if (nameElement) {
-        nameElement.textContent = currentUserJSON.name;
-    }
+    if (!currentUser) return;
 
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', () => {
-            currentUserJSON = null;
-            window.location.href = 'login.html';
-        });
+    if (currentUser.rol === 'company') {
+        window.location.href = 'company.html';
+    } else {
+        window.location.href = 'dashboard_user.html';
     }
 });

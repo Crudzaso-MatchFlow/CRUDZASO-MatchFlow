@@ -23,7 +23,7 @@
         "Responsive Design"
       ],
       "languages": [
-    {
+        {
           "name": "Spanish",
           "level": "Native"
         },
@@ -65,7 +65,7 @@
         "Microservices"
       ],
       "languages": [
-    {
+        {
           "name": "Spanish",
           "level": "Native"
         },
@@ -107,7 +107,7 @@
         "Design Systems"
       ],
       "languages": [
-    {
+        {
           "name": "Spanish",
           "level": "Native"
         },
@@ -152,8 +152,8 @@
         {
           "name": "Spanish",
           "level": "Native"
-    },
-    {
+        },
+        {
           "name": "English",
           "level": "B2"
         }
