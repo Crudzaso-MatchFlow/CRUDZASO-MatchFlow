@@ -12,8 +12,8 @@
       "profession": "Desarrollador Frontend",
       "openToWork": false,
       "bio": "Desarrolladora frontend con pasión por crear interfaces de usuario intuitivas y accesibles. Experiencia en React y Vue.",
-      "reservedBy": null,
-      "reservedForOffer": null,
+      "availabilityStatus": "available",
+      "activeReservationId": null,
       "skills": [
         "HTML",
         "CSS",
@@ -54,8 +54,8 @@
       "profession": "Desarrollador Backend",
       "openToWork": true,
       "bio": "Especialista en arquitecturas escalables y APIs RESTful. Trabajo con Node.js y Python.",
-      "reservedBy": null,
-      "reservedForOffer": null,
+      "availabilityStatus": "available",
+      "activeReservationId": null,
       "skills": [
         "Node.js",
         "Python",
@@ -96,8 +96,8 @@
       "profession": "Diseñador UX/UI",
       "openToWork": false,
       "bio": "Diseñadora centrada en el usuario con enfoque en investigación y prototipado.",
-      "reservedBy": null,
-      "reservedForOffer": null,
+      "availabilityStatus": "available",
+      "activeReservationId": null,
       "skills": [
         "User Research",
         "Wireframing",
@@ -138,8 +138,8 @@
       "profession": "Desarrollador Full Stack",
       "openToWork": true,
       "bio": "Full Stack developer con experiencia en MERN stack y desarrollo ágil.",
-      "reservedBy": 1,
-      "reservedForOffer": 2,
+      "availabilityStatus": "reserved",
+      "activeReservationId": "1",
       "skills": [
         "JavaScript",
         "React",
@@ -180,8 +180,8 @@
       "profession": "Data Analyst",
       "openToWork": true,
       "bio": "Analista de datos con experiencia en SQL, Python y visualización de datos con Power BI.",
-      "reservedBy": null,
-      "reservedForOffer": null,
+      "availabilityStatus": "available",
+      "activeReservationId": null,
       "skills": [
         "SQL",
         "Python",
@@ -449,6 +449,17 @@
       "startedAt": "2026-01-01T00:00:00.000Z",
       "expiresAt": "2026-02-01T00:00:00.000Z",
       "status": "active"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1",
+      "candidateId": 4,
+      "companyId": 1,
+      "jobOfferId": 2,
+      "status": "active",
+      "reservedAt": "2026-01-27T14:05:00Z",
+      "expiresAt": "2026-02-03T14:05:00Z"
     }
   ]
 }

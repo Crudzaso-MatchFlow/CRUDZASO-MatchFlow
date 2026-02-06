@@ -1,3 +1,4 @@
+import { getSession } from "./utils.js";
 
 // Helpers
 
@@ -43,6 +44,17 @@ async function loginUser(email, password) {
 // Events
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const currentUser = getSession();
+
+    if (currentUser) {
+
+        if (currentUser.role === "company") { // add
+            window.location.href = "company.html"
+        } else {
+            window.location.href = "candidate.html"
+        }
+    }
 
     // Sigup
     const signupForm = document.getElementById('signup-form');
@@ -100,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('currentUser', JSON.stringify(user));
 
         window.location.href =
-            user.rol === 'company' ? 'company.html' : 'dashboard_user.html';
+            user.rol === 'company' ? 'company.html' : 'candidate.html';
     });
 });
 
@@ -112,6 +124,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (currentUser.rol === 'company') {
         window.location.href = 'company.html';
     } else {
-        window.location.href = 'dashboard_user.html';
+        window.location.href = 'candidate.html';
     }
 });

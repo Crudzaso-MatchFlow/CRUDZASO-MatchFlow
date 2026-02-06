@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,22 +9,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../css/styles.css">
     <style>
-        :root { --primary: #137fec; }
-        body { font-family: 'Inter', sans-serif; background: #f6f7f8; }
+        :root {
+            --primary: #137fec;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f6f7f8;
+        }
     </style>
 </head>
+
 <body>
     <header class="bg-white border-bottom py-3">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="dashboard_user.html" class="d-flex align-items-center gap-2 text-decoration-none">
                 <div class="bg-primary rounded p-1 text-white">
                     <svg width="20" height="20" viewBox="0 0 48 48" fill="none">
-                        <path d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z" fill="currentColor"/>
+                        <path
+                            d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z"
+                            fill="currentColor" />
                     </svg>
                 </div>
                 <span class="fw-bold fs-5">MatchFlow</span>
             </a>
-            <a href="dashboard_user.html" class="btn btn-outline-secondary">Back to Dashboard</a>
+            <a href="company.html" class="btn btn-outline-secondary">Back Profile</a>
         </div>
     </header>
 
@@ -36,11 +46,13 @@
                         <form id="formCreateOffer">
                             <div class="mb-3">
                                 <label class="form-label">Job Title</label>
-                                <input type="text" class="form-control" id="titleOffer" placeholder="e.g., Software Developer" required>
+                                <input type="text" class="form-control" id="titleOffer"
+                                    placeholder="e.g., Software Developer" required>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Description</label>
-                                <textarea class="form-control" id="descriptionOffer" rows="3" placeholder="Job description..."></textarea>
+                                <textarea class="form-control" id="descriptionOffer" rows="3"
+                                    placeholder="Job description..."></textarea>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -68,7 +80,8 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Location</label>
-                                    <input type="text" class="form-control" id="locationOffer" placeholder="e.g., Medellín">
+                                    <input type="text" class="form-control" id="locationOffer"
+                                        placeholder="e.g., Medellín">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Mode</label>
@@ -83,7 +96,8 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label">Salary</label>
-                                    <input type="text" class="form-control" id="salaryOffer" placeholder="e.g., $2.550.000">
+                                    <input type="text" class="form-control" id="salaryOffer"
+                                        placeholder="e.g., $2.550.000">
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label">Deadline</label>
@@ -91,7 +105,7 @@
                                 </div>
                             </div>
                             <div class="d-flex gap-3 justify-content-end">
-                                <a href="dashboard_user.html" class="btn btn-secondary">Cancel</a>
+                                <a href="company.html" class="btn btn-secondary">Cancel</a>
                                 <button type="submit" class="btn btn-primary">Publish Offer</button>
                             </div>
                         </form>
@@ -103,4 +117,5 @@
 
     <script type="module" src="../scripts/createOffer.js"></script>
 </body>
+
 </html>
