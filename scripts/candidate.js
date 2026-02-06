@@ -1,321 +1,397 @@
 const API_URL = 'http://localhost:3000/candidates';
 let candidateId = localStorage.getItem('candidateId');
 
-let currentCandidate = null;
-let profileModalInstance = null;
+let currentCandidate = null;   // datos reales
+let draftCandidate = null;     // copia editable
+let profileModal = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-
   const modalEl = document.getElementById('profileModal');
   if (modalEl && window.bootstrap) {
-    profileModalInstance = new bootstrap.Modal(modalEl);
+    profileModal = new bootstrap.Modal(modalEl);
   }
 
   await loadCandidate();
   setupEvents();
 });
 
-// ============================
-// Events
-// ============================
+/* 
+  EVENTS
+*/
 
 function setupEvents() {
-
   document.getElementById('editProfileBtn')?.addEventListener('click', openModal);
   document.getElementById('editProfileBtn2')?.addEventListener('click', openModal);
-
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
-  document.getElementById('openToWorkToggle')?.addEventListener('change', toggleStatus);
-
-  document.getElementById('avatarEdit')?.addEventListener('click', () =>
-    document.getElementById('photoInput')?.click()
-  );
-  document.getElementById('photoInput')?.addEventListener('change', uploadPhoto);
+  document.getElementById('addSkillBtn')?.addEventListener('click', addSkill);
+  document.getElementById('addLanguageBtn')?.addEventListener('click', addLanguage);
+  document.getElementById('addExperienceBtn')?.addEventListener('click', addExperience);
+  document.getElementById('openToWorkToggle')?.addEventListener('change', handleOpenToWork);
+  document.getElementById('avatarEdit')?.addEventListener('click', () => {
+    document.getElementById('photoInput')?.click();
+  });
+  document.getElementById('photoInput')?.addEventListener('change', handlePhotoUpload);
 }
 
-// ============================
-// Error UI
-// ============================
-
-function showProfileError(message) {
-  const box = document.getElementById('profileError');
-  if (!box) return;
-  box.textContent = message;
-  box.classList.remove('d-none');
-}
-
-function hideProfileError() {
-  const box = document.getElementById('profileError');
-  if (!box) return;
-  box.classList.add('d-none');
-}
-
-// ============================
-// Load candidate
-// ============================
+/* 
+  LOAD CANDIDATE
+*/
 
 async function loadCandidate() {
   try {
-    hideProfileError();
+    let res;
 
     if (candidateId) {
-      const res = await fetch(`${API_URL}/${candidateId}`);
-      if (!res.ok) throw new Error('Candidate not found');
-
-      const data = await res.json();
-      currentCandidate = data;
-      updateUI(data);
-      return;
+      res = await fetch(`${API_URL}/${candidateId}`);
+    } else {
+      res = await fetch(API_URL);
     }
 
-    const res = await fetch(API_URL);
-    if (!res.ok) throw new Error('Could not load candidates');
+    if (!res.ok) throw new Error('Error loading candidate');
 
-    const list = await res.json();
-    if (!Array.isArray(list) || list.length === 0) {
-      throw new Error('No candidates available');
-    }
+    const data = await res.json();
+    currentCandidate = Array.isArray(data) ? data[0] : data;
 
-    const first = list[0];
-    candidateId = first.id;
+    candidateId = currentCandidate.id;
     localStorage.setItem('candidateId', candidateId);
 
-    currentCandidate = first;
-    updateUI(first);
+    renderProfile(currentCandidate);
   } catch (err) {
     console.error(err);
-    showProfileError('We couldn’t load your profile. Please refresh the page.');
   }
 }
 
-// ============================
-// UI render
-// ============================
+/* 
+  RENDER PROFILE (VIEW)
+*/
 
-function updateUI(data) {
-  const name = data.name || 'User';
+function renderProfile(data) {
+  document.getElementById('profileName').textContent = data.name || '';
+  document.getElementById('profileTitle').textContent = data.profession || '';
+  document.getElementById('profileBio').textContent = data.bio || 'Tell us about yourself...';
+  document.getElementById('profileEmail').textContent = data.email || 'N/A';
+  document.getElementById('profilePhone').textContent = data.phone || 'N/A';
+  const avatarUrl =
+    data.avatar ||
+    `https://ui-avatars.com/api/?name=${encodeURIComponent(data.name || 'User')}`;
 
-  const nameEl = document.getElementById('profileName');
-  const titleEl = document.getElementById('profileTitle');
-  const bioEl = document.getElementById('profileBio');
-  const skillsEl = document.getElementById('profileSkills');
-  const languagesEl = document.getElementById('profileLanguages');
-  const expEl = document.getElementById('profileExperience');
-  const toggleEl = document.getElementById('openToWorkToggle');
-  const phoneEl = document.getElementById('profilePhone');
-  const emailEl = document.getElementById('profileEmail');
+  document.getElementById('profileAvatar').src = avatarUrl;
 
-  // Sidebar footer
   const sidebarAvatar = document.getElementById('user-avatar');
   const sidebarName = document.getElementById('user-name');
-  const sidebarRole = document.getElementById('user-role');
 
-  if (sidebarAvatar) sidebarAvatar.src = data.avatar || 'https://via.placeholder.com/40?text=%3F';
-  if (sidebarName) sidebarName.textContent = name;
-  if (sidebarRole) sidebarRole.textContent = 'Candidate';
+  if (sidebarAvatar) sidebarAvatar.src = avatarUrl;
+  if (sidebarName) sidebarName.textContent = data.name || 'User';
 
-  if (nameEl) nameEl.textContent = name;
-  if (titleEl) titleEl.textContent = data.profession || '';
-  if (bioEl) bioEl.textContent = data.bio || 'No bio available.';
-  if (phoneEl) phoneEl.textContent = data.phone || 'N/A';
-  if (emailEl) emailEl.textContent = data.email || 'N/A';
+  renderOpenToWork(data.openToWork);
 
-  // Skills
-  if (skillsEl) {
-    skillsEl.textContent = '';
-    if (Array.isArray(data.skills) && data.skills.length > 0) {
-      data.skills.forEach((skill) => {
-        const span = document.createElement('span');
-        span.classList.add('badge', 'text-secondary', 'bg-primary-subtle', 'me-2', 'mb-2');
-        span.textContent = skill;
-        skillsEl.appendChild(span);
-      });
-    } else {
-      skillsEl.textContent = 'Add your technical skills';
-    }
+  renderSkillBadges(data.skills || []);
+  renderLanguagesView(data.languages || []);
+  renderExperienceView(data.experience || []);
+}
+
+
+function renderSkillBadges(skills = []) {
+  const el = document.getElementById('profileSkills');
+  el.innerHTML = '';
+
+  if (!skills.length) {
+    el.textContent = 'Add your technical skills';
+    return;
   }
 
-  // Languages
-  if (languagesEl) {
-    languagesEl.textContent = '';
-    if (Array.isArray(data.languages) && data.languages.length > 0) {
-      data.languages.forEach((lang) => {
-        const div = document.createElement('div');
-        div.classList.add('mb-2', 'text-start');
-        div.innerHTML = `
-          <h6 class="mb-1 fw-bold">${lang.name || ''}</h6>
-          <p class="mb-0">Proficiency: ${lang.level || ''}</p>
-        `;
-        languagesEl.appendChild(div);
-      });
-    } else {
-      languagesEl.textContent = 'Add languages you speak';
-    }
+  skills.forEach(skill => {
+    const span = document.createElement('span');
+    span.className = 'badge bg-primary-subtle text-secondary me-2 mb-2';
+    span.textContent = skill;
+    el.appendChild(span);
+  });
+}
+
+function renderLanguagesView(languages = []) {
+  const el = document.getElementById('profileLanguages');
+  el.innerHTML = '';
+
+  if (!languages.length) {
+    el.textContent = 'Add languages you speak';
+    return;
   }
 
-  // Experience
-  if (expEl) {
-    expEl.textContent = '';
-    if (Array.isArray(data.experience) && data.experience.length > 0) {
-      data.experience.forEach((exp) => {
-        const div = document.createElement('div');
-        div.classList.add('mb-3', 'text-start');
-        div.innerHTML = `
-          <h6 class="mb-1 fw-bold">${exp.position || ''} at ${exp.company || ''}</h6>
-          <p class="mb-0"><em>${exp.startDate || ''} - ${exp.endDate || 'Present'}</em></p>
-          <p class="mb-0">${exp.description || ''}</p>
-        `;
-        expEl.appendChild(div);
-      });
-    } else {
-      expEl.textContent = 'Add your professional experience';
-    }
+  languages.forEach(l => {
+    el.innerHTML += `
+      <div class="mb-2">
+        <strong>${l.name}</strong> – ${l.level}
+      </div>
+    `;
+  });
+}
+
+function renderExperienceView(exp = []) {
+  const el = document.getElementById('profileExperience');
+  el.innerHTML = '';
+
+  if (!exp.length) {
+    el.textContent = 'Add your professional experience';
+    return;
   }
 
-  // Toggle + badge
-  if (toggleEl) toggleEl.checked = !!data.openToWork;
+  exp.forEach(e => {
+    el.innerHTML += `
+      <div class="mb-3">
+        <strong>${e.position}</strong> at ${e.company}<br>
+        <em>${e.startDate} - ${e.endDate || 'Present'}</em>
+        <p>${e.description}</p>
+      </div>
+    `;
+  });
+}
 
+/* 
+OPEN TO WORK
+*/
+
+function renderOpenToWork(open) {
   const badge = document.getElementById('openToWorkBadge');
-  if (badge) {
-    if (data.openToWork) {
-      badge.textContent = 'Open to Work';
-      badge.classList.remove('bg-secondary');
-      badge.classList.add('bg-success');
-    } else {
-      badge.textContent = 'Not available';
-      badge.classList.remove('bg-success');
-      badge.classList.add('bg-secondary');
-    }
+  const toggle = document.getElementById('openToWorkToggle');
+
+  if (!badge || !toggle) return;
+
+  toggle.checked = !!open;
+
+  if (open) {
+    badge.textContent = 'Open to work';
+    badge.className = 'badge bg-success mb-3';
+  } else {
+    badge.textContent = 'Not available';
+    badge.className = 'badge bg-secondary mb-3';
   }
-
-  updateAvatar(name, data.avatar);
 }
 
-// ============================
-// Avatar
-// ============================
-
-function updateAvatar(name, avatarUrl) {
-  const finalUrl = avatarUrl
-    ? avatarUrl
-    : `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=137fec&color=fff&size=140`;
-
-  const mainAvatar = document.getElementById('profileAvatar');
-  const topAvatar = document.getElementById('topAvatar');
-  const topName = document.getElementById('topName');
-
-  if (mainAvatar) mainAvatar.src = finalUrl;
-  if (topAvatar) topAvatar.src = finalUrl;
-  if (topName) topName.textContent = name;
-}
-
-// ============================
-// Modal (Bootstrap)
-// ============================
-
-function openModal() {
-  if (!currentCandidate) return;
-
-  document.getElementById('modalName').value = currentCandidate.name || '';
-  document.getElementById('modalProfession').value = currentCandidate.profession || '';
-  document.getElementById('modalPhone').value = currentCandidate.phone || '';
-  document.getElementById('modalEmail').value = currentCandidate.email || '';
-
-  profileModalInstance?.show();
-}
-
-function closeModal() {
-  profileModalInstance?.hide();
-}
-
-// ============================
-// Save profile
-// ============================
-
-async function saveProfile() {
-  const form = document.getElementById('profileForm');
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
-
-  if (!candidateId || !currentCandidate) {
-    alert('Error: Candidate not loaded');
-    return;
-  }
-
-  const updatedCandidate = {
-    ...currentCandidate,
-    name: document.getElementById('modalName').value.trim(),
-    profession: document.getElementById('modalProfession').value.trim(),
-    phone: document.getElementById('modalPhone').value.trim(),
-    email: document.getElementById('modalEmail').value.trim(),
-    openToWork: document.getElementById('openToWorkToggle').checked
-  };
+async function handleOpenToWork(e) {
+  const value = e.target.checked;
 
   try {
-    const res = await fetch(`${API_URL}/${candidateId}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedCandidate)
-    });
+    const updated = { ...currentCandidate, openToWork: value };
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-    const updated = await res.json();
-    currentCandidate = updated;
-    updateUI(updated);
-    closeModal();
-  } catch (error) {
-    console.error('Error saving profile:', error);
-    alert('Error saving profile');
-  }
-}
-
-// ============================
-// Toggle status
-// ============================
-
-async function toggleStatus() {
-  if (!candidateId || !currentCandidate) return;
-
-  const isOpen = document.getElementById('openToWorkToggle').checked;
-
-  const updated = {
-    ...currentCandidate,
-    openToWork: isOpen
-  };
-
-  try {
     const res = await fetch(`${API_URL}/${candidateId}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updated)
     });
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error('Failed to update');
 
-    currentCandidate = updated;
-    updateUI(updated);
-  } catch (error) {
-    console.error('Error toggling status:', error);
+    currentCandidate.openToWork = value;
+    renderOpenToWork(value);
+  } catch (err) {
+    console.error('Error updating Open to Work:', err);
+    // Revertir el checkbox si falló
+    e.target.checked = !value;
   }
 }
 
-// ============================
-// Upload photo 
-// ============================
+/* 
+  MODAL
+*/
 
-function uploadPhoto(e) {
+function openModal() {
+  draftCandidate = structuredClone(currentCandidate);
+
+  document.getElementById('modalName').value = draftCandidate.name || '';
+  document.getElementById('modalProfession').value = draftCandidate.profession || '';
+  document.getElementById('modalPhone').value = draftCandidate.phone || '';
+  document.getElementById('modalEmail').value = draftCandidate.email || '';
+  document.getElementById('modalBio').value = draftCandidate.bio || '';
+
+  renderSkillsEditor();
+  renderLanguagesEditor();
+  renderExperienceEditor();
+
+  profileModal.show();
+}
+
+/* 
+  SKILLS
+*/
+
+function renderSkillsEditor() {
+  const el = document.getElementById('skillsEditor');
+  el.innerHTML = '';
+
+  draftCandidate.skills.forEach((skill, index) => {
+    const row = document.createElement('div');
+    row.className = 'd-flex gap-2 mb-2';
+
+    row.innerHTML = `
+      <input class="form-control" value="${skill}">
+      <button class="btn btn-outline-danger btn-sm">✕</button>
+    `;
+
+    row.querySelector('input').addEventListener('input', e => {
+      draftCandidate.skills[index] = e.target.value;
+    });
+
+    row.querySelector('button').addEventListener('click', () => {
+      draftCandidate.skills.splice(index, 1);
+      renderSkillsEditor();
+    });
+
+    el.appendChild(row);
+  });
+}
+
+function addSkill() {
+  draftCandidate.skills.push('');
+  renderSkillsEditor();
+}
+
+/* 
+  LANGUAGES
+*/
+
+function renderLanguagesEditor() {
+  const el = document.getElementById('languagesEditor');
+  el.innerHTML = '';
+
+  draftCandidate.languages.forEach((lang, index) => {
+    const row = document.createElement('div');
+    row.className = 'border p-2 mb-2';
+
+    row.innerHTML = `
+      <input class="form-control mb-2" placeholder="Language" value="${lang.name}">
+      <input class="form-control mb-2" placeholder="Level (e.g., Native, Fluent)" value="${lang.level}">
+      <button class="btn btn-outline-danger btn-sm">Remove</button>
+    `;
+
+    const inputs = row.querySelectorAll('input');
+    inputs[0].addEventListener('input', e => draftCandidate.languages[index].name = e.target.value);
+    inputs[1].addEventListener('input', e => draftCandidate.languages[index].level = e.target.value);
+
+    row.querySelector('button').addEventListener('click', () => {
+      draftCandidate.languages.splice(index, 1);
+      renderLanguagesEditor();
+    });
+
+    el.appendChild(row);
+  });
+}
+
+function addLanguage() {
+  draftCandidate.languages.push({ name: '', level: '' });
+  renderLanguagesEditor();
+}
+
+/*  
+  EXPERIENCE
+*/
+
+function renderExperienceEditor() {
+  const el = document.getElementById('experienceEditor');
+  el.innerHTML = '';
+
+  draftCandidate.experience.forEach((exp, index) => {
+    const row = document.createElement('div');
+    row.className = 'border p-3 mb-3';
+
+    row.innerHTML = `
+      <input class="form-control mb-2" placeholder="Position" value="${exp.position}">
+      <input class="form-control mb-2" placeholder="Company" value="${exp.company}">
+      <input class="form-control mb-2" placeholder="Start Date" value="${exp.startDate}">
+      <input class="form-control mb-2" placeholder="End Date (or leave empty if current)" value="${exp.endDate || ''}">
+      <textarea class="form-control mb-2" placeholder="Description" rows="3">${exp.description}</textarea>
+      <button class="btn btn-outline-danger btn-sm">Remove</button>
+    `;
+
+    const inputs = row.querySelectorAll('input, textarea');
+    inputs[0].addEventListener('input', e => exp.position = e.target.value);
+    inputs[1].addEventListener('input', e => exp.company = e.target.value);
+    inputs[2].addEventListener('input', e => exp.startDate = e.target.value);
+    inputs[3].addEventListener('input', e => exp.endDate = e.target.value);
+    inputs[4].addEventListener('input', e => exp.description = e.target.value);
+
+    row.querySelector('button').addEventListener('click', () => {
+      draftCandidate.experience.splice(index, 1);
+      renderExperienceEditor();
+    });
+
+    el.appendChild(row);
+  });
+}
+
+function addExperience() {
+  draftCandidate.experience.push({
+    position: '',
+    company: '',
+    startDate: '',
+    endDate: '',
+    description: ''
+  });
+  renderExperienceEditor();
+}
+
+/* 
+  PHOTO
+*/
+
+function handlePhotoUpload(e) {
   const file = e.target.files?.[0];
   if (!file || !file.type.startsWith('image/')) return;
 
   const reader = new FileReader();
-  reader.onload = (ev) => {
-    const img = document.getElementById('profileAvatar');
-    if (img) img.src = ev.target.result;
+  reader.onload = async () => {
+    document.getElementById('profileAvatar').src = reader.result;
+    
+    // Actualizar avatar
+    try {
+      const updated = { ...currentCandidate, avatar: reader.result };
+      
+      await fetch(`${API_URL}/${candidateId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updated)
+      });
+
+      currentCandidate.avatar = reader.result;
+      
+      // Actualizar sidebar también
+      const sidebarAvatar = document.getElementById('user-avatar');
+      if (sidebarAvatar) sidebarAvatar.src = reader.result;
+      
+    } catch (err) {
+      console.error('Error uploading photo:', err);
+    }
   };
   reader.readAsDataURL(file);
+}
+
+/* 
+  SAVE
+*/
+
+async function saveProfile() {
+  draftCandidate.name = document.getElementById('modalName').value.trim();
+  draftCandidate.profession = document.getElementById('modalProfession').value.trim();
+  draftCandidate.phone = document.getElementById('modalPhone').value.trim();
+  draftCandidate.email = document.getElementById('modalEmail').value.trim();
+  draftCandidate.bio = document.getElementById('modalBio').value.trim();
+
+  try {
+    const res = await fetch(`${API_URL}/${candidateId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(draftCandidate)
+    });
+
+    if (!res.ok) throw new Error('Save failed');
+
+    currentCandidate = structuredClone(draftCandidate);
+    renderProfile(currentCandidate);
+    draftCandidate = null;
+    profileModal.hide();
+  } catch (err) {
+    console.error(err);
+    alert('Error saving profile. Please try again.');
+  }
 }
 
 
