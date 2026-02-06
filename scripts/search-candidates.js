@@ -6,8 +6,16 @@ document.addEventListener("click", async (e) => {
     const candidateId = e.target.dataset.candidateId;
     const currentUser = utils.getCurrentUser();
     const companyId = currentUser.id;
+    if(!currentUser){
+      alert("You must be looged in as a company");
+      return;
+    }
 
     const offerId = localStorage.getItem("selectedOfferId");
+    if(!offerId){
+      alert("YOu must select a job offer first")
+      return;
+    }
 
     // 
     const validation = await utils.canCrtReservation(candidateId, offerId);
@@ -38,7 +46,7 @@ function candidateCard(c) {
         `<span class="badge rounded-pill text-bg-light border me-1 mb-1 fw-normal">${s}</span>`
     )
     .join("");
-
+  const disabled = c.reservedBy ? "disabled" : "";
   return `
     <div class="col-12 col-lg-6">
       <div class="card h-100 shadow-sm">
@@ -69,14 +77,15 @@ function candidateCard(c) {
               }
 
               <div class="mt-2">${skills}</div>
-
+              
               <div class="d-flex gap-2 mt-3">
                 <button
                   class="btn btn-primary btn-sm"
                   data-action="match"
                   data-candidate-id="${c.id}"
+                  ${disabled}
                 >
-                  Hacer match
+                  ${c.reservedBy ? "Reserved" : "Hacer match"}
                 </button>
                 <button
                   class="btn btn-outline-secondary btn-sm"
@@ -91,7 +100,7 @@ function candidateCard(c) {
         </div>
       </div>
     </div>
-  `;
+    `;
 }
 
 function renderCandidates(list) {

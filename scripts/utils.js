@@ -163,6 +163,20 @@ export async function updateMatchStatus(matchId, status) {
 // ================================
 // Funciones de Ofertas
 // ================================
+export async function canCrtOffer(companyId) {
+    const subRes = await fetch(`${API_URL}/subscriptions?userId=${companyId}&rol=company`);
+    const subs = await subRes.json();
+    if (!subs.length) return { ok: false, reason: "No active subscription" };
+    const planRes = await fetch(`${API_URL}/plans?id=${subs[0].planId}`);
+    const plan = (await planRes.json())[0];
+    const offersRes = await fetch(`${API_URL}/jobOffers?companyId=${companyId}`);
+    const offers = await offersRes.json();
+    if (offers.length >= plan.maxOffers) {
+        return { ok: false, reason: "Offer limit reached for your plan" };
+    }
+    return { ok: true };
+}
+
 
 export async function createJobOffer(offerData) {
     return await createInDB('jobOffers', {

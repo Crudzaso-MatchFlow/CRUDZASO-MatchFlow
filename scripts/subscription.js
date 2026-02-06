@@ -2,12 +2,12 @@ const API = "http://localhost:3000";
 const user = JSON.parse(localStorage.getItem("user"));
 
 if(!user) {
-    alert("You must be login");
+    alert("You must be logged in");
     location.href = "../index.html";
 }
-const container = document.getElementById("subscription");
+const container = document.getElementById("subscriptionInfo");
 async function loadSubscription(){
-    const subRes = fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
+    const subRes = await fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
     const subs = await subRes.json();
     if(subs.length === 0) {
         container.innerHTML = `

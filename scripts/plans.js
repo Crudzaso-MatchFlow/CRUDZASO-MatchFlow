@@ -40,7 +40,7 @@ async function subscribe(planId) {
         expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
         status: "active"
     };
-    const existing = await fetch(`${API}/subscription?userId=${user.id}&rol=${user.rol}`);
+    const existing = await fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
     const data = await existing.json();
     if (data.length > 0){
         await fetch(`${API}/subscriptions/${data[0].id}`, {

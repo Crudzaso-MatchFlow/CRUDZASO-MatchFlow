@@ -30,9 +30,30 @@ Files added:
 
 ## change 4:
 ### added
+(1. reservation blocking integration)
 a click for the "match" btn was introduced
 a validation step was added before creating a reservation:
 - candidates are not already reserved
-- candidates are not already assigned
+- Jobs offer are not already assigned
+(2. Reservation flow validation)
+- Candidates cannot be reserved if they are already reserved or marked as unavailable.
+- Job offers cannot be used if they already have an active match.
 ### Why 
-this change ensure all the reservation actions is controlled flow with validation rules applied
+(1). this change ensure all the reservation actions is controlled flow with validation rules applied.
+(2). json-server does not enforce bussisnes rules.
+- invalid matches
+- missing relations
+- Runtime erros caused by missing session data
+
+## change 5:
+
+### Added
+(visual match btn blocking)
+The "match" btn is now visually blocked when a candidate is not avlb:
+- if open to work is false
+- if the candidate is already reserved.
+(plan based restriction)
+bussisnes rules were applied...
+- candidates cannot be reserved beyons the plan reservation limit.
+- job offers cannot be created beyond the plan offer limit
+- Match buttons are visually disabled when a candidate is already reserved (refactorized)
