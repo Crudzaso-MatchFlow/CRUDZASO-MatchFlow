@@ -2,7 +2,7 @@ import { getCurrentUser } from "./utils.js";
 import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/candidates';
-let user = getCurrentUser();
+let user = getCurrentUser(candidateId);
 
 let currentCandidate = null;
 let profileModalInstance = null;
