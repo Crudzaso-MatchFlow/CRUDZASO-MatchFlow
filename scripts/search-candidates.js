@@ -58,7 +58,7 @@ function candidateCard(c) {
                   data-action="view"
                   data-candidate-id="${c.id}"
                 >
-                  Ver perfil
+                  Reservar
                 </button>
               </div>
             </div>

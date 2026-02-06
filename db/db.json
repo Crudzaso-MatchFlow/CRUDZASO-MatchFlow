@@ -12,25 +12,12 @@
       "profession": "Desarrollador Frontend",
       "openToWork": false,
       "bio": "Desarrolladora frontend con pasión por crear interfaces de usuario intuitivas y accesibles. Experiencia en React y Vue.",
-      "reservedBy": null,
-      "reservedForOffer": null,
-      "skills": [
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "React",
-        "Vue",
-        "Responsive Design"
-      ],
+      "availabilityStatus": "available",
+      "activeReservationId": null,
+      "skills": ["HTML", "CSS", "JavaScript", "React", "Vue", "Responsive Design"],
       "languages": [
-        {
-          "name": "Spanish",
-          "level": "Native"
-        },
-        {
-          "name": "English",
-          "level": "B2"
-        }
+        { "name": "Spanish", "level": "Native" },
+        { "name": "English", "level": "B2" }
       ],
       "experience": [
         {
@@ -54,25 +41,12 @@
       "profession": "Desarrollador Backend",
       "openToWork": true,
       "bio": "Especialista en arquitecturas escalables y APIs RESTful. Trabajo con Node.js y Python.",
-      "reservedBy": null,
-      "reservedForOffer": null,
-      "skills": [
-        "Node.js",
-        "Python",
-        "REST APIs",
-        "PostgreSQL",
-        "Docker",
-        "Microservices"
-      ],
+      "availabilityStatus": "available",
+      "activeReservationId": null,
+      "skills": ["Node.js", "Python", "REST APIs", "PostgreSQL", "Docker", "Microservices"],
       "languages": [
-        {
-          "name": "Spanish",
-          "level": "Native"
-        },
-        {
-          "name": "English",
-          "level": "B1"
-        }
+        { "name": "Spanish", "level": "Native" },
+        { "name": "English", "level": "B1" }
       ],
       "experience": [
         {
@@ -96,25 +70,12 @@
       "profession": "Diseñador UX/UI",
       "openToWork": false,
       "bio": "Diseñadora centrada en el usuario con enfoque en investigación y prototipado.",
-      "reservedBy": null,
-      "reservedForOffer": null,
-      "skills": [
-        "User Research",
-        "Wireframing",
-        "Prototyping",
-        "Figma",
-        "Usability Testing",
-        "Design Systems"
-      ],
+      "availabilityStatus": "available",
+      "activeReservationId": null,
+      "skills": ["User Research", "Wireframing", "Prototyping", "Figma", "Usability Testing", "Design Systems"],
       "languages": [
-        {
-          "name": "Spanish",
-          "level": "Native"
-        },
-        {
-          "name": "English",
-          "level": "B2"
-        }
+        { "name": "Spanish", "level": "Native" },
+        { "name": "English", "level": "B2" }
       ],
       "experience": [
         {
@@ -138,25 +99,12 @@
       "profession": "Desarrollador Full Stack",
       "openToWork": true,
       "bio": "Full Stack developer con experiencia en MERN stack y desarrollo ágil.",
-      "reservedBy": 1,
-      "reservedForOffer": 2,
-      "skills": [
-        "JavaScript",
-        "React",
-        "Node.js",
-        "MongoDB",
-        "Express",
-        "Agile Development"
-      ],
+      "availabilityStatus": "reserved",
+      "activeReservationId": "1",
+      "skills": ["JavaScript", "React", "Node.js", "MongoDB", "Express", "Agile Development"],
       "languages": [
-        {
-          "name": "Spanish",
-          "level": "Native"
-        },
-        {
-          "name": "English",
-          "level": "B2"
-        }
+        { "name": "Spanish", "level": "Native" },
+        { "name": "English", "level": "B2" }
       ],
       "experience": [
         {
@@ -180,25 +128,12 @@
       "profession": "Data Analyst",
       "openToWork": true,
       "bio": "Analista de datos con experiencia en SQL, Python y visualización de datos con Power BI.",
-      "reservedBy": null,
-      "reservedForOffer": null,
-      "skills": [
-        "SQL",
-        "Python",
-        "Power BI",
-        "Data Visualization",
-        "Data Cleaning",
-        "Statistical Analysis"
-      ],
+      "availabilityStatus": "available",
+      "activeReservationId": null,
+      "skills": ["SQL", "Python", "Power BI", "Data Visualization", "Data Cleaning", "Statistical Analysis"],
       "languages": [
-        {
-          "name": "Spanish",
-          "level": "Native"
-        },
-        {
-          "name": "English",
-          "level": "B1"
-        }
+        { "name": "Spanish", "level": "Native" },
+        { "name": "English", "level": "B1" }
       ],
       "experience": [
         {
@@ -379,6 +314,17 @@
       "jobOfferId": 5,
       "status": "contacted",
       "createdAt": "2026-01-28T16:45:00Z"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1",
+      "candidateId": 4,
+      "companyId": 1,
+      "jobOfferId": 2,
+      "status": "active",
+      "reservedAt": "2026-01-27T14:05:00Z",
+      "expiresAt": "2026-02-03T14:05:00Z"
     }
   ]
 }
