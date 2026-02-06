@@ -14,10 +14,23 @@
       "bio": "Desarrolladora frontend con pasión por crear interfaces de usuario intuitivas y accesibles. Experiencia en React y Vue.",
       "availabilityStatus": "available",
       "activeReservationId": null,
-      "skills": ["HTML", "CSS", "JavaScript", "React", "Vue", "Responsive Design"],
+      "skills": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "React",
+        "Vue",
+        "Responsive Design"
+      ],
       "languages": [
-        { "name": "Spanish", "level": "Native" },
-        { "name": "English", "level": "B2" }
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
       ],
       "experience": [
         {
@@ -43,10 +56,23 @@
       "bio": "Especialista en arquitecturas escalables y APIs RESTful. Trabajo con Node.js y Python.",
       "availabilityStatus": "available",
       "activeReservationId": null,
-      "skills": ["Node.js", "Python", "REST APIs", "PostgreSQL", "Docker", "Microservices"],
+      "skills": [
+        "Node.js",
+        "Python",
+        "REST APIs",
+        "PostgreSQL",
+        "Docker",
+        "Microservices"
+      ],
       "languages": [
-        { "name": "Spanish", "level": "Native" },
-        { "name": "English", "level": "B1" }
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B1"
+        }
       ],
       "experience": [
         {
@@ -72,10 +98,23 @@
       "bio": "Diseñadora centrada en el usuario con enfoque en investigación y prototipado.",
       "availabilityStatus": "available",
       "activeReservationId": null,
-      "skills": ["User Research", "Wireframing", "Prototyping", "Figma", "Usability Testing", "Design Systems"],
+      "skills": [
+        "User Research",
+        "Wireframing",
+        "Prototyping",
+        "Figma",
+        "Usability Testing",
+        "Design Systems"
+      ],
       "languages": [
-        { "name": "Spanish", "level": "Native" },
-        { "name": "English", "level": "B2" }
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
       ],
       "experience": [
         {
@@ -101,10 +140,23 @@
       "bio": "Full Stack developer con experiencia en MERN stack y desarrollo ágil.",
       "availabilityStatus": "reserved",
       "activeReservationId": "1",
-      "skills": ["JavaScript", "React", "Node.js", "MongoDB", "Express", "Agile Development"],
+      "skills": [
+        "JavaScript",
+        "React",
+        "Node.js",
+        "MongoDB",
+        "Express",
+        "Agile Development"
+      ],
       "languages": [
-        { "name": "Spanish", "level": "Native" },
-        { "name": "English", "level": "B2" }
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B2"
+        }
       ],
       "experience": [
         {
@@ -130,10 +182,23 @@
       "bio": "Analista de datos con experiencia en SQL, Python y visualización de datos con Power BI.",
       "availabilityStatus": "available",
       "activeReservationId": null,
-      "skills": ["SQL", "Python", "Power BI", "Data Visualization", "Data Cleaning", "Statistical Analysis"],
+      "skills": [
+        "SQL",
+        "Python",
+        "Power BI",
+        "Data Visualization",
+        "Data Cleaning",
+        "Statistical Analysis"
+      ],
       "languages": [
-        { "name": "Spanish", "level": "Native" },
-        { "name": "English", "level": "B1" }
+        {
+          "name": "Spanish",
+          "level": "Native"
+        },
+        {
+          "name": "English",
+          "level": "B1"
+        }
       ],
       "experience": [
         {
