@@ -8,14 +8,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const currentUser = getSession();
 
   if (!currentUser) { // add
-    showError("No hay sesión activa.");
-    window.location.href = "index.html"
+    window.location.href = "./../index.html"
     return;
   }
 
-  if (currentUser.role !== "company") { // add
-    window.location.href = "candidate.html"
-  }
+ 
 
   const user = JSON.parse(localStorage.getItem("currentUser"));
   const candidateId = user?.id;
@@ -23,10 +20,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.getElementById("cards-grid");
   const matchesCount = document.getElementById("matches-count");
   const resultsCount = document.getElementById("results-count");
+  
+  const navSearchItem = document.getElementById("navSearchItem")
+  const navOfferItem = document.getElementById("navOfferItem")
 
   if (!candidateId) {
     grid.innerHTML = "<p>No hay usuario logueado</p>";
     return;
+  }
+
+   if (currentUser.role === "company"){
+    if (navSearchItem) navSearchItem.classList.remove("d-none")
+    if (navOfferItem) navOfferItem.classList.remove("d-none")
   }
 
 
@@ -72,7 +77,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// opcional (por si tu sidebar lo llama)
+
 function logout() {
   localStorage.removeItem("user");
   window.location.href = "../index.html";
