@@ -1,3 +1,6 @@
+import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
+
 const API_URL = 'http://localhost:3000/companies';
 let companyId = null;
 
@@ -5,6 +8,8 @@ let companyId = null;
 let didInit = false;
 let isCreatingCompany = false;
 let hasAttemptedCreate = false;
+
+
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (didInit) return; // prevents double init in some setups
@@ -17,10 +22,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 function setupEvents() {
   // Defensive: don't crash if an element doesn't exist (crashes can trigger reload loops)
   document.getElementById('editProfileBtnInline')?.addEventListener('click', openModal);
-  
+
   document.getElementById('closeModal')?.addEventListener('click', closeModal);
   document.getElementById('cancelBtn')?.addEventListener('click', closeModal);
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
+  
 
   document.getElementById('avatarEdit')?.addEventListener('click', () =>
     document.getElementById('photoInput')?.click()
@@ -38,70 +44,34 @@ function setupEvents() {
 /* Function to load company */
 async function loadCompany() {
   try {
-    const res = await fetch(API_URL);
+    const user = getCurrentUser();
+    console.log("CURRENT USER =>", user);
 
-    // If GET fails, do NOT create (prevents spam when server is down / CORS / etc.)
-    if (!res.ok) {
-      console.error('Error loading company: HTTP', res.status);
+    if (!user) {
+      window.location.href = "../pages/login.html";
       return;
     }
 
-    const companies = await res.json();
-    const sessionCompany = JSON.parse(localStorage.getItem('currentUser'))
-
-    /* Deletes this block its not working  */
-    if (Array.isArray(companies) && companies.length > 0) {
-      companyId = sessionCompany.id || '1';
-      updateUI(sessionCompany);
-    } else {
-      // Only create when we are sure GET worked and list is truly empty
-      // This create an objet template to data null company
-      await createCompanyOnce();
-    }
-  } catch (error) {
-    // Do NOT create on errors; just log and show fallback UI
-    console.error('Error loading company:', error);
-  }
-  /* Still Here */
-
-}
-
-/* Function to create company once time */
-async function createCompanyOnce() {
-  if (hasAttemptedCreate || isCreatingCompany) return;
-  hasAttemptedCreate = true;
-  isCreatingCompany = true;
-
-  const newCompany = {
-    name: 'Your Company Name',
-    industry: 'Industry',
-    size: '',
-    location: 'Location',
-    phone: '',
-    email: 'email@company.com',
-    website: '',
-    description: 'Add a description about your company...',
-  };
-
-  try {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newCompany),
-    });
-
-    if (!res.ok) {
-      console.error('Error creating company: HTTP', res.status);
+    if (user.role !== "company") {
+      window.location.href = "../pages/candidate.html";
       return;
     }
 
-    const data = await res.json();
-    companyId = data.id;
-    updateUI(data);
-  } catch (error) {
-    console.error('Error creating company:', error);
-  } finally {
-    isCreatingCompany = false;
+    companyId = String(user.id);
+
+    
+    const res = await fetch(`${API_URL}/${companyId}`);
+    if (!res.ok) {
+      console.error("Error loading company:", res.status);
+      return;
+    }
+
+    const company = await res.json();
+    updateUI(company);
+
+  } catch (err) {
+    console.error("loadCompany failed:", err);
+    notify.error?.("Error inesperado cargando la compañía.");
   }
 }
 
@@ -114,7 +84,7 @@ function updateUI(data) {
   /* No theres data */
 /*   document.getElementById('companySize').textContent = data.size || 'Company Size';
   document.getElementById('companyLocation').textContent = data.location || 'Location'; */
-  
+
   document.getElementById('companyPhone').textContent = `Cel: (${data.phone})` || '+57 ...';
   document.getElementById('companyEmail').textContent = `Email: ${data.email}` || 'email@company.com';
   document.getElementById('companyDescription').textContent = data.description || 'Add a description about your company...';
@@ -170,7 +140,7 @@ async function saveProfile() {
   }
 
   if (!companyId) {
-    alert('Error: Company not loaded');
+    notify.error("company not loaded");
     return;
   }
 
@@ -224,4 +194,3 @@ window.logout = function logout() {
   localStorage.removeItem('currentUser');
   window.location.href = '../pages/login.html';
 };
-

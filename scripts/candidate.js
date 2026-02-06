@@ -1,8 +1,17 @@
+import { getCurrentUser, notify} from "./utils.js";
+
+
 const API_URL = 'http://localhost:3000/candidates';
-let candidateId = localStorage.getItem('candidateId');
+let user = getCurrentUser();
 
 let currentCandidate = null;
 let profileModalInstance = null;
+
+
+if (!user){
+  window.location.href = "./login.html"
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
 
@@ -58,12 +67,12 @@ export async function loadCandidate() {
   try {
     hideProfileError();
 
-    if (candidateId) {
-      const res = await fetch(`${API_URL}/${candidateId}`);
+    if (user) {
+      const res = await fetch(`${API_URL}/${user.id}`);
       if (!res.ok) throw new Error('Candidate not found');
 
       const data = await res.json();
-      currentCandidate = data;
+      user = data;
       updateUI(data);
       return;
     }
@@ -240,7 +249,7 @@ async function saveProfile() {
   }
 
   if (!candidateId || !currentCandidate) {
-    alert('Error: Candidate not loaded');
+    notify.error("candidate not loaded");
     return;
   }
 

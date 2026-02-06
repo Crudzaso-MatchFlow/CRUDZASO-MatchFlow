@@ -22,7 +22,7 @@ export function renderOffers(offers, companies){
   }).join('');
 }
 
-export function renderMatches(matches, jobOffers, companies){
+/* export function renderMatches(matches, jobOffers, companies){
   return matches.map(m => { 
     const offer = jobOffers.find(x => x.id === m.jobOfferId);
     const company = companies.find(x => x.id === offer.companyId);
@@ -38,5 +38,5 @@ export function renderMatches(matches, jobOffers, companies){
         </div>
       </article>
     `;
-  }).join('');
+  }).join(''); */
 }
