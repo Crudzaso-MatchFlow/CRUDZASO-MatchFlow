@@ -1,5 +1,5 @@
-import { getSession } from "./utils.js";
-
+import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/companies';
 let companyId = null;
@@ -10,18 +10,6 @@ let isCreatingCompany = false;
 let hasAttemptedCreate = false;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const currentUser = getSession();
-
-  if (!currentUser) { // add
-    showError("No hay sesión activa.");
-    window.location.href = "index.html"
-    return;
-  }
-
-  if (currentUser.role !== "company") { // add
-    window.location.href = "candidate.html"
-  }
-
   if (didInit) return; // prevents double init in some setups
   didInit = true;
 
@@ -62,7 +50,7 @@ async function loadCompany() {
     }
 
     const companies = await res.json();
-    const sessionCompany = JSON.parse(localStorage.getItem('currentUser'))
+    const sessionCompany = getCurrentUser();
 
     /* Deletes this block its not working  */
     if (Array.isArray(companies) && companies.length > 0) {
@@ -127,8 +115,8 @@ function updateUI(data) {
   document.getElementById('companyIndustry').textContent = data.industry || 'Industry';
 
   /* No theres data */
-  /*   document.getElementById('companySize').textContent = data.size || 'Company Size';
-    document.getElementById('companyLocation').textContent = data.location || 'Location'; */
+/*   document.getElementById('companySize').textContent = data.size || 'Company Size';
+  document.getElementById('companyLocation').textContent = data.location || 'Location'; */
 
   document.getElementById('companyPhone').textContent = `Cel: (${data.phone})` || '+57 ...';
   document.getElementById('companyEmail').textContent = `Email: ${data.email}` || 'email@company.com';
@@ -161,7 +149,7 @@ async function openModal() {
       document.getElementById('modalIndustry').value = data.industry || '';
 
       // Documentated by stteen
-      /*       document.getElementById('modalSize').value = data.size || ''; */
+/*       document.getElementById('modalSize').value = data.size || ''; */
 
       document.getElementById('modalLocation').value = data.location || '';
       document.getElementById('modalPhone').value = data.phone || '';
@@ -185,7 +173,7 @@ async function saveProfile() {
   }
 
   if (!companyId) {
-    alert('Error: Company not loaded');
+    notify.error("company not loaded");
     return;
   }
 
@@ -239,4 +227,3 @@ window.logout = function logout() {
   localStorage.removeItem('currentUser');
   window.location.href = '../pages/login.html';
 };
-

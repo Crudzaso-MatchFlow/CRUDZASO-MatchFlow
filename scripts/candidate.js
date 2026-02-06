@@ -1,24 +1,13 @@
-import { getSession } from "./utils.js";
+import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/candidates';
-let candidateId = localStorage.getItem('candidateId');
+let candidateId = getCurrentUser(candidateId);
 
 let currentCandidate = null;
 let profileModalInstance = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const currentUser = getSession();
-
-  if (!currentUser) { // add
-    showError("No hay sesión activa.");
-    window.location.href = "index.html"
-    return;
-  }
-
-  if (currentUser.role === "company") { // add
-    window.location.href = "company.html"
-  }
-
 
   const modalEl = document.getElementById('profileModal');
   if (modalEl && window.bootstrap) {
@@ -254,7 +243,7 @@ async function saveProfile() {
   }
 
   if (!candidateId || !currentCandidate) {
-    alert('Error: Candidate not loaded');
+    notify.error("candidate not loaded");
     return;
   }
 

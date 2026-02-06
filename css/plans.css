@@ -1,0 +1,14 @@
+.hover-top {
+    transition: all 0.3s ease-in-out;
+    top: 0;
+    position: relative;
+}
+
+.hover-top:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; 
+}
+
+.ls-1 {
+    letter-spacing: 1px;
+}

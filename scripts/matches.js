@@ -1,11 +1,11 @@
-import { getSession } from "./utils.js";
+import { getCurrentUser } from "./utils.js";
 
 
 const API = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", async () => {
 
-  const currentUser = getSession();
+  const currentUser = getCurrentUser();
 
   if (!currentUser) { // add
     window.location.href = "./../index.html"
