@@ -1,4 +1,5 @@
 import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/candidates';
 let candidateId = getCurrentUser(candidateId);
@@ -242,7 +243,7 @@ async function saveProfile() {
   }
 
   if (!candidateId || !currentCandidate) {
-    alert('Error: Candidate not loaded');
+    notify.error("candidate not loaded");
     return;
   }
 

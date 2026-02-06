@@ -8,7 +8,7 @@ two new collections were added to the db.json:
 - `subscriptions`
 ### Refactoring
 The data base structure was extended.
-### Filfes modified
+### Files modified
 - `db.json`
 ## change 2:
 
@@ -108,7 +108,7 @@ subs view now displays real usage of plan limits on screen :p
 - scripts/plans.js
 - scripts/subscription.js
 
-## Change 9:
+## Change 9
 
 ### Added
 **Upgrade UI cards in plans & subscription**
@@ -119,3 +119,13 @@ subs view now displays real usage of plan limits on screen :p
 ### Files modified
 - `pages/plans.html`
 - `pages/subscription.html`
+
+## Change 10
+
+### Added
+**SweetAlert2**
+implemented modular alerts.
+- Integrated alerts of SweetAlert
+
+### Files modified
+- `utils.js`

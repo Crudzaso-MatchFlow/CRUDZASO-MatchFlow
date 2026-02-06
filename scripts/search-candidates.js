@@ -7,13 +7,13 @@ document.addEventListener("click", async (e) => {
     const currentUser = utils.getCurrentUser();
     const companyId = currentUser.id;
     if(!currentUser){
-      alert("You must be looged in as a company");
+      utils.notify.error();
       return;
     }
 
     const offerId = localStorage.getItem("selectedOfferId");
     if(!offerId){
-      alert("YOu must select a job offer first")
+      utils.notify.toast("You must select a offer first");
       return;
     }
 
@@ -28,7 +28,7 @@ document.addEventListener("click", async (e) => {
     await utils.reserveCandidate(candidateId, companyId, offerId);
     await utils.createMatch(companyId, candidateId, offerId);
 
-    alert("Match created successfully!");
+    utils.notify.confirm("Match Created Sucessfully");
   }
 });
 

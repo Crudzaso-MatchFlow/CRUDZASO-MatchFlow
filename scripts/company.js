@@ -1,4 +1,5 @@
 import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/companies';
 let companyId = null;
@@ -172,7 +173,7 @@ async function saveProfile() {
   }
 
   if (!companyId) {
-    alert('Error: Company not loaded');
+    notify.error("company not loaded");
     return;
   }
 

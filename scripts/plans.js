@@ -1,10 +1,10 @@
 import { getCurrentUser } from "./utils.js";
-
+import { notify } from "./utils.js";
 const API = "http://localhost:3000";
 const user = getCurrentUser();
 
 if (!user) {
-    alert("You must be logged in.");
+    notify.error();
     location.href = "../index.html";
 }
 
@@ -94,7 +94,7 @@ plansContainer.addEventListener("click", async (e) => {
         body: JSON.stringify(subscription)
         });
     }
-    alert("Subscription updated");
+    notify.success("Subscription Updated");
     window.location.href = "../pages/subscription.html";
     }
 });

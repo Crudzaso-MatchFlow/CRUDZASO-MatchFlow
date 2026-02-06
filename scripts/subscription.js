@@ -1,9 +1,10 @@
 import { getCurrentUser} from "./utils.js";
+import { notify } from "./utils.js";
 const API = "http://localhost:3000";
 const user = getCurrentUser();
 
 if(!user) {
-    alert("You must be logged in");
+    notify.error("", "you must be logged in");
     location.href = "../index.html";
 }
 const container = document.getElementById("subscriptionInfo");
@@ -31,7 +32,13 @@ async function loadSubscription(){
     if(user.rol === "candidate" && plan.maxReservations){
         const matchesRes = await fetch(`${API}/matches?companyId=${user.id}`);
         const matches = await matchesRes.json();
-        usageText = `<p>Reservations used: ${matches.length} / ${plan.maxReservations}</p>`;
+        usageText = `<div class="mb-2 d-flex justify-content-between small">
+        <span>Reservas</span>
+        <span class="fw-bold">8/10</span>
+    </div>
+    <div class="progress mb-3" style="height: 6px;">
+        <div class="progress-bar bg-primary" role="progressbar" style="width: 80%"></div>
+    </div>`;
     }
     container.innerHTML = `
     <div class="card border-0 shadow-sm rounded-3 overflow-hidden">

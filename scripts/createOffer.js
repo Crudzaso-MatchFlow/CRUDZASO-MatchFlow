@@ -57,6 +57,6 @@ form.addEventListener('submit', async (event) => {
         body: JSON.stringify(newOffer)
     });
 
-    alert('Ofer created sucessfully');
+    utils.notify.error("offer created succesfully");
     form.reset();
 });
