@@ -90,3 +90,20 @@ subs view now displays real usage of plan limits on screen :p
 - `scripts/plans.js`
 - `scripts/subscription.js`
 - `scripts/utils.js`
+
+
+## Change 8:
+
+### Fix
+**Invalid .json in currentUser storage**
+- Correct jsON serialization when storing the logged user.
+### refactor
+- replace all localStorage... by the fucntion getCurrentUser()
+### Files modified
+- pages/createOffer.html
+- pages/dashboard_user.html
+- pages/subscription.html
+- scripts/company.js
+- scripts/login.js
+- scripts/plans.js
+- scripts/subscription.js

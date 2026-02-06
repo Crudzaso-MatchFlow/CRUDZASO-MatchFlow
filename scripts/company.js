@@ -49,7 +49,7 @@ async function loadCompany() {
     }
 
     const companies = await res.json();
-    const sessionCompany = JSON.parse(getCurrentUser())
+    const sessionCompany = getCurrentUser();
 
     /* Deletes this block its not working  */
     if (Array.isArray(companies) && companies.length > 0) {

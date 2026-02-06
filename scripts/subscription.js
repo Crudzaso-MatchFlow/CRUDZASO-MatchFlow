@@ -1,5 +1,6 @@
+import { getCurrentUser} from "./utils.js";
 const API = "http://localhost:3000";
-const user = JSON.parse(localStorage.getItem("user"));
+const user = getCurrentUser();
 
 if(!user) {
     alert("You must be logged in");
