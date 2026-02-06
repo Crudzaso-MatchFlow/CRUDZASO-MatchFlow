@@ -129,3 +129,19 @@ implemented modular alerts.
 
 ### Files modified
 - `utils.js`
+
+
+
+
+## Change 11
+
+### Added
+**SPA strcuture**
+implemented SPA structure 60%
+
+### Files modified
+- `scripts/app.js`
+- `scripts/component/sideBar.js`
+- `scripts/plans.js`
+- `scripts/utils.js`
+- `scripts/company.js`

@@ -1,37 +1,61 @@
-// Minimal app.js - direct navigation only
-import { loadDb, renderCandidates, renderOffers, renderMatches } from './showOferts.js';
-import { getCurrentUser } from './utils.js';
+// scripts/app.js
+import { getSession } from './utils.js';
+import { renderSidebar, initSidebarEvents } from './components/Sidebar.js';
 
-let db;
-let currentView = 'offers';
-let currentUserId = 1; // Default user ID
+const routes = {
+    "public": ["/login"],
+    "private": {
+        "candidate": ["/dashboard", "/plans", "/matches"],
+        "company": ["/dashboard", "/plans", "/subscription", "/create-offer", "/search"]
+    }
+};
 
-(async () => {
-  db = await loadDb();
-  const user = getCurrentUser() || {};
-  currentUserId = user.userId || 1; // Use saved or default to 1
-  
-  localStorage.setItem('currentUser', JSON.stringify({ name: 'Usuario', avatar: '', userId: currentUserId }));
-  
-  // Set default view - show offers
-  const grid = document.getElementById('cards-grid');
-  grid.innerHTML = renderOffers(db.jobOffers, db.companies);
-  
-  // Nav click handlers
-  document.querySelectorAll('.nav-item').forEach(nav => {
-    nav.addEventListener('click', () => {
-      const text = nav.textContent;
-      if(text.includes('Discovery')) {
-        currentView = 'discovery';
-        grid.innerHTML = renderOffers(db.jobOffers, db.companies);
-      } else if(text.includes('Match')) {
-        currentView = 'matches';
-        const myMatches = db.matches.filter(m => m.candidateId === currentUserId);
-        grid.innerHTML = renderMatches(myMatches, db.jobOffers, db.companies);
-      } else if(text.includes('Job')) {
-        currentView = 'offers';
-        grid.innerHTML = renderOffers(db.jobOffers, db.companies);
-      }
-    });
-  });
-})();
+async function router() {
+    const hash = window.location.hash.replace('#', '') || '/login';
+    const user = getSession();
+    const sidebarContainer = document.getElementById('sidebar-root');
+    const contentContainer = document.getElementById('content-root');
+
+    // protect routes
+    if (!user && !routes.public.includes(hash)) {
+        window.location.hash = '#/login';
+        return;
+    }
+
+    if (user && !routes.public.includes(hash)) {
+        const allowed = routes.private[user.rol];
+        if (!allowed.includes(hash)) {
+            window.location.hash = allowed[0]; // home per defect
+            return;
+        }
+    }
+
+    // sidebar render
+    if (user && hash !== '/login') {
+        sidebarContainer.innerHTML = renderSidebar();
+        initSidebarEvents();
+    } else {
+        sidebarContainer.innerHTML = '';
+    }
+
+    //load view
+    const viewName = (hash === '/login') ? 'login' : (hash === '/dashboard') ? (user.rol === 'company' ? 'company' : 'candidate') : hash.replace('/', '');
+
+    try {
+        const response = await fetch(`./pages/${viewName}.html`);
+        const html = await response.text();
+        contentContainer.innerHTML = html;
+
+        // load script dynamic on the page
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = `./scripts/${viewName}.js?v=${Date.now()}`;
+        document.body.appendChild(script);
+        
+    } catch (err) {
+        contentContainer.innerHTML = "<h2>Error 404: page not found</h2>";
+    }
+}
+
+window.addEventListener('hashchange', router);
+window.addEventListener('load', router);

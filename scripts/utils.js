@@ -77,7 +77,7 @@ export function setCurrentUser(user) {
 
 export function logout() {
     localStorage.removeItem('currentUser');
-    window.location.href = 'pages/login.html';
+    window.location.hash = '#/login';
 }
 
 // ================================

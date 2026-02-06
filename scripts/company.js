@@ -11,6 +11,12 @@ let didInit = false;
 let isCreatingCompany = false;
 let hasAttemptedCreate = false;
 
+
+export function initCompanyPage() {
+    loadCompany(); // 
+    setupEvents();  // 
+}
+
 document.addEventListener('DOMContentLoaded', async () => {
   const currentUser = getSession();
 

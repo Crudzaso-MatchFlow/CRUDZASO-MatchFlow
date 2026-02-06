@@ -70,7 +70,14 @@ async function loadPlans() {
 }
 plansContainer.addEventListener("click", async (e) => {
     if (e.target.dataset.action === "subscribe") {
+        e.preventDefault();
         const planId = e.target.dataset.planId;
+        // show load...
+        Swal.fire({
+            title: 'Processing...',
+            didOpen: () => { Swal.showLoading() },
+            allowOutsideClick: false
+        });
         const subscription = {
             userId: user.id,
             rol: user.rol,
@@ -94,7 +101,9 @@ plansContainer.addEventListener("click", async (e) => {
         body: JSON.stringify(subscription)
         });
     }
-    notify.success("Subscription Updated");
+    await notify.success("Subscription Updated").then(() =>{
+        window.location.href = "../pages/subscription.html"
+    } );
     window.location.href = "../pages/subscription.html";
     }
 });
