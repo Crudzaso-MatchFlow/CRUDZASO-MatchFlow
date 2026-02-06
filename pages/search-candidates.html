@@ -46,44 +46,47 @@
         </div>
         <div>
           <h1 class="logo-title">MatchFlow</h1>
-          <p class="logo-subtitle">Company</p>
+          <p class="logo-subtitle">Candidate</p>
         </div>
       </div>
 
       <nav class="sidebar-nav">
-        <a href="./company.html" class="nav-item active">
-          <span class="material-symbols-outlined">business</span>
+
+        <a href="./company.html" class="nav-item">
+          <span class="material-symbols-outlined filled">business</span>
           <p>Profile</p>
         </a>
 
-        <a href="search-candidates.html" class="nav-item">
+
+        <a href="matches.html" class="nav-item">
+          <span class="material-symbols-outlined">favorite</span>
+          <p>My Matches</p>
+          <span class="badge" id="matches-count">0</span>
+        </a>
+
+
+        <a href="search-candidates.html" class="nav-item active">
           <span class="material-symbols-outlined">search</span>
           <p>Search candidates</p>
         </a>
 
         <a href="createOffer.html" class="nav-item">
-          <span class="material-symbols-outlined filled">add</span>
+          <span class="material-symbols-outlined">add</span>
           <p>Create Offer</p>
         </a>
 
-        <a href="dashboard_user.html" class="nav-item">
+        <a href="createOffer.html" class="nav-item">
           <span class="material-symbols-outlined">work</span>
           <p>My Offers</p>
-        </a>
-
-        <a href="#" class="nav-item" onclick="logout(); return false;">
-          <span class="material-symbols-outlined">logout</span>
-          <p>Logout</p>
         </a>
       </nav>
 
       <div class="sidebar-footer">
         <div class="profile-card">
-          <img id="topAvatar" class="profile-avatar" src="https://via.placeholder.com/40?text=%3F" alt="Company"
-            width="40" height="40">
+          <img id="user-avatar" class="profile-avatar" src="" alt="User" width="40" height="40">
           <div class="profile-info">
-            <p class="profile-name" id="topName">Company</p>
-            <p class="profile-role">Company</p>
+            <p class="profile-name" id="user-name">Invitado</p>
+            <p class="profile-role" id="user-role"></p>
           </div>
         </div>
       </div>
