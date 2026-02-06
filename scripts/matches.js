@@ -78,10 +78,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 
-function logout() {
+window.logout = function logout() {
   localStorage.removeItem("currentUser");
   window.location.href = "login.html";
 }
+
 
 document.addEventListener("DOMContentLoaded", () => {
   const profileLink = document.getElementById("profile-link");
