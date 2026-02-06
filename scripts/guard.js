@@ -19,20 +19,20 @@ function requireAuth() {
     }
 }
 
-// Requieres ADMIN
-function requireAdmin() {
+// Requieres Company
+function requireCompany() {
     const session = getSession();
 
-    if (!session || session.role !== "admin") {
+    if (!session || session.rol !== "company") {
         window.location.href = "login.html";
     }
 }
 
-// Requieres USER
-function requireUser() {
+// Requieres candidate
+function requireCandidate() {
     const session = getSession();
 
-    if (!session || session.role !== "user") {
+    if (!session || session.rol !== "candidate") {
         window.location.href = "login.html";
     }
 }
