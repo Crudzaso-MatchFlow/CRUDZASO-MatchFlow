@@ -2,6 +2,10 @@ import { getCurrentUser } from "./utils.js";
 import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/companies';
+const RESERVATIONS_URL = 'http://localhost:3000/reservations';
+const OFFERS_URL = 'http://localhost:3000/jobOffers';
+const MATCHES_URL = 'http://localhost:3000/matches';
+
 let companyId = null;
 
 // guards
@@ -10,6 +14,13 @@ let isCreatingCompany = false;
 let hasAttemptedCreate = false;
 
 
+let reservations = [];
+let offers = [];
+let matches = [];
+
+const reserved = document.getElementById("reservedCandidates")
+const activeoffers = document.getElementById("activeOffers")
+const totalMatches = document.getElementById("totalMatches")
 
 document.addEventListener('DOMContentLoaded', async () => {
   if (didInit) return; // prevents double init in some setups
@@ -26,7 +37,7 @@ function setupEvents() {
   document.getElementById('closeModal')?.addEventListener('click', closeModal);
   document.getElementById('cancelBtn')?.addEventListener('click', closeModal);
   document.getElementById('saveProfileBtn')?.addEventListener('click', saveProfile);
-  
+
 
   document.getElementById('avatarEdit')?.addEventListener('click', () =>
     document.getElementById('photoInput')?.click()
@@ -59,7 +70,7 @@ async function loadCompany() {
 
     companyId = String(user.id);
 
-    
+
     const res = await fetch(`${API_URL}/${companyId}`);
     if (!res.ok) {
       console.error("Error loading company:", res.status);
@@ -68,6 +79,7 @@ async function loadCompany() {
 
     const company = await res.json();
     updateUI(company);
+    await loadMetrics();
 
   } catch (err) {
     console.error("loadCompany failed:", err);
@@ -82,10 +94,9 @@ function updateUI(data) {
   document.getElementById('companyIndustry').textContent = data.industry || 'Industry';
 
   /* No theres data */
-/*   document.getElementById('companySize').textContent = data.size || 'Company Size';
-  document.getElementById('companyLocation').textContent = data.location || 'Location'; */
 
-  document.getElementById('companyPhone').textContent = `Cel: (${data.phone})` || '+57 ...';
+  document.getElementById('companyLocation').textContent = data.location || 'Location';
+  document.getElementById('companyPhone').textContent = `Cel: (${data.phone})` || '3022345890';
   document.getElementById('companyEmail').textContent = `Email: ${data.email}` || 'email@company.com';
   document.getElementById('companyDescription').textContent = data.description || 'Add a description about your company...';
 
@@ -115,8 +126,6 @@ async function openModal() {
       document.getElementById('modalName').value = data.name || '';
       document.getElementById('modalIndustry').value = data.industry || '';
 
-      // Documentated by stteen
-/*       document.getElementById('modalSize').value = data.size || ''; */
 
       document.getElementById('modalLocation').value = data.location || '';
       document.getElementById('modalPhone').value = data.phone || '';
@@ -129,6 +138,33 @@ async function openModal() {
 /* Function to closeModal */
 function closeModal() {
   document.getElementById('profileModal').classList.remove('active');
+}
+
+async function loadMetrics() {
+  try {
+    const [resRes, resOffers, resMatches] = await Promise.all([
+      fetch(RESERVATIONS_URL),
+      fetch(OFFERS_URL),
+      fetch(MATCHES_URL)
+    ]);
+
+    const allReservations = await resRes.json();
+    const allOffers = await resOffers.json();
+    const allMatches = await resMatches.json();
+
+    // Filtrar SOLO los datos de la empresa logueada
+    reservations = allReservations.filter(r => String(r.companyId) === companyId);
+    offers = allOffers.filter(o => String(o.companyId) === companyId);
+    matches = allMatches.filter(m => String(m.companyId) === companyId);
+
+    // Métricas
+    reserved.textContent = reservations.length;
+    activeoffers.textContent = offers.filter(o => o.isActive === true).length;
+    totalMatches.textContent = matches.length;
+
+  } catch (error) {
+    console.error('Error loading metrics:', error);
+  }
 }
 
 /* Function to save profile */
@@ -148,7 +184,6 @@ async function saveProfile() {
     id: companyId,
     name: document.getElementById('modalName').value.trim() || 'Your Company Name',
     industry: document.getElementById('modalIndustry').value.trim() || 'Industry',
-    size: document.getElementById('modalSize').value || '',
     location: document.getElementById('modalLocation').value.trim() || 'Location',
     phone: document.getElementById('modalPhone').value.trim() || '',
     email: document.getElementById('modalEmail').value.trim() || 'email@company.com',

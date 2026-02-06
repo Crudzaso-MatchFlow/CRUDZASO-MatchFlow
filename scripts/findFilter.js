@@ -8,7 +8,7 @@ async function filterSearch() {
   const formFilter = document.querySelector("#formFilter");
   const searchInput = document.querySelector("#search");
   const searchForm = document.querySelector("#searchForm");
-  // Control de Errores
+  // Controle de Errores
   try {
     // Method Get Fetch
     const resp = await fetch(url);

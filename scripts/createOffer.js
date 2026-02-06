@@ -15,7 +15,7 @@ const user = utils.getCurrentUser();
 
 // block visual 
 (async function checkSubscription() {
-    const hasSub = await utils.hasActiveSubscription(user.id, user.rol);
+    const hasSub = await utils.hasActiveSubscription(user.id, user.role);
 
     if (!hasSub) {
         form.innerHTML = `

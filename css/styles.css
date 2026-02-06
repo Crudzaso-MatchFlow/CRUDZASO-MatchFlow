@@ -563,7 +563,7 @@ body {
    Forms
    ======================================== */
 
-.form-control, .form-select {
+.form-controle, .form-select {
     display: block;
     width: 100%;
     padding: 0.625rem 0.875rem;
@@ -577,7 +577,7 @@ body {
     transition: border-color 0.2s ease;
 }
 
-.form-control:focus, .form-select:focus {
+.form-controle:focus, .form-select:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(19, 127, 236, 0.1);

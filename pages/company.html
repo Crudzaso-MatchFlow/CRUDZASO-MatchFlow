@@ -37,24 +37,28 @@
           <p>Profile</p>
         </a>
         <a href="./plans.html" class="nav-item">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-    <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-</svg>
-                    <p>plans</p>
-                </a>
-                <a href="./subscription.html" class="nav-item ">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-patch-minus-fill" viewBox="0 0 16 16">
-    <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM6 7.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1"/>
-</svg>
-                    <p>subscriptions</p>
-                </a>
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag"
+            viewBox="0 0 16 16">
+            <path
+              d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+          </svg>
+          <p>plans</p>
+        </a>
+        <a href="./subscription.html" class="nav-item ">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-patch-minus-fill" viewBox="0 0 16 16">
+            <path
+              d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM6 7.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1 0-1" />
+          </svg>
+          <p>subscriptions</p>
+        </a>
 
 
-       <a href="matches.html" class="nav-item">
-                    <span class="material-symbols-outlined">favorite</span>
-                    <p>My Matches</p>
-                    <span class="badge" id="matches-count">0</span>
-                </a>
+        <a href="matches.html" class="nav-item">
+          <span class="material-symbols-outlined">favorite</span>
+          <p>My Matches</p>
+          <span class="badge" id="matches-count">0</span>
+        </a>
 
 
 
@@ -106,11 +110,12 @@
 
                 <div class="flex-grow-1">
                   <h1 id="companyName" class="fw-bold mb-1">Company Name</h1>
-                  <p id="companyIndustry" class="text-muted mb-2">Industry</p>
+                  <p id="companyIndustry" class="text-muted mb-1">Industry</p>
+                  <p id="companyLocation" class="text-muted mb-2">Location</p>
 
                   <div class="d-flex gap-2 mb-3">
                     <span id="companyPhone" class="badge bg-light text-dark">Phone</span>
-                    <span id="companyEmail" class="badge bg-light text-dark">Location</span>
+                    <span id="companyEmail" class="badge bg-light text-dark">Email</span>
                   </div>
 
                   <button class="btn btn-primary btn-sm" id="editProfileBtnInline" type="button" data-bs-toggle="modal"
@@ -183,37 +188,37 @@
           <form id="profileForm">
             <div class="mb-3">
               <label class="form-label">Company Name</label>
-              <input type="text" class="form-control" id="modalName" required>
+              <input type="text" class="form-controle" id="modalName" required>
             </div>
 
             <div class="mb-3">
               <label class="form-label">Industry</label>
-              <input type="text" class="form-control" id="modalIndustry" placeholder="e.g., Technology">
+              <input type="text" class="form-controle" id="modalIndustry" placeholder="e.g., Technology">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Phone</label>
-              <input type="text" class="form-control" id="modalPhone" placeholder="e.g., +57 ...">
+              <input type="text" class="form-controle" id="modalPhone" placeholder="e.g., +57 ...">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Location</label>
-              <input type="text" class="form-control" id="modalLocation" placeholder="e.g., Medellín">
+              <input type="text" class="form-controle" id="modalLocation" placeholder="e.g., MedellÃ­n">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Email</label>
-              <input type="text" class="form-control" id="modalEmail" placeholder="e.g., example@xxxx.com">
+              <input type="text" class="form-controle" id="modalEmail" placeholder="e.g., example@xxxx.com">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Website</label>
-              <input type="text" class="form-control" id="modalWebsite" placeholder="e.g., www.start.com">
+              <input type="text" class="form-controle" id="modalWebsite" placeholder="e.g., www.start.com">
             </div>
 
             <div class="mb-3">
               <label class="form-label">Description</label>
-              <textarea class="form-control" id="modalDescription" rows="3"></textarea>
+              <textarea class="form-controle" id="modalDescription" rows="3"></textarea>
             </div>
           </form>
         </div>

@@ -39,7 +39,7 @@ a validation step was added before creating a reservation:
 - Candidates cannot be reserved if they are already reserved or marked as unavailable.
 - Job offers cannot be used if they already have an active match.
 ### Why 
-**1**. this change ensure all the reservation actions is controlled flow with validation rules applied.
+**1**. this change ensure all the reservation actions is controleled flow with validation rules applied.
 **2**. json-server does not enforce bussisnes rules.
 - invalid matches
 - missing relations

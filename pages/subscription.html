@@ -1,23 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>My Subscription | MatchFlow</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body class="bg-light">
 
     <nav class="navbar navbar-expand-lg bg-white border-bottom">
         <div class="container">
             <a class="navbar-brand fw-bold" href="../index.html">MatchFlow</a>
             <div>
-            <a href="plans.html" class="btn btn-outline-primary">Change Plan</a>
+                <a href="plans.html" class="btn btn-outline-primary">Change Plan</a>
             </div>
         </div>
     </nav>
 
+
     <section class="container py-5">
+        <div class="mb-4">
+            <button type="button" class="btn btn-outline-secondary" onclick="history.back()">
+                ← Back
+            </button>
+        </div>
         <div class="text-center mb-4">
             <h1 class="fw-bold">My Subscription</h1>
             <p class="text-muted">Manage your current plan</p>
@@ -25,13 +33,14 @@
 
         <div class="row justify-content-center">
             <div class="col-md-6">
-            <div id="subscriptionInfo">
-                <!-- injects subscription -->
-            </div>
+                <div id="subscriptionInfo">
+                    <!-- injects subscription -->
+                </div>
             </div>
         </div>
     </section>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script type="module" src="../scripts/subscription.js"></script>
 </body>
+
 </html>

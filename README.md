@@ -7,10 +7,10 @@ MatchFlow is a match-first hiring platform where candidates activate "Open to Wo
 ## 🎯 Key Features
 
 ### For Candidates
-- **Open to Work Toggle**: Control your visibility to companies
+- **Open to Work Toggle**: Controle your visibility to companies
 - **Profile Management**: Update your professional information
 - **Match Tracking**: See all your matches and their status
-- **Privacy Control**: Contact info only visible after "contacted" status
+- **Privacy Controle**: Contact info only visible after "contacted" status
 
 ### For Companies
 - **Candidate Discovery**: Browse candidates who are open to work
@@ -85,12 +85,12 @@ The `db/db.json` file contains:
   "id": 1,
   "username": "user",
   "password": "password",
-  "rol": "candidate",
+  "role": "candidate",
   "name": "John Doe",
   "email": "john@example.com",
   "phone": "+57 300 123 4567",
   "avatar": "https://i.pravatar.cc/150?img=1",
-  "profession": "Desarrollador Frontend",
+  "profession": "Desarrolelador Frontend",
   "experience": 3,
   "location": "Medellín",
   "openToWork": true,
@@ -106,7 +106,7 @@ The `db/db.json` file contains:
   "id": 1,
   "username": "company",
   "password": "password",
-  "rol": "company",
+  "role": "company",
   "name": "Tech Corp",
   "email": "contact@techcorp.com",
   "phone": "+57 300 987 6543",
@@ -126,7 +126,7 @@ The `db/db.json` file contains:
   "companyId": 1,
   "title": "Frontend Developer",
   "description": "We are looking for...",
-  "profession": "Desarrollador Frontend",
+  "profession": "Desarrolelador Frontend",
   "typeContract": "Indefinido",
   "location": "Medellín",
   "mode": "Híbrido",
@@ -196,7 +196,7 @@ The `db/db.json` file contains:
 
 ### 2. Login/Signup (`pages/login.html`)
 - Tabbed interface for login and signup
-- Role selection (Candidate/Company)
+- role selection (Candidate/Company)
 - Form validation
 
 ### 3. Dashboard (`pages/dashboard_user.html`)
@@ -251,7 +251,7 @@ The `db/db.json` file contains:
 
 5. **Match Status Progression**
    - Linear flow: pending → contacted → interview → hired/discarded
-   - Companies control status updates
+   - Companies controle status updates
 
 ## 🔄 API Endpoints
 

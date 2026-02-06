@@ -1,35 +1,35 @@
-import { getCurrentUser} from "./utils.js";
+import { getCurrentUser } from "./utils.js";
 import { notify } from "./utils.js";
 const API = "http://localhost:3000";
 const user = getCurrentUser();
 
-if(!user) {
+if (!user) {
     notify.error("", "you must be logged in");
     location.href = "../index.html";
 }
 const container = document.getElementById("subscriptionInfo");
-async function loadSubscription(){
-    const subRes = await fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
+async function loadSubscription() {
+    const subRes = await fetch(`${API}/subscriptions?userId=${user.id}&role=${user.role}`);
     const subs = await subRes.json();
-    if(subs.length === 0) {
+    if (subs.length === 0) {
         container.innerHTML = `
         <div class="alert alert-warning">
             Not active subscription.
             <a href="plans.html">Choose a</a>
         </div>`;
-    return;
+        return;
     }
     const subscription = subs[0]
     const planRes = await fetch(`${API}/plans?id=${subscription.planId}`);
     const plan = (await planRes.json())[0];
     let usageText = "";
-    if(user.rol === "company" && plan.maxOffers){
+    if (user.role === "company" && plan.maxOffers) {
         const offersRes = await fetch(`${API}/jobOffers?companyId=${user.id}`);
         const offers = await offersRes.json();
         usageText = `<p>Offers used: ${offers.length} / ${plan.maxOffers}</p>`;
     }
 
-    if(user.rol === "candidate" && plan.maxReservations){
+    if (user.role === "candidate" && plan.maxReservations) {
         const matchesRes = await fetch(`${API}/matches?companyId=${user.id}`);
         const matches = await matchesRes.json();
         usageText = `<div class="mb-2 d-flex justify-content-between small">
@@ -91,5 +91,8 @@ async function loadSubscription(){
         </a>
     </div>
 </div>`
+
+
 }
+
 loadSubscription();
