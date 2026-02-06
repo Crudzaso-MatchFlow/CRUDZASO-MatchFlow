@@ -1,8 +1,23 @@
+import { getSession } from "./utils.js";
+
 
 const API = "http://localhost:3000";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const user = JSON.parse(localStorage.getItem("currentUser")); 
+
+  const currentUser = getSession();
+
+  if (!currentUser) { // add
+    showError("No hay sesión activa.");
+    window.location.href = "index.html"
+    return;
+  }
+
+  if (currentUser.role !== "company") { // add
+    window.location.href = "candidate.html"
+  }
+
+  const user = JSON.parse(localStorage.getItem("currentUser"));
   const candidateId = user?.id;
 
   const grid = document.getElementById("cards-grid");
@@ -14,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  
+
   const matches = await fetch(`${API}/matches?candidateId=${candidateId}`).then(r => r.json());
 
   matchesCount.textContent = matches.length;

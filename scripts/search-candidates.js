@@ -1,4 +1,7 @@
+import { getSession } from "./utils.js";
+
 const currentUser = getSession();
+
 const API = "http://localhost:3000";
 
 let actualCandidate = null; // add 
@@ -127,11 +130,6 @@ async function getOffers() {
     console.error("Error loading offers:", error); // add
     return []; // add
   }
-}
-
-function getSession() {
-  const session = localStorage.getItem("currentUser");
-  return session ? JSON.parse(session) : null;
 }
 
 function formatDate(dateValue) { //add
@@ -273,7 +271,12 @@ document.getElementById("tbody").addEventListener("click", async (e) => {
 (async function init() {
   if (!currentUser) { // add
     showError("No hay sesión activa.");
+    window.location.href = "index.html"
     return;
+  }
+
+  if (currentUser.role !== "company") {
+    window.location.href = "candidate.html"
   }
 
   const companies = await getCompanies(); // add - corregí nombre

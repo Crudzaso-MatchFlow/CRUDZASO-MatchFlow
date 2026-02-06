@@ -1,3 +1,18 @@
+import { getSession } from "./utils.js";
+
+const currentUser = getSession();
+
+if (!currentUser) { // add
+    showError("No hay sesión activa.");
+    window.location.href = "index.html"
+    return;
+}
+
+if (currentUser.role !== "company") { // add
+    window.location.href = "candidate.html"
+}
+
+
 let form = document.getElementById('formCreateOffer');
 const titleOffer = document.getElementById('titleOffer');
 const descriptionOffer = document.getElementById('descriptionOffer');

@@ -94,7 +94,7 @@ export function cacheData(key, data) {
 export function getCachedData(key, maxAge = 5 * 60 * 1000) { // 5 minutos por defecto
     const cached = localStorage.getItem(`matchflow_${key}`);
     if (!cached) return null;
-    
+
     const { data, timestamp } = JSON.parse(cached);
     if (Date.now() - timestamp > maxAge) {
         localStorage.removeItem(`matchflow_${key}`);
@@ -170,7 +170,7 @@ export function showNotification(message, type = 'success') {
     notification.style.zIndex = '9999';
     notification.textContent = message;
     document.body.appendChild(notification);
-    
+
     setTimeout(() => {
         notification.remove();
     }, 3000);
@@ -193,13 +193,18 @@ export function getStatusBadge(status) {
         hired: { class: 'bg-success', text: 'Contratado' },
         discarded: { class: 'bg-danger', text: 'Descartado' }
     };
-    
+
     const config = statusConfig[status] || { class: 'bg-secondary', text: status };
     return `<span class="badge ${config.class}">${config.text}</span>`;
 }
 
 export function getOpenToWorkBadge(openToWork) {
-    return openToWork 
+    return openToWork
         ? '<span class="badge bg-success">Open to Work</span>'
         : '<span class="badge bg-secondary">Busy</span>';
+}
+
+export function getSession() { // add
+    const session = localStorage.getItem("currentUser");
+    return session ? JSON.parse(session) : null;
 }

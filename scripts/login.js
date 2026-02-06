@@ -1,3 +1,4 @@
+import { getSession } from "./utils.js";
 
 // Helpers
 
@@ -43,6 +44,17 @@ async function loginUser(email, password) {
 // Events
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const currentUser = getSession();
+
+    if (currentUser) {
+
+        if (currentUser.role === "company") { // add
+            window.location.href = "company.html"
+        } else {
+            window.location.href = "candidate.html"
+        }
+    }
 
     // Sigup
     const signupForm = document.getElementById('signup-form');

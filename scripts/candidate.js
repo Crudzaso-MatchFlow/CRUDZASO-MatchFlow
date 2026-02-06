@@ -1,3 +1,5 @@
+import { getSession } from "./utils.js";
+
 const API_URL = 'http://localhost:3000/candidates';
 let candidateId = localStorage.getItem('candidateId');
 
@@ -5,6 +7,18 @@ let currentCandidate = null;
 let profileModalInstance = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
+  const currentUser = getSession();
+
+  if (!currentUser) { // add
+    showError("No hay sesión activa.");
+    window.location.href = "index.html"
+    return;
+  }
+
+  if (currentUser.role === "company") { // add
+    window.location.href = "company.html"
+  }
+
 
   const modalEl = document.getElementById('profileModal');
   if (modalEl && window.bootstrap) {
