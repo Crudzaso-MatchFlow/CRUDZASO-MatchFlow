@@ -208,3 +208,73 @@ export function getSession() { // add
     const session = localStorage.getItem("currentUser");
     return session ? JSON.parse(session) : null;
 }
+// Notify alerts sweetAlert2
+
+export const notify = {
+    // 1. (Success)
+    success: (title, text = "") => {
+        return Swal.fire({
+            icon: 'success',
+            title: title,
+            text: text,
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            padding: '2rem',
+            color: '#1a1a1a',
+            iconColor: '#28a745', // Verde Bootstrap
+            customClass: {
+                popup: 'rounded-4 shadow-lg'
+            }
+        });
+    },
+
+    // 2. (error)
+    error: (title, text = "Something went wrong, try again.") => {
+        return Swal.fire({
+            icon: 'error',
+            title: title,
+            text: text,
+            confirmButtonColor: '#dc3545',
+            padding: '2rem',
+            customClass: {
+                popup: 'rounded-4'
+            }
+        });
+    },
+
+    // 3.(confirmation) for change plan
+    confirm: async (title, text, confirmButtonText = "Sí, continuar") => {
+        const result = await Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0d6efd', // Azul Bootstrap
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: confirmButtonText,
+            cancelButtonText: 'Cancelar',
+            reverseButtons: true, // Pone el botón de cancelar a la izquierda
+            padding: '2rem',
+            customClass: {
+                popup: 'rounded-4'
+            }
+        });
+        return result.isConfirmed;
+    },
+
+    // 4. Toast
+    toast: (title, icon = 'info') => {
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+        Toast.fire({
+            icon: icon,
+            title: title
+        });
+    }
+};

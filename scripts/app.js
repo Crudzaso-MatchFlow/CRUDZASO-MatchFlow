@@ -1,5 +1,6 @@
 // Minimal app.js - direct navigation only
 import { loadDb, renderCandidates, renderOffers, renderMatches } from './showOferts.js';
+import { getCurrentUser } from './utils.js';
 
 let db;
 let currentView = 'offers';
@@ -7,7 +8,7 @@ let currentUserId = 1; // Default user ID
 
 (async () => {
   db = await loadDb();
-  const user = JSON.parse(localStorage.getItem('currentUser')) || {};
+  const user = getCurrentUser() || {};
   currentUserId = user.userId || 1; // Use saved or default to 1
   
   localStorage.setItem('currentUser', JSON.stringify({ name: 'Usuario', avatar: '', userId: currentUserId }));

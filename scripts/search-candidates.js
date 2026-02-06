@@ -1,8 +1,41 @@
+import * as utils from "./utils.js"
+const API = "http://localhost:3000";
+
+document.addEventListener("click", async (e) => {
+  if(e.target.dataset.action === "match"){
+    const candidateId = e.target.dataset.candidateId;
+    const currentUser = utils.getCurrentUser();
+    const companyId = currentUser.id;
+    if(!currentUser){
+      utils.notify.error();
+      return;
+    }
+
+    const offerId = localStorage.getItem("selectedOfferId");
+    if(!offerId){
+      utils.notify.toast("You must select a offer first");
+      return;
+    }
+
+    // 
+    const validation = await utils.canCrtReservation(candidateId, offerId);
+
+    if (!validation.ok) {
+      alert(validation.reason);
+      return;
+    }
+
+    await utils.reserveCandidate(candidateId, companyId, offerId);
+    await utils.createMatch(companyId, candidateId, offerId);
+
+    utils.notify.confirm("Match Created Sucessfully");
+  }
+});
+
+
 import { getSession } from "./utils.js";
 
 const currentUser = getSession();
-
-const API = "http://localhost:3000";
 
 let actualCandidate = null; // add 
 let actualCompany = null; // add 
@@ -31,7 +64,9 @@ function candidateCard(candidate) {
         `<span class="badge rounded-pill text-bg-light border me-1 mb-1 fw-normal">${skill}</span>`
     )
     .join("");
-
+    
+  const disabled = c.reservedBy ? "disabled" : "";
+  const label = c.blocked ? "Subscription expired" : c.reservedBy ? "Reserved" : "Hacer match";
   return `
     <div class="col-12 col-lg-6">
       <div class="card h-100 shadow-sm">
@@ -61,14 +96,15 @@ function candidateCard(candidate) {
     }
 
               <div class="mt-2">${skills}</div>
-
+              
               <div class="d-flex gap-2 mt-3">
                 <button
                   class="btn btn-primary btn-sm"
                   data-action="match"
-                  data-candidate-id="${candidate.id}"
+                  data-candidate-id="${c.id}"
+                  ${disabled}
                 >
-                  Hacer match
+                  ${label}
                 </button>
                 <button
                   class="btn btn-outline-secondary btn-sm"
@@ -83,7 +119,7 @@ function candidateCard(candidate) {
         </div>
       </div>
     </div>
-  `;
+    `;
 }
 
 function renderCandidates(list) {
@@ -99,15 +135,20 @@ function renderCandidates(list) {
 }
 
 async function loadCandidates() {
-  const response = await fetch(`${API}/candidates`);
+  const res = await fetch(`${API}/candidates`);
+  const candidates = await res.json();
+  const user = utils.getCurrentUser();
+  const hasSub = await utils.hasActiveSubscription(user.id, user.rol)
 
-  if (!response.ok) {
-    showError("Error cargando candidatos."); // add - corregí el texto
+  const processed = candidates.map(e => ({
+    ...c,
+    blocked: !hasSub
+  }));
+  if (!res.ok) {
+    showError("Error cargando candidatos.");
     return;
   }
-
-  candidates = await response.json();
-  renderCandidates(candidates);
+  renderCandidates(processed);
 }
 
 async function getCompanies() { // add - corregí el nombre 

@@ -1,7 +1,9 @@
+import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 import { getSession } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/candidates';
-let candidateId = localStorage.getItem('candidateId');
+let candidateId = getCurrentUser(candidateId);
 
 let currentCandidate = null;
 let profileModalInstance = null;
@@ -254,7 +256,7 @@ async function saveProfile() {
   }
 
   if (!candidateId || !currentCandidate) {
-    alert('Error: Candidate not loaded');
+    notify.error("candidate not loaded");
     return;
   }
 

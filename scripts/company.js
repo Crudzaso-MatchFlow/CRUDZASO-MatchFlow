@@ -1,3 +1,5 @@
+import { getCurrentUser } from "./utils.js";
+import { notify } from "./utils.js";
 import { getSession } from "./utils.js";
 
 
@@ -62,7 +64,7 @@ async function loadCompany() {
     }
 
     const companies = await res.json();
-    const sessionCompany = JSON.parse(localStorage.getItem('currentUser'))
+    const sessionCompany = getCurrentUser();
 
     /* Deletes this block its not working  */
     if (Array.isArray(companies) && companies.length > 0) {
@@ -185,7 +187,7 @@ async function saveProfile() {
   }
 
   if (!companyId) {
-    alert('Error: Company not loaded');
+    notify.error("company not loaded");
     return;
   }
 

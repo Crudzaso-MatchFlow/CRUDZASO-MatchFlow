@@ -381,6 +381,76 @@
       "createdAt": "2026-01-28T16:45:00Z"
     }
   ],
+  "plans": [
+    {
+      "id": "1",
+      "name": "Free Candidate",
+      "rol": "candidate",
+      "maxReservation": 1,
+      "filters": false,
+      "price": 0
+    },
+    {
+      "id": "2",
+      "name": "Pro Candidate 1",
+      "rol": "candidate",
+      "maxReservations": 3,
+      "filters": true,
+      "price": 10
+    },
+    {
+      "id": "3",
+      "name": "Pro Candidate 2",
+      "rol": "candidate",
+      "maxReservations": 5,
+      "filters": true,
+      "price": 20
+    },
+    {
+      "id": "4",
+      "name": "Free Company",
+      "rol": "company",
+      "maxOffers": 1,
+      "priority": false,
+      "price": 0
+    },
+    {
+      "id": "5",
+      "name": "Business",
+      "rol": "company",
+      "maxOffers": 5,
+      "priority": true,
+      "price": 50
+    },
+    {
+      "id": "6",
+      "name": "Enterprise",
+      "rol": "company",
+      "maxOffers": 999,
+      "priority": true,
+      "price": 100
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": "1",
+      "userId": "1",
+      "rol": "candidate",
+      "planId": "2",
+      "startedAt": "2026-02-06T11:49:29.416Z",
+      "expiresAt": "2026-03-06T11:49:29.416Z",
+      "status": "active"
+    },
+    {
+      "id": "2",
+      "userId": "1",
+      "rol": "company",
+      "planId": "4",
+      "startedAt": "2026-01-01T00:00:00.000Z",
+      "expiresAt": "2026-02-01T00:00:00.000Z",
+      "status": "active"
+    }
+  ],
   "reservations": [
     {
       "id": "1",
