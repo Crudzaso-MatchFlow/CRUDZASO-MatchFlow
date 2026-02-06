@@ -30,17 +30,17 @@ Files added:
 
 ## change 4:
 ### added
-(1. reservation blocking integration)
+**1. reservation blocking integration**
 a click for the "match" btn was introduced
 a validation step was added before creating a reservation:
 - candidates are not already reserved
 - Jobs offer are not already assigned
-(2. Reservation flow validation)
+**2. Reservation flow validation**
 - Candidates cannot be reserved if they are already reserved or marked as unavailable.
 - Job offers cannot be used if they already have an active match.
 ### Why 
-(1). this change ensure all the reservation actions is controlled flow with validation rules applied.
-(2). json-server does not enforce bussisnes rules.
+**1**. this change ensure all the reservation actions is controlled flow with validation rules applied.
+**2**. json-server does not enforce bussisnes rules.
 - invalid matches
 - missing relations
 - Runtime erros caused by missing session data
@@ -48,7 +48,7 @@ a validation step was added before creating a reservation:
 ## change 5:
 
 ### Added
-(visual match btn blocking)
+**visual match btn blocking**
 The "match" btn is now visually blocked when a candidate is not avlb:
 - if open to work is false
 - if the candidate is already reserved.
@@ -57,3 +57,22 @@ bussisnes rules were applied...
 - candidates cannot be reserved beyons the plan reservation limit.
 - job offers cannot be created beyond the plan offer limit
 - Match buttons are visually disabled when a candidate is already reserved (refactorized)
+
+## change 6:
+
+### Added
+**sub expiration validation**
+subs expiration is validated before allowing:
+- candidate reservation
+- job offer creation
+**Job offer Creation Restriction**
+logical validations prevents submitting offers beyond the allowed plan limits. 
+the form is visually blocked when the user has no active sub...
+job offer creation is now restricted by subscription status and plan limits.
+**Plan Usage Counter**
+subs view now displays real usage of plan limits on screen :p
+### files modified
+- `utils.js`
+- `subscription.js`
+
+

@@ -46,7 +46,9 @@ function candidateCard(c) {
         `<span class="badge rounded-pill text-bg-light border me-1 mb-1 fw-normal">${s}</span>`
     )
     .join("");
+    
   const disabled = c.reservedBy ? "disabled" : "";
+  const label = c.blocked ? "Subscription expired" : c.reservedBy ? "Reserved" : "Hacer match";
   return `
     <div class="col-12 col-lg-6">
       <div class="card h-100 shadow-sm">
@@ -85,7 +87,7 @@ function candidateCard(c) {
                   data-candidate-id="${c.id}"
                   ${disabled}
                 >
-                  ${c.reservedBy ? "Reserved" : "Hacer match"}
+                  ${label}
                 </button>
                 <button
                   class="btn btn-outline-secondary btn-sm"
@@ -117,18 +119,20 @@ function renderCandidates(list) {
 
 
 async function loadCandidates() {
-
-
   const res = await fetch(`${API}/candidates`);
+  const candidates = await res.json();
+  const user = utils.getCurrentUser();
+  const hasSub = await utils.hasActiveSubscription(user.id, user.rol)
+
+  const processed = candidates.map(e => ({
+    ...c,
+    blocked: !hasSub
+  }));
   if (!res.ok) {
     showError("Error cargando candidatos.");
     return;
   }
-
-  let candidates = await res.json()
-
-
-  renderCandidates(candidates);
+  renderCandidates(processed);
 }
 
 // init

@@ -111,10 +111,19 @@ export async function updateCandidateOpenToWork(candidateId, openToWork) {
     return await saveToDB('candidates', candidateId, { openToWork });
 }
 export async function canCrtReservation(candidateId, jobOfferId) {
+    const user = getCurrentUser();
+
     const candidateRes = await fetch(`${API_URL}/candidates/${candidateId}`);
     const candidate = await candidateRes.json();
-
-    if (!candidate.openToWork || candidate.reservedBy !== null) {
+    const planRes = await fetch(`${API_URL}/plans?id=${subscription.planId}`);
+    const plan = (await planRes.json())[0];
+    if (!subs.length){
+        return {ok: false, reason: "Not active subscription"}
+    }
+    const subscription = subs[0];
+    
+    
+    if (!candidate.reservedBy) {
         return { ok: false, reason: "Candidate is already reserved or not available." };
     }
 
@@ -167,6 +176,10 @@ export async function canCrtOffer(companyId) {
     const subRes = await fetch(`${API_URL}/subscriptions?userId=${companyId}&rol=company`);
     const subs = await subRes.json();
     if (!subs.length) return { ok: false, reason: "No active subscription" };
+    const subscription = subs[0]
+    if (!isSubscriptionActive(subscription)) {
+        return { ok: false, reason: "Your subscription is expired" };
+    }
     const planRes = await fetch(`${API_URL}/plans?id=${subs[0].planId}`);
     const plan = (await planRes.json())[0];
     const offersRes = await fetch(`${API_URL}/jobOffers?companyId=${companyId}`);
@@ -232,4 +245,20 @@ export function getOpenToWorkBadge(openToWork) {
     return openToWork 
         ? '<span class="badge bg-success">Open to Work</span>'
         : '<span class="badge bg-secondary">Busy</span>';
+}
+
+//subscription functions...
+export function isSubscriptionActive(subscription) {
+    const now = new Date();
+    const expires = new Date(subscription.expiresAt);
+    return subscription.status === "active" && expires > now;
+}
+export async function hasActiveSubscription(userId, rol) {
+    const res = await fetch(`${API_URL}/subscriptions?userId=${userId}&rol=${rol}`);
+    const subs = await res.json();
+
+    if (!subs.length) return false;
+
+    const sub = subs[0];
+    return isSubscriptionActive(sub);
 }

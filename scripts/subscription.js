@@ -13,21 +13,34 @@ async function loadSubscription(){
         container.innerHTML = `
         <div class="alert alert-warning">
             Not active subscription.
-            <a href="plans.html">Elegir plan</a>
+            <a href="plans.html">Choose a</a>
         </div>`;
     return;
     }
     const subscription = subs[0]
     const planRes = await fetch(`${API}/plans?id=${subscription.planId}`);
     const plan = (await planRes.json())[0];
+    let usageText = "";
+    if(user.rol === "company" && plan.maxOffers){
+        const offersRes = await fetch(`${API}/jobOffers?companyId=${user.id}`);
+        const offers = await offersRes.json();
+        usageText = `<p>Offers used: ${offers.length} / ${plan.maxOffers}</p>`;
+    }
+
+    if(user.rol === "candidate" && plan.maxReservations){
+        const matchesRes = await fetch(`${API}/matches?companyId=${user.id}`);
+        const matches = await matchesRes.json();
+        usageText = `<p>Reservations used: ${matches.length} / ${plan.maxReservations}</p>`;
+    }
     container.innerHTML = `
     <div class="card">
         <div class="card-body">
             <h5>${plan.name}</h5>
-            <p>Precio: $${plan.price}</p>
-            <p>Inicio: ${subscription.startedAt.split("T")[0]}</p>
-            <p>Vence: ${subscription.expiresAt.split("T")[0]}</p>
-            <a href="plans.html" class="btn btn-primary">Cambiar plan</a>
+            <p>Price: $${plan.price}</p>
+            <p>Start: ${subscription.startedAt.split("T")[0]}</p>
+            <p>Expires: ${subscription.expiresAt.split("T")[0]}</p>
+            ${usageText}
+            <a href="plans.html" class="btn btn-primary">Change plan</a>
         </div>
     </div>`;
 }
