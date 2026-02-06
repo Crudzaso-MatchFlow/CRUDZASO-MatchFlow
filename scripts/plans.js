@@ -98,5 +98,3 @@ plansContainer.addEventListener("click", async (e) => {
     window.location.href = "../pages/subscription.html";
     }
 });
-
-loadPlans();

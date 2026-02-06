@@ -110,7 +110,32 @@ export function getCachedData(key, maxAge = 5 * 60 * 1000) { // 5 minutos por de
 export async function updateCandidateOpenToWork(candidateId, openToWork) {
     return await saveToDB('candidates', candidateId, { openToWork });
 }
+export async function canCrtReservation(candidateId, jobOfferId) {
+    const user = getCurrentUser();
 
+    const candidateRes = await fetch(`${API_URL}/candidates/${candidateId}`);
+    const candidate = await candidateRes.json();
+    const planRes = await fetch(`${API_URL}/plans?id=${subscription.planId}`);
+    const plan = (await planRes.json())[0];
+    if (!subs.length){
+        return {ok: false, reason: "Not active subscription"}
+    }
+    const subscription = subs[0];
+    
+    
+    if (!candidate.reservedBy) {
+        return { ok: false, reason: "Candidate is already reserved or not available." };
+    }
+
+    const matchesRes = await fetch(`${API_URL}/matches?jobOfferId=${jobOfferId}`);
+    const matches = await matchesRes.json();
+
+    if (matches.length > 0) {
+        return { ok: false, reason: "Job offer already has a reservation." };
+    }
+
+    return { ok: true };
+}
 export async function reserveCandidate(candidateId, companyId, offerId) {
     return await saveToDB('candidates', candidateId, {
         reservedBy: companyId,
@@ -147,6 +172,24 @@ export async function updateMatchStatus(matchId, status) {
 // ================================
 // Funciones de Ofertas
 // ================================
+export async function canCrtOffer(companyId) {
+    const subRes = await fetch(`${API_URL}/subscriptions?userId=${companyId}&rol=company`);
+    const subs = await subRes.json();
+    if (!subs.length) return { ok: false, reason: "No active subscription" };
+    const subscription = subs[0]
+    if (!isSubscriptionActive(subscription)) {
+        return { ok: false, reason: "Your subscription is expired" };
+    }
+    const planRes = await fetch(`${API_URL}/plans?id=${subs[0].planId}`);
+    const plan = (await planRes.json())[0];
+    const offersRes = await fetch(`${API_URL}/jobOffers?companyId=${companyId}`);
+    const offers = await offersRes.json();
+    if (offers.length >= plan.maxOffers) {
+        return { ok: false, reason: "Offer limit reached for your plan" };
+    }
+    return { ok: true };
+}
+
 
 export async function createJobOffer(offerData) {
     return await createInDB('jobOffers', {
@@ -199,15 +242,29 @@ export function getStatusBadge(status) {
 }
 
 export function getOpenToWorkBadge(openToWork) {
-    return openToWork
+    return openToWork 
         ? '<span class="badge bg-success">Open to Work</span>'
         : '<span class="badge bg-secondary">Busy</span>';
 }
 
-export function getSession() { // add
-    const session = localStorage.getItem("currentUser");
-    return session ? JSON.parse(session) : null;
+//subscription functions...
+export function isSubscriptionActive(subscription) {
+    const now = new Date();
+    const expires = new Date(subscription.expiresAt);
+    return subscription.status === "active" && expires > now;
 }
+export async function hasActiveSubscription(userId, rol) {
+    const res = await fetch(`${API_URL}/subscriptions?userId=${userId}&rol=${rol}`);
+    const subs = await res.json();
+
+    if (!subs.length) return false;
+
+    const sub = subs[0];
+    return isSubscriptionActive(sub);
+}
+
+
+
 // Notify alerts sweetAlert2
 
 export const notify = {
