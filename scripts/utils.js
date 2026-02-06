@@ -110,7 +110,23 @@ export function getCachedData(key, maxAge = 5 * 60 * 1000) { // 5 minutos por de
 export async function updateCandidateOpenToWork(candidateId, openToWork) {
     return await saveToDB('candidates', candidateId, { openToWork });
 }
+export async function canCrtReservation(candidateId, jobOfferId) {
+    const candidateRes = await fetch(`${API_URL}/candidates/${candidateId}`);
+    const candidate = await candidateRes.json();
 
+    if (!candidate.openToWork || candidate.reservedBy !== null) {
+        return { ok: false, reason: "Candidate is already reserved or not available." };
+    }
+
+    const matchesRes = await fetch(`${API_URL}/matches?jobOfferId=${jobOfferId}`);
+    const matches = await matchesRes.json();
+
+    if (matches.length > 0) {
+        return { ok: false, reason: "Job offer already has a reservation." };
+    }
+
+    return { ok: true };
+}
 export async function reserveCandidate(candidateId, companyId, offerId) {
     return await saveToDB('candidates', candidateId, {
         reservedBy: companyId,

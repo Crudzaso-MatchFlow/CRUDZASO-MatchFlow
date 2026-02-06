@@ -1,4 +1,29 @@
+import * as utils from "./utils.js"
 const API = "http://localhost:3000";
+
+document.addEventListener("click", async (e) => {
+  if(e.target.dataset.action === "match"){
+    const candidateId = e.target.dataset.candidateId;
+    const currentUser = utils.getCurrentUser();
+    const companyId = currentUser.id;
+
+    const offerId = localStorage.getItem("selectedOfferId");
+
+    // 
+    const validation = await utils.canCrtReservation(candidateId, offerId);
+
+    if (!validation.ok) {
+      alert(validation.reason);
+      return;
+    }
+
+    await utils.reserveCandidate(candidateId, companyId, offerId);
+    await utils.createMatch(companyId, candidateId, offerId);
+
+    alert("Match created successfully!");
+  }
+});
+
 
 
 function candidateCard(c) {
