@@ -395,6 +395,14 @@
       "jobOfferId": "2",
       "status": "pending",
       "createdAt": 1770406445440
+    },
+    {
+      "id": "a134",
+      "companyId": "1",
+      "candidateId": "1",
+      "jobOfferId": "1",
+      "status": "pending",
+      "createdAt": 1770420209897
     }
   ],
   "plans": [
@@ -461,9 +469,9 @@
       "id": "2",
       "userId": "1",
       "role": "company",
-      "planId": "5",
-      "startedAt": "2026-02-06T22:36:55.537Z",
-      "expiresAt": "2026-03-06T22:36:55.537Z",
+      "planId": "4",
+      "startedAt": "2026-02-06T23:23:02.929Z",
+      "expiresAt": "2026-03-06T23:23:02.929Z",
       "status": "active"
     }
   ],
