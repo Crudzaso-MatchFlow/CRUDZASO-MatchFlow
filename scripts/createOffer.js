@@ -45,7 +45,7 @@ form.addEventListener('submit', async (event) => {
         mode: modeOffer.value,
         salary: salaryOffer.value,
         deadline: deadlineOffer.value,
-        createdAt: new Date(),
+        createdAt: new Date().toISOString(),
         isActive: true
     }
 

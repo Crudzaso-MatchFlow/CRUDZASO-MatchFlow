@@ -1,3 +1,5 @@
+import { getCurrentUser } from "./utils.js";
+
 const API_URL = 'http://localhost:3000/companies';
 let companyId = null;
 
@@ -47,7 +49,7 @@ async function loadCompany() {
     }
 
     const companies = await res.json();
-    const sessionCompany = JSON.parse(localStorage.getItem('currentUser'))
+    const sessionCompany = JSON.parse(getCurrentUser())
 
     /* Deletes this block its not working  */
     if (Array.isArray(companies) && companies.length > 0) {

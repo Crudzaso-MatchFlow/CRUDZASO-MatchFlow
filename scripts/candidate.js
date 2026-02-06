@@ -1,5 +1,7 @@
+import { getCurrentUser } from "./utils.js";
+
 const API_URL = 'http://localhost:3000/candidates';
-let candidateId = localStorage.getItem('candidateId');
+let candidateId = getCurrentUser(candidateId);
 
 let currentCandidate = null;
 let profileModalInstance = null;

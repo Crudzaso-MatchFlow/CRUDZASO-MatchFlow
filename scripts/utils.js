@@ -67,7 +67,7 @@ export async function deleteFromDB(endpoint, id) {
 // ================================
 
 export function getCurrentUser() {
-    const user = localStorage.getItem('currentUser');
+    const user = getCurrentUser();
     return user ? JSON.parse(user) : null;
 }
 

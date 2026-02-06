@@ -75,4 +75,18 @@ subs view now displays real usage of plan limits on screen :p
 - `utils.js`
 - `subscription.js`
 
+## Change 7:
 
+### Fix
+- Adjust user used functions (localStorage...("user) / getCurrentUser() in .js).
+- Normalize dates to ISO
+- routes **from** import
+### Files Modified
+- `scripts/app.js`
+- `scripts/candidate.js`
+- `scripts/company.js`
+- `scripts/creatorOffer.js`
+- `scripts/login.js`
+- `scripts/plans.js`
+- `scripts/subscription.js`
+- `scripts/utils.js`

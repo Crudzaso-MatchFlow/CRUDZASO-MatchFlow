@@ -1,6 +1,8 @@
 
 // Helpers
 
+import { getCurrentUser } from "./utils.js";
+
 async function getAllUsers() {
     const [candidates, companies] = await Promise.all([
         fetch(`http://localhost:3000/candidates`).then(response => response.json()),
@@ -105,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    const currentUser = JSON.parse(getCurrentUser());
 
     if (!currentUser) return;
 
