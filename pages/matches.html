@@ -63,8 +63,13 @@
 
                 <a href="job-offers.html" class="nav-item" id="navOfferItem">
                     <span class="material-symbols-outlined">work</span>
-                    <p>Jon Offers</p>
+                    <p>Job Offers</p>
                 </a>
+
+                <a href="#" class="nav-item" onclick="logout(); return false;">
+          <span class="material-symbols-outlined">logout</span>
+          <p>Logout</p>
+        </a>
 
             </nav>
 
@@ -86,21 +91,6 @@
                 <div class="header-content">
                     <div class="header-left">
                         <h2 class="header-title-mobile" id="view-title">Discovery</h2>
-                        <div class="job-selector">
-                            <div class="select-wrapper">
-                                <span class="material-symbols-outlined select-icon">work</span>
-                                <select class="job-select" id="job-filter">
-                                    <option value="all">All Professions</option>
-                                </select>
-                                <span class="material-symbols-outlined select-arrow">expand_more</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="header-right">
-                        <button class="btn-new-search" id="toggle-view-btn">
-                            <span class="material-symbols-outlined">swap_horiz</span>
-                            <span id="toggle-text">View Offers</span>
-                        </button>
                     </div>
                 </div>
             </header>
@@ -109,14 +99,6 @@
             <div class="content-area">
                 <div class="content-header">
                     <div>
-                        <div class="status-bar">
-                            <span class="status-badge" id="status-badge">Active</span>
-                            <span class="dot">•</span>
-                            <span class="status-text">Last updated <span id="update-time">now</span></span>
-                        </div>
-                        <h3 class="page-title" id="page-title">
-                            <span id="view-title-main">Candidates</span>
-                        </h3>
                         <p class="page-subtitle">
                             Showing <span id="results-count">0</span> results
                         </p>

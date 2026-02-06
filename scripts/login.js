@@ -21,7 +21,7 @@ async function createUser(newUser) {
         throw new Error('Email already exists');
     }
 
-    const endpoint = newUser.rol === 'company' ? 'companies' : 'candidates';
+    const endpoint = newUser.role === 'company' ? 'companies' : 'candidates';
 
     const response = await fetch(`http://localhost:3000/${endpoint}`, {
         method: 'POST',
@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentUser = getCurrentUser();
 
     if (currentUser) {
+        console.log(JSON.stringify(currentUser.role))
 
         if (currentUser.role === "company") { // add
             window.location.href = "company.html"
@@ -75,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: signupName.value.trim(),
             email: signupEmail.value.trim().toLowerCase(),
             password: signupPassword.value,
-            rol: signupRole.value
+            role: signupRole.value
         };
 
         try {
@@ -112,18 +113,8 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('currentUser', JSON.stringify(user));
 
         window.location.href =
-            user.rol === 'company' ? 'company.html' : 'candidate.html';
+            user.role === 'company' ? 'company.html' : 'candidate.html';
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    if (!currentUser) return;
-
-    if (currentUser.rol === 'company') {
-        window.location.href = 'company.html';
-    } else {
-        window.location.href = 'candidate.html';
-    }
-});

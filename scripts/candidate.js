@@ -2,7 +2,7 @@ import { getCurrentUser } from "./utils.js";
 import { notify } from "./utils.js";
 
 const API_URL = 'http://localhost:3000/candidates';
-let candidateId = getCurrentUser(candidateId);
+let user = getCurrentUser();
 
 let currentCandidate = null;
 let profileModalInstance = null;
@@ -61,12 +61,12 @@ export async function loadCandidate() {
   try {
     hideProfileError();
 
-    if (candidateId) {
-      const res = await fetch(`${API_URL}/${candidateId}`);
+    if (user) {
+      const res = await fetch(`${API_URL}/${user.id}`);
       if (!res.ok) throw new Error('Candidate not found');
 
       const data = await res.json();
-      currentCandidate = data;
+      user = data;
       updateUI(data);
       return;
     }

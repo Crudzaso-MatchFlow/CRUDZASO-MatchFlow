@@ -379,6 +379,14 @@
       "jobOfferId": 5,
       "status": "contacted",
       "createdAt": "2026-01-28T16:45:00Z"
+    },
+    {
+      "id": "c3de",
+      "companyId": "1",
+      "candidateId": "1",
+      "jobOfferId": "1",
+      "status": "pending",
+      "createdAt": 1770401128489
     }
   ],
   "plans": [
