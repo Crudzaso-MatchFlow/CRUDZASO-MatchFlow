@@ -1,4 +1,4 @@
-import { getSession } from "./utils.js";
+import { getCurrentUser } from "./utils.js";
 
 // Helpers
 
@@ -45,7 +45,7 @@ async function loginUser(email, password) {
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    const currentUser = getSession();
+    const currentUser = getCurrentUser();
 
     if (currentUser) {
 
