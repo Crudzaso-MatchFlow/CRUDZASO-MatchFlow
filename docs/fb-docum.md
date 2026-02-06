@@ -107,3 +107,15 @@ subs view now displays real usage of plan limits on screen :p
 - scripts/login.js
 - scripts/plans.js
 - scripts/subscription.js
+
+## Change 9:
+
+### Added
+**Upgrade UI cards in plans & subscription**
+- improve design and responsive for both pages
+- cards improved too 
+
+
+### Files modified
+- `pages/plans.html`
+- `pages/subscription.html`

@@ -2,24 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plans | MatchFlow</title>
+    <link rel="stylesheet" href="../css/plans.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
 </head>
-<body>
-    <nav class="navbar navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="../index.html">MatchFlow</a>
-            <a href="subscription.html">My susbscription</a>
+<body class="bg-light">
+
+<nav class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="../index.html">MatchFlow</a>
+        <div>
+        <a href="../pages/subscription.html" class="btn btn-outline-primary">My Subscription</a>
         </div>
-    </nav>
-    <div class="container mt-5">
-        <h2 class="text-center mb-4">Plans Avaliable</h2>
-        <div class="row" id="plansContainer"></div>
+    </div>
+</nav>
+
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold">Choose your plan</h1>
+        <p class="text-muted">Unlock the best features to match faster</p>
     </div>
 
-    <script type="module" src="../scripts/plans.js"></script>
-    
+    <div class="row g-4" id="plansContainer">
+        <!-- injects plans -->
+    </div>
+</section>
+
+<script type="module" src="../scripts/plans.js"></script>
 </body>
 </html>

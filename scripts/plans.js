@@ -4,7 +4,7 @@ const API = "http://localhost:3000";
 const user = getCurrentUser();
 
 if (!user) {
-    alert("You must login.");
+    alert("You must be logged in.");
     location.href = "../index.html";
 }
 
@@ -14,34 +14,71 @@ async function loadPlans() {
     const res = await fetch(`${API}/plans?rol=${user.rol}`)
     const plans = await res.json();
     plansContainer.innerHTML = "";
-    plans.forEach(plan => {
-        plansContainer.innerHTML +=`
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow">
-                <div class="card-header text-center fw-bold">${plan.name}</div>
-                <div class="card-body">
-                    <p>Price: $${plan.price}</p>
-                    ${plan.maxReservations ? `<p>Reservations: ${plan.maxReservations}</p>` : ""}
-                    ${plan.maxOffers ? `<p>Offers: ${plan.maxOffers}</p>` : ""}
-                    <p>Filters: ${plan.filters ? "Yes" : "No"}</p>
-                    <button class="btn btn-primary w-100" onclick="subscribe(${plan.id})">
-                        Choose Plan
-                    </button>
-                </div>
+    plansContainer.innerHTML = plans.map(plan => `
+        <div class="col-md-4 mb-4">
+    <div class="card h-100 border-0 shadow-sm hover-top transition-all">
+        <div class="card-body p-4 d-flex flex-column">
+            
+            <div class="text-center mb-4">
+                <h5 class="text-uppercase text-muted fw-bold small ls-1">${plan.name}</h5>
+                <div class="d-flex justify-content-center align-items-baseline my-3">
+                    <span class="h2 fw-bold align-self-start me-1">$</span>
+                    <span class="display-4 fw-bold text-primary">${plan.price}</span>
+                    </div>
             </div>
+
+            <ul class="list-unstyled mb-4 flex-grow-1">
+                ${plan.maxReservations ? `
+                <li class="mb-3 d-flex align-items-center">
+                    <span class="badge bg-success-subtle text-success rounded-circle p-1 me-2">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <span><strong>${plan.maxReservations}</strong> Reservaciones</span>
+                </li>` : ""}
+
+                ${plan.maxOffers ? `
+                <li class="mb-3 d-flex align-items-center">
+                    <span class="badge bg-success-subtle text-success rounded-circle p-1 me-2">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                    </span>
+                    <span><strong>${plan.maxOffers}</strong> Ofertas</span>
+                </li>` : ""}
+
+                <li class="mb-3 d-flex align-items-center">
+                    <span class="badge ${plan.filters ? 'bg-primary-subtle text-primary' : 'bg-secondary-subtle text-secondary'} rounded-circle p-1 me-2">
+                        ${plan.filters 
+                            ? `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>` 
+                            : `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>`
+                        }
+                    </span>
+                    <span class="${plan.filters ? '' : 'text-muted'}">
+                        Filtros: ${plan.filters ? "Incluidos" : "No incluidos"}
+                    </span>
+                </li>
+            </ul>
+
+            <button 
+                class="btn btn-primary w-100 rounded-pill py-2 fw-bold shadow-sm"
+                data-action="subscribe"
+                data-plan-id="${plan.id}">
+                Elegir Plan
+            </button>
         </div>
-    `;
-    });
+    </div>
+</div>
+    `).join("");
 }
-async function subscribe(planId) {
-    const subscription = {
-        userId: user.id,
-        rol: user.rol,
-        planId: planId,
-        startedAt: new Date().toISOString(),
-        expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
-        status: "active"
-    };
+plansContainer.addEventListener("click", async (e) => {
+    if (e.target.dataset.action === "subscribe") {
+        const planId = e.target.dataset.planId;
+        const subscription = {
+            userId: user.id,
+            rol: user.rol,
+            planId: planId,
+            startedAt: new Date().toISOString(),
+            expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
+            status: "active"
+        };
     const existing = await fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
     const data = await existing.json();
     if (data.length > 0){
@@ -58,6 +95,8 @@ async function subscribe(planId) {
         });
     }
     alert("Subscription updated");
-    location.href = "subscription.html";
-}
+    window.location.href = "../pages/subscription.html";
+    }
+});
+
 loadPlans();
