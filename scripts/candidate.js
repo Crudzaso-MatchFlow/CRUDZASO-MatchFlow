@@ -2,15 +2,21 @@ import { getCurrentUser, notify} from "./utils.js";
 
 
 const API_URL = 'http://localhost:3000/candidates';
-let user = getCurrentUser();
+
 
 let currentCandidate = null;
 let profileModalInstance = null;
 
+const currentUser = getCurrentUser();
 
-if (!user){
-  window.location.href = "./login.html"
-}
+  if (!currentUser) { // add
+    window.location.href = "./../index.html"
+  }
+
+  if (currentUser.role === "company") { // add
+    window.location.href = "company.html"
+  } 
+
 
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -117,11 +123,11 @@ function updateUI(data) {
   // Sidebar footer
   const sidebarAvatar = document.getElementById('user-avatar');
   const sidebarName = document.getElementById('user-name');
-  const sidebarRole = document.getElementById('user-role');
+  const sidebarrole = document.getElementById('user-role');
 
   if (sidebarAvatar) sidebarAvatar.src = data.avatar || 'https://via.placeholder.com/40?text=%3F';
   if (sidebarName) sidebarName.textContent = name;
-  if (sidebarRole) sidebarRole.textContent = 'Candidate';
+  if (sidebarrole) sidebarrole.textContent = 'Candidate';
 
   if (nameEl) nameEl.textContent = name;
   if (titleEl) titleEl.textContent = data.profession || '';

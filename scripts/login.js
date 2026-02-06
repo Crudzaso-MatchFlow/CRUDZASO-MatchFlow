@@ -11,6 +11,9 @@ async function getAllUsers() {
     return [...candidates, ...companies];
 }
 
+
+
+
 // Sign up
 
 async function createUser(newUser) {
@@ -64,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const signupName = document.getElementById('signup-name');
     const signupEmail = document.getElementById('signup-email');
     const signupPassword = document.getElementById('signup-password');
-    const signupRole = document.getElementById('signup-role');
+    const signuprole = document.getElementById('signup-role');
 
     signupForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -76,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
             name: signupName.value.trim(),
             email: signupEmail.value.trim().toLowerCase(),
             password: signupPassword.value,
-            role: signupRole.value
+            role: signuprole.value
         };
 
         try {

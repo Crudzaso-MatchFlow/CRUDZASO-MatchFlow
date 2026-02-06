@@ -90,11 +90,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!profileLink) return;
 
-  if (!user?.rol) {
+  if (!user?.role) {
     profileLink.href = "../index.html"; // o login
     return;
   }
 
-  if (user.rol === "candidate") profileLink.href = "candidate.html";
-  else if (user.rol === "company") profileLink.href = "company.html";
+  if (user.role === "candidate") profileLink.href = "candidate.html";
+  else if (user.role === "company") profileLink.href = "company.html";
 });

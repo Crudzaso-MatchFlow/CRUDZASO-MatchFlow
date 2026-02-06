@@ -162,7 +162,7 @@
         let currentView = 'discovery';
 
         const professions = [
-            'Desarrollador Frontend', 'Desarrollador Backend', 'Desarrollador Full Stack',
+            'Desarrolelador Frontend', 'Desarrolelador Backend', 'Desarrolelador Full Stack',
             'Diseñador UX/UI', 'Data Analyst'
         ];
 
@@ -176,10 +176,10 @@
             // Update UI
             document.getElementById('user-name').textContent = currentUser.name || 'Usuario';
             document.getElementById('user-avatar').src = currentUser.avatar || 'https://via.placeholder.com/40?text=%3F';
-            document.getElementById('user-role').textContent = currentUser.rol === 'company' ? 'Company' : 'Candidate';
+            document.getElementById('user-role').textContent = currentUser.role === 'company' ? 'Company' : 'Candidate';
 
             // Hide company-only nav
-            if (currentUser.rol !== 'company') {
+            if (currentUser.role !== 'company') {
                 document.querySelectorAll('.company-only').forEach(el => el.style.display = 'none');
             }
 
@@ -236,7 +236,7 @@
 
         function toggleView() {
             const isDiscovery = currentView === 'discovery';
-            if (currentUser.rol === 'company') {
+            if (currentUser.role === 'company') {
                 currentView = isDiscovery ? 'offers' : 'discovery';
             } else {
                 currentView = isDiscovery ? 'offers' : 'discovery';
@@ -259,7 +259,7 @@
                     viewTitle = 'Job Offers';
                     break;
                 case 'matches':
-                    items = currentUser.rol === 'company'
+                    items = currentUser.role === 'company'
                         ? db?.matches?.filter(m => m.companyId === currentUser.id) || []
                         : db?.matches?.filter(m => m.candidateId === currentUser.id) || [];
                     viewTitle = 'My Matches';
@@ -296,7 +296,7 @@
 
             // Update match count
             const matchCount = db?.matches?.filter(m => 
-                currentUser.rol === 'company' ? m.companyId === currentUser.id : m.candidateId === currentUser.id
+                currentUser.role === 'company' ? m.companyId === currentUser.id : m.candidateId === currentUser.id
             ).length || 0;
             document.getElementById('matches-count').textContent = matchCount;
         }
@@ -336,7 +336,7 @@
                         <p class="small">👤 ${candidate?.name || 'Deleted'}</p>
                         <p class="small text-muted">📅 ${new Date(m.createdAt).toLocaleDateString()}</p>
                         <div class="d-flex gap-2 mt-2">
-                            ${currentUser.rol === 'company' ? `
+                            ${currentUser.role === 'company' ? `
                                 <button class="btn btn-primary btn-sm" onclick="updateMatchStatus(${m.id}, 'contacted')">Contact</button>
                                 <button class="btn btn-success btn-sm" onclick="updateMatchStatus(${m.id}, 'hired')">Hire</button>
                                 <button class="btn btn-danger btn-sm" onclick="updateMatchStatus(${m.id}, 'discarded')">Discard</button>

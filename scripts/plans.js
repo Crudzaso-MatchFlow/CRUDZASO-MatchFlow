@@ -11,7 +11,7 @@ if (!user) {
 const plansContainer = document.getElementById("plansContainer");
 
 async function loadPlans() {
-    const res = await fetch(`${API}/plans?rol=${user.rol}`)
+    const res = await fetch(`${API}/plans?role=${user.role}`)
     const plans = await res.json();
     plansContainer.innerHTML = "";
     plansContainer.innerHTML = plans.map(plan => `
@@ -46,10 +46,10 @@ async function loadPlans() {
 
                 <li class="mb-3 d-flex align-items-center">
                     <span class="badge ${plan.filters ? 'bg-primary-subtle text-primary' : 'bg-secondary-subtle text-secondary'} rounded-circle p-1 me-2">
-                        ${plan.filters 
-                            ? `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>` 
-                            : `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>`
-                        }
+                        ${plan.filters
+            ? `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>`
+            : `<svg width="12" height="12" fill="currentColor" viewBox="0 0 16 16"><path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z"/></svg>`
+        }
                     </span>
                     <span class="${plan.filters ? '' : 'text-muted'}">
                         Filtros: ${plan.filters ? "Incluidos" : "No incluidos"}
@@ -73,28 +73,37 @@ plansContainer.addEventListener("click", async (e) => {
         const planId = e.target.dataset.planId;
         const subscription = {
             userId: user.id,
-            rol: user.rol,
+            role: user.role,
             planId: planId,
             startedAt: new Date().toISOString(),
             expiresAt: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString(),
             status: "active"
         };
-    const existing = await fetch(`${API}/subscriptions?userId=${user.id}&rol=${user.rol}`);
-    const data = await existing.json();
-    if (data.length > 0){
-        await fetch(`${API}/subscriptions/${data[0].id}`, {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(subscription)
-        });
-    } else {
-        await fetch(`${API}/subscriptions`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(subscription)
-        });
+        const existing = await fetch(`${API}/subscriptions?userId=${user.id}&role=${user.role}`);
+        const data = await existing.json();
+        if (data.length > 0) {
+            await fetch(`${API}/subscriptions/${data[0].id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(subscription)
+            });
+        } else {
+            await fetch(`${API}/subscriptions`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(subscription)
+            });
+        }
+        notify.success("Subscription Updated");
+        window.location.href = "../pages/subscription.html";
     }
-    notify.success("Subscription Updated");
-    window.location.href = "../pages/subscription.html";
-    }
+
+    const backBtn = document.getElementById("backBtn");
+
+    backBtn.addEventListener("click", () => {
+    window.history.back();
 });
+
+});
+
+loadPlans()
