@@ -387,6 +387,14 @@
       "jobOfferId": "1",
       "status": "pending",
       "createdAt": 1770401128489
+    },
+    {
+      "id": "30d5",
+      "companyId": "1",
+      "candidateId": "1",
+      "jobOfferId": "2",
+      "status": "pending",
+      "createdAt": 1770406445440
     }
   ],
   "plans": [

@@ -1,4 +1,4 @@
-import { getCurrentUser } from "./utils.js";
+import { getCurrentUser, logout } from "./utils.js";
 
 
 const API = "http://localhost:3000";
@@ -72,3 +72,8 @@ const container = document.getElementById("job-offers-list");
     container.innerHTML = `<p>Error cargando ofertas.</p>`;
   }
 })
+
+window.logout = function logout() {
+  localStorage.removeItem('currentUser');
+  window.location.href = 'login.html';
+};

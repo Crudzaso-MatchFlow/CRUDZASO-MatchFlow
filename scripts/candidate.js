@@ -1,11 +1,17 @@
-import { getCurrentUser } from "./utils.js";
-import { notify } from "./utils.js";
+import { getCurrentUser, notify} from "./utils.js";
+
 
 const API_URL = 'http://localhost:3000/candidates';
 let user = getCurrentUser();
 
 let currentCandidate = null;
 let profileModalInstance = null;
+
+
+if (!user){
+  window.location.href = "./login.html"
+}
+
 
 document.addEventListener('DOMContentLoaded', async () => {
 
