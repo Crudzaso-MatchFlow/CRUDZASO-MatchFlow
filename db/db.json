@@ -345,6 +345,20 @@
       "deadline": "2026-01-20T23:59:59Z",
       "createdAt": "2026-01-10T08:00:00Z",
       "isActive": false
+    },
+    {
+      "id": "68c6",
+      "companyId": "",
+      "title": "Hola",
+      "description": "Yo",
+      "profession": "Data Analyst",
+      "typeContract": "Fijo",
+      "location": "Colombia",
+      "mode": "Híbrido",
+      "salary": "2300",
+      "deadline": "2026-02-19",
+      "createdAt": "2026-02-07T01:17:43.333Z",
+      "isActive": true
     }
   ],
   "matches": [

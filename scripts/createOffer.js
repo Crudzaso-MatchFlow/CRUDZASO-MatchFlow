@@ -13,27 +13,27 @@ let submitBtn = document.getElementById('submitBtn');
 let cancelBtn = document.getElementById('cancelBtn');
 const user = utils.getCurrentUser();
 
-// block visual 
-(async function checkSubscription() {
-    const hasSub = await utils.hasActiveSubscription(user.id, user.role);
+// // block visual 
+// (async function checkSubscription() {
+//     const hasSub = await utils.hasActiveSubscription(user.id, user.role);
 
-    if (!hasSub) {
-        form.innerHTML = `
-        <div class="alert alert-danger">
-            Your subscription is expired or inactive.
-            <a href="plans.html">Renew your plan</a>
-        </div>`;
-    }
-})();
+//     if (!hasSub) {
+//         form.innerHTML = `
+//         <div class="alert alert-danger">
+//             Your subscription is expired or inactive.
+//             <a href="plans.html">Renew your plan</a>
+//         </div>`;
+//     }
+// })();
 
 form.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const validation = await utils.canCrtOffer(user.id);
+    // const validation = await utils.canCrtOffer(user.id);
 
-    if(!validation.ok){
-        alert(validation.reason);
-        return;
-    }
+    // if (!validation.ok) {
+    //     alert(validation.reason);
+    //     return;
+    // }
 
     const newOffer = {
         companyId: "",

@@ -13,18 +13,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
 
-const navSearchItem = document.getElementById("navSearchItem")
-const navOfferItem = document.getElementById("navOfferItem")
-const btnCreateOffer = document.getElementById("btnCreateOffer") 
+  const navSearchItem = document.getElementById("navSearchItem")
+  const navOfferItem = document.getElementById("navOfferItem")
+  const btnCreateOffer = document.getElementById("btnCreateOffer")
 
-if (currentUser.role === "company"){
+  if (currentUser.role === "company") {
     if (navSearchItem) navSearchItem.classList.remove("d-none")
     if (navOfferItem) navOfferItem.classList.remove("d-none")
     if (btnCreateOffer) btnCreateOffer.classList.remove("d-none")
   }
 
 
-const container = document.getElementById("job-offers-list");
+  const container = document.getElementById("job-offers-list");
   if (!container) return;
 
   try {
@@ -36,7 +36,7 @@ const container = document.getElementById("job-offers-list");
     const jobOffers = await offersRes.json();
     const companies = await companiesRes.json();
 
-    
+
     let visibleOffers = jobOffers;
 
     if (currentUser.role === "company") {
@@ -44,7 +44,7 @@ const container = document.getElementById("job-offers-list");
       visibleOffers = jobOffers.filter(
         (o) => Number(o.companyId) === companyId
       );
-    } 
+    }
 
     if (!visibleOffers.length) {
       container.innerHTML = `<p>No hay ofertas para mostrar.</p>`;
@@ -58,13 +58,59 @@ const container = document.getElementById("job-offers-list");
         );
 
         return `
-          <article class="card job-offer-card">
-            <div class="card-body">
-              <h4>${o.title}</h4>
-              <p>${o.profession} • ${company ? company.name : "Empresa"}</p>
-            </div>
-          </article>
-        `;
+       <div class="col-12 col-md-6 col-lg-4 mb-3">
+  <article class="card shadow-sm border-0 h-100">
+    <div class="card-body d-flex flex-column">
+
+     
+      <div class="d-flex align-items-start justify-content-between mb-2">
+
+        <div class="d-flex align-items-center gap-3">
+          <img
+            src="${company?.avatar || 'https://ui-avatars.com/api/?name=Empresa'}"
+            alt="${company?.name || 'Empresa'}"
+            class="rounded"
+            style="width:44px;height:44px;object-fit:cover;"
+          />
+
+          <div>
+            <h6 class="mb-0 fw-semibold text-truncate">
+              ${o.title}
+            </h6>
+            <small class="text-muted d-block">
+              ${company ? company.name : "Empresa"}
+            </small>
+          </div>
+        </div>
+
+      </div>
+
+     
+      <div class="d-flex flex-wrap gap-2 mb-2">
+        <span class="badge bg-light text-secondary border">${o.location}</span>
+        <span class="badge bg-light text-secondary border">${o.typeContract}</span>
+        <span class="badge bg-light text-secondary border">${o.mode}</span>
+      </div>
+
+     
+      <p class="small text-muted mb-3 flex-grow-1 job-card-description">
+        ${o.description}
+      </p>
+
+     
+      <div class="d-flex justify-content-between align-items-center small pt-2 border-top">
+        <span class="fw-semibold text-success">
+          ${o.salary}
+        </span>
+
+        <span class="text-muted">
+          ${new Date(o.deadline).toLocaleDateString()}
+        </span>
+      </div>
+
+    </div>
+  </article>
+</div>`;
       })
       .join("");
   } catch (err) {
