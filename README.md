@@ -1,298 +1,282 @@
-# MatchFlow - Hiring Platform by Crudzaso
+# MatchFlow – Hiring Platform by Crudzaso
 
 ## 📋 Description
 
-MatchFlow is a match-first hiring platform where candidates activate "Open to Work" status and companies discover and match with them. No traditional applications - just smart matching.
+MatchFlow is a match-first hiring platform where candidates activate an **“Open to Work”** status and companies discover and match with them.
+There are no traditional applications; instead, companies create matches directly with candidates through controlled business rules and subscription plans.
+
+This project is an educational implementation focused on frontend logic, business rules, and REST-based data handling using `json-server`.
+
+---
 
 ## 🎯 Key Features
 
 ### For Candidates
-- **Open to Work Toggle**: Controle your visibility to companies
-- **Profile Management**: Update your professional information
-- **Match Tracking**: See all your matches and their status
-- **Privacy Controle**: Contact info only visible after "contacted" status
+
+* Open to Work toggle to control visibility
+* Profile management (personal and professional data)
+* Match tracking with status progression
+* Privacy control: contact information only visible after being contacted
 
 ### For Companies
-- **Candidate Discovery**: Browse candidates who are open to work
-- **Match Creation**: Create matches with candidates for specific job offers
-- **Reservation System**: Reserve candidates while evaluating
-- **Match Management**: Track match status (pending → contacted → interview → hired/discarded)
-- **Job Offers**: Create and manage job postings
+
+* Candidate discovery (only open candidates)
+* Match creation linked to job offers
+* Candidate reservation system
+* Match lifecycle management
+* Job offer creation with plan-based limits
+
+---
 
 ## 🏗️ Project Structure
 
 ```
-CRUDZASO-HabitFlow/
-├── index.html                    # Landing page
-├── README.md                     # This file
+CRUDZASO-MatchFlow/
+├── index.html
+├── README.md
 ├── package.json
 ├── css/
-│   └── styles.css               # Unified styles (Bootstrap + custom)
+│   └── styles.css
 ├── db/
-│   ├── db.json                  # json-server database
+│   ├── db.json
 │   ├── package.json
 │   └── package-lock.json
 ├── images/
-│   └── hero.svg                 # Hero image
+│   └── hero.svg
 ├── pages/
-│   ├── login.html               # Login/Signup page
-│   ├── dashboard_user.html      # Unified dashboard (Discovery, Matches, Reserved)
-│   ├── candidate.html           # Candidate profile management
-│   ├── company.html             # Company profile management
-│   └── createOffer.html         # Create job offer form
+│   ├── login.html
+│   ├── candidate.html
+│   ├── company.html
+│   ├── createOffer.html
+│   ├── plans.html
+│   └── subscription.html
 └── scripts/
-    ├── login.js                 # Authentication logic
-    ├── candidate.js             # Candidate profile functionality
-    ├── company.js               # Company profile functionality
-    ├── createOffer.js           # Job offer creation
-    ├── findFilter.js            # Search and filter functionality
-    ├── showOferts.js            # Display offers and matches
-    ├── app.js                   # Main app logic
-    └── utils.js                 # Shared utilities
+    ├── app.js
+    ├── login.js
+    ├── candidate.js
+    ├── company.js
+    ├── createOffer.js
+    ├── matches.js
+    ├── plans.js
+    ├── subscription.js
+    ├── showOferts.js
+    └── utils.js
 ```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js installed
-- npm or npx
+
+* Node.js
+* npm or npx
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd CRUDZASO-HabitFlow
-   ```
+Clone the repository:
 
-2. **Start json-server**
-   ```bash
-   cd db
-   npx json-server --watch db.json --port 3000
-   ```
+```
+git clone <repository-url>
+cd CRUDZASO-MatchFlow
+```
 
-3. **Open the application**
-   - Open `index.html` in your browser
-   - Or use Live Server extension in VS Code
+Start json-server:
+
+```
+cd db
+npx json-server --watch db.json --port 3000
+```
+
+Open the application:
+
+* Open `index.html` directly
+* Or use Live Server in VS Code
+
+---
 
 ## 📊 Database Structure
 
-The `db/db.json` file contains:
-
 ### Candidates
+
 ```json
 {
   "id": 1,
   "username": "user",
   "password": "password",
-  "role": "candidate",
+  "rol": "candidate",
   "name": "John Doe",
   "email": "john@example.com",
   "phone": "+57 300 123 4567",
   "avatar": "https://i.pravatar.cc/150?img=1",
-  "profession": "Desarrolelador Frontend",
+  "profession": "Frontend Developer",
   "experience": 3,
+  "skills": ["JavaScript", "HTML", "CSS"],
+  "languages": ["Spanish", "English"],
   "location": "Medellín",
   "openToWork": true,
-  "bio": "Passionate developer...",
   "reservedBy": null,
   "reservedForOffer": null
 }
 ```
 
 ### Companies
+
 ```json
 {
   "id": 1,
   "username": "company",
   "password": "password",
-  "role": "company",
+  "rol": "company",
   "name": "Tech Corp",
   "email": "contact@techcorp.com",
-  "phone": "+57 300 987 6543",
-  "avatar": "https://i.pravatar.cc/150?img=10",
   "industry": "Technology",
-  "size": "50-200",
-  "location": "Bogotá",
-  "website": "www.techcorp.com",
-  "description": "Leading tech company..."
+  "location": "Bogotá"
 }
 ```
 
 ### Job Offers
+
 ```json
 {
   "id": 1,
   "companyId": 1,
   "title": "Frontend Developer",
   "description": "We are looking for...",
-  "profession": "Desarrolelador Frontend",
-  "typeContract": "Indefinido",
   "location": "Medellín",
-  "mode": "Híbrido",
+  "mode": "Hybrid",
   "salary": "$3.500.000",
-  "deadline": "2024-12-31",
-  "createdAt": "2024-01-15T10:00:00Z",
   "isActive": true
 }
 ```
 
 ### Matches
+
 ```json
 {
   "id": 1,
   "companyId": 1,
   "candidateId": 2,
   "jobOfferId": 1,
-  "status": "pending",
-  "createdAt": "2024-01-20T14:30:00Z"
+  "status": "pending"
 }
 ```
 
-**Match Status Flow:**
-- `pending` → Initial state
-- `contacted` → Company contacted candidate (contact info now visible)
-- `interview` → Interview scheduled
-- `hired` → Candidate hired
-- `discarded` → Match rejected
+---
 
-## 🎨 Design System
+## 📝 Business Rules
 
-### Colors
-- **Primary**: `#137fec` (Blue)
-- **Secondary**: `#0fbcf9` (Light Blue)
-- **Success**: `#10b981` (Green)
-- **Warning**: `#f59e0b` (Orange)
-- **Danger**: `#ef4444` (Red)
+* Only candidates with `openToWork: true` appear in discovery
+* Candidates cannot see other candidates
+* One match = one company + one candidate + one job offer
+* Reserved candidates are blocked from other companies
+* Contact information is only visible after status `contacted`
+* Match status flow:
 
-### Typography
-- **Font Family**: Inter (Google Fonts)
-- **Weights**: 400, 500, 600, 700
+```
+pending → contacted → interview → hired / discarded
+```
 
-### Components
-- Bootstrap 5.3.0 for base components
-- Custom CSS for MatchFlow-specific styling
-- Material Symbols icons
+---
 
 ## 🔐 Authentication
 
 ### Default Test Accounts
 
-**Candidate:**
-- Email: `candidate@test.com`
-- Password: `123456`
+Candidate
+Email: `candidate@test.com`
+Password: `123456`
 
-**Company:**
-- Email: `company@test.com`
-- Password: `123456`
+Company
+Email: `company@test.com`
+Password: `123456`
 
-## 📱 Pages Overview
+Authentication is handled via json-server and session persistence through `localStorage`.
 
-### 1. Landing Page (`index.html`)
-- Hero section with CTA
-- Features showcase
-- Statistics
-- Call to action
-
-### 2. Login/Signup (`pages/login.html`)
-- Tabbed interface for login and signup
-- role selection (Candidate/Company)
-- Form validation
-
-### 3. Dashboard (`pages/dashboard_user.html`)
-- **Discovery View**: Browse candidates/offers
-- **Matches View**: See all matches
-- **Reserved View**: (Companies only) Reserved candidates
-- Sidebar navigation
-- Real-time filtering
-
-### 4. Candidate Profile (`pages/candidate.html`)
-- Profile information display
-- Open to Work toggle
-- Edit profile modal
-- Experience and skills sections
-
-### 5. Company Profile (`pages/company.html`)
-- Company information
-- Statistics (active offers, matches, reserved)
-- Edit profile modal
-
-### 6. Create Offer (`pages/createOffer.html`)
-- Job offer creation form
-- All required fields
-- Validation
-
-## 🛠️ Technologies
-
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **UI Framework**: Bootstrap 5.3.0
-- **Icons**: Material Symbols
-- **Backend**: json-server (REST API)
-- **Storage**: localStorage for session management
-
-## 📝 Business Rules
-
-1. **Open to Work Visibility**
-   - Only candidates with `openToWork: true` appear in Discovery
-   - Candidates can toggle this status anytime
-
-2. **Match Creation**
-   - Companies can create matches with open candidates
-   - One match = one company + one candidate + one job offer
-
-3. **Reservation System**
-   - Companies can reserve candidates (blocks other companies)
-   - Reserved candidates show "Reserved" badge
-   - Companies can release reservations
-
-4. **Contact Privacy**
-   - Contact info (phone, email) only visible after "contacted" status
-   - Protects candidate privacy until serious interest
-
-5. **Match Status Progression**
-   - Linear flow: pending → contacted → interview → hired/discarded
-   - Companies controle status updates
+---
 
 ## 🔄 API Endpoints
 
-json-server provides REST API at `http://localhost:3000`:
+Base URL: `http://localhost:3000`
 
-- `GET /candidates` - List all candidates
-- `GET /candidates/:id` - Get candidate by ID
-- `POST /candidates` - Create new candidate
-- `PATCH /candidates/:id` - Update candidate
-- `PUT /candidates/:id` - Replace candidate
+* `/candidates`
+* `/companies`
+* `/jobOffers`
+* `/matches`
+* `/plans`
+* `/subscriptions`
 
-Same pattern for:
-- `/companies`
-- `/jobOffers`
-- `/matches`
+Supports GET, POST, PATCH, PUT.
+
+---
+
+## 📌 Change Log – Project Extensions & Fixes
+
+### Change 1–10: Plans & Subscriptions (Phase 1)
+
+* Added `plans` and `subscriptions` collections
+* Plan-based restrictions for:
+
+  * Candidate reservations
+  * Job offer creation
+* Subscription expiration validation
+* UI improvements for plans and subscriptions
+* SweetAlert2 integration
+* Session normalization and date fixes
+
+---
+
+### Change 11–17: Dashboard & Matching Fixes
+
+* Added profile button to dashboard cards
+* Extended candidate model (skills, languages, experience)
+* Role-based dashboard visibility
+* Match creation auto-reserves candidate
+* Fixed repeated reload and object recreation
+* Deprecated and removed `dashboard_user.html`
+
+---
+
+### Change 18–25: Authentication, Session & Routing (Ulith Giraldo)
+
+* Unified and simplified login + register logic
+* Correct json-server integration
+* Proper session persistence using localStorage
+* Role-aware login (candidate & company)
+* Centralized `getCurrentUser()` utility
+* Modular JS across all pages
+* Manual route protection
+* Match creation with job offer selection
+* Navbar normalization across all pages
+* Inline documentation for all major refactors
+
+---
 
 ## 🐛 Troubleshooting
 
-### json-server not starting
-```bash
-cd db
+**json-server not starting**
+
+```
 npm install -g json-server
 json-server --watch db.json --port 3000
 ```
 
-### CORS errors
-json-server automatically handles CORS. Make sure it's running on port 3000.
+**Login issues**
 
-### Login not working
-1. Check json-server is running
-2. Check browser console for errors
-3. Verify db.json has test accounts
-
-## 📄 License
-
-This project is part of the Crudzaso learning initiative.
-
-## 👥 Team
-
-Developed by the Crudzaso team as part of the web development bootcamp.
+* Ensure json-server is running
+* Check db.json test accounts
+* Verify session data in localStorage
 
 ---
 
-**Note**: This is an educational project. For production use, implement proper authentication, security measures, and backend infrastructure.
+## 📄 License
+
+Educational project developed under the Crudzaso learning initiative.
+
+---
+
+## 👥 Team
+
+Developed by the Crudzaso team as part of a web development bootcamp.
+
+**Note:** This project is not production-ready. Authentication, authorization, and backend logic should be implemented server-side for real-world use.
